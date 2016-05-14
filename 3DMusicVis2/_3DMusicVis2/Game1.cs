@@ -33,6 +33,9 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace _3DMusicVis2
 {
+    /// <summary>
+    /// 3DMusicVis2
+    /// </summary>
     public class Game1 : Game
     {
         private const float SplashMaxCount = 1000;
