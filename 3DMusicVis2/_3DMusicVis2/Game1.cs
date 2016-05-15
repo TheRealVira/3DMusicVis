@@ -74,9 +74,16 @@ namespace _3DMusicVis2
         private float orbitSpeed = 0.001f;
         private float PauseInformationFloatCounter;
         private bool PauseInformationFromFlowingIn = true;
-        private bool RainbowMode;
         private float RainbowPointer;
-        private bool RandomMode;
+
+        /// <summary>
+        /// The color mode:
+        /// 0: Normal
+        /// 1: Rainbow
+        /// 2: Random
+        ///(3: Disco mode)
+        /// </summary>
+        private byte ColorGenerater;
         private string SongDirectory;
         private SpecialSong[] Songs;
         private bool splash = true;
@@ -527,13 +534,13 @@ namespace _3DMusicVis2
                     }
                     if (NewKeyboardState.IsKeyUp(Keys.R) && OldKeyboardState.IsKeyDown(Keys.R))
                     {
-                        RainbowMode = !RainbowMode;
-                        RandomMode = false;
+                        ColorGenerater = ColorGenerater == 1?(byte)0: (byte)1;
+                        //RandomMode = false;
                     }
                     if (NewKeyboardState.IsKeyUp(Keys.T) && OldKeyboardState.IsKeyDown(Keys.T))
                     {
-                        RandomMode = !RandomMode;
-                        RainbowMode = false;
+                        ColorGenerater = ColorGenerater == 2 ? (byte)0 : (byte)2;
+                        //RainbowMode = false;
                     }
                     if (NewKeyboardState.IsKeyUp(Keys.C) && OldKeyboardState.IsKeyDown(Keys.C))
                     {
@@ -825,7 +832,7 @@ namespace _3DMusicVis2
                                 mixed[i] = visData.Frequencies[i];
                             }
 
-                            if (!RainbowMode && !RandomMode)
+                            if (ColorGenerater==0)
                             {
                                 if (ModeProb == 1)
                                 {
@@ -840,22 +847,7 @@ namespace _3DMusicVis2
                                         myColorMode, flatModeInCircle, heightMultiplier);
                                 }
                             }
-                            else if (RandomMode)
-                            {
-                                if (ModeProb == 1)
-                                {
-                                    MyField.Update(mixed.ToArray(),
-                                        mixed.Length / WaveWaveZoomProb, GetRandomColor(), ModeProb,
-                                        FadeOutColor, myColorMode, flatModeInWave, heightMultiplier);
-                                }
-                                else if (ModeProb == 2)
-                                {
-                                    MyField.Update(mixed.ToArray(),
-                                        mixed.Length / CircleWaveZoomProb, GetRandomColor(), ModeProb,
-                                        FadeOutColor, myColorMode, flatModeInCircle, heightMultiplier);
-                                }
-                            }
-                            else
+                            else if (ColorGenerater == 1)
                             {
                                 if (ModeProb == 1)
                                 {
@@ -869,6 +861,21 @@ namespace _3DMusicVis2
                                         mixed.Length / CircleWaveZoomProb,
                                         GetRainbowColor(RainbowPointerProb), ModeProb, FadeOutColor, myColorMode,
                                         flatModeInCircle, heightMultiplier);
+                                }
+                            }
+                            else if (ColorGenerater==2)
+                            {
+                                if (ModeProb == 1)
+                                {
+                                    MyField.Update(mixed.ToArray(),
+                                        mixed.Length / WaveWaveZoomProb, GetRandomColor(), ModeProb,
+                                        FadeOutColor, myColorMode, flatModeInWave, heightMultiplier);
+                                }
+                                else if (ModeProb == 2)
+                                {
+                                    MyField.Update(mixed.ToArray(),
+                                        mixed.Length / CircleWaveZoomProb, GetRandomColor(), ModeProb,
+                                        FadeOutColor, myColorMode, flatModeInCircle, heightMultiplier);
                                 }
                             }
                         }
@@ -908,7 +915,7 @@ namespace _3DMusicVis2
                         }
                     }
 
-                    if (RainbowMode)
+                    if (ColorGenerater==1)
                     {
                         RainbowPointerProb += (float) gameTime.ElapsedGameTime.TotalMilliseconds/5000f;
                     }
@@ -1109,6 +1116,20 @@ namespace _3DMusicVis2
                     spriteBatch.Begin();
                     if (wave_2D)
                     {
+                        Color drawColor = Color.Black;
+                        if (ColorGenerater==0)
+                        {
+                            drawColor = waveColor;
+                        }
+                        else if (ColorGenerater == 1)
+                        {
+                            drawColor = GetRainbowColor(RainbowPointerProb);
+                        }
+                        else if (ColorGenerater==2)
+                        {
+                            drawColor= GetRandomColor();
+                        }
+
                         int x, y, width, height;
 
                         for (int s = 0; s < visData.Samples.Count; s++)
@@ -1125,7 +1146,7 @@ namespace _3DMusicVis2
                                      GraphicsDevice.Viewport.Height/4f);
 
                             spriteBatch.Draw(this.OnePixelTexture, new Rectangle(x, y, width, height),
-                                this.waveColor.HalfNegate());
+                                drawColor);
                         }
 
                         for (int f = 0; f < visData.Frequencies.Count; f++)
@@ -1134,8 +1155,8 @@ namespace _3DMusicVis2
                             y = (int)(GraphicsDevice.Viewport.Height - visData.Frequencies[f] * GraphicsDevice.Viewport.Height / 2);
                             width = 1;
                             height = (int)(visData.Frequencies[f] * GraphicsDevice.Viewport.Height / 2);
-                            spriteBatch.Draw(this.OnePixelTexture, new Rectangle(x+width*2, y, width, height), this.waveColor.Negate());
-                            spriteBatch.Draw(this.OnePixelTexture, new Rectangle(x, y, width*2, height), this.waveColor);
+                            spriteBatch.Draw(this.OnePixelTexture, new Rectangle(x+width*2, y, width, height), drawColor.Negate());
+                            spriteBatch.Draw(this.OnePixelTexture, new Rectangle(x, y, width*2, height), drawColor);
                         }
                     }
 
