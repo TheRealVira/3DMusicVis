@@ -131,6 +131,7 @@ namespace _3DMusicVis2.TileHelper
         public void ChangeSideColorsDynamic(Color fadeOut)
         {
             // Also a great performance eater
+            // TODO: Gather more performances
             Verts[0].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[0].Position.Y.Normalize(0, 1));
             Verts[2].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[2].Position.Y.Normalize(0, 1));
             Verts[3].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[3].Position.Y.Normalize(0, 1));
@@ -227,6 +228,7 @@ namespace _3DMusicVis2.TileHelper
         public void UpdateOutsideHeight(Tile[,] field, Point myPosition)
         {
             // Also a great performance eater
+            // TODO: Gather more performances
             int fieldWidth = field.GetLength(0) - 1, fieldHeight = field.GetLength(1) - 1;
             var right = myPosition.X == fieldWidth ? fieldWidth : myPosition.X + 1;
             var top = myPosition.Y == 0 ? 0 : myPosition.Y - 1;
