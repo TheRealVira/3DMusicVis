@@ -38,15 +38,16 @@ namespace _3DMusicVis2
         private const float SplashMaxCount = 1000;
         private const float PAUSEINFORMATIONFLOATMAXCOUNTER = 20000;
         private const int FIELD_WIDTH = 100;
-        public static GraphicsDeviceManager graphics;
-        public static SpriteBatch spriteBatch;
+        private const float INITAIL_HEIGHT = 0;
+        public static GraphicsDeviceManager Graphics;
+        public static SpriteBatch SpriteBatch;
         public static MouseState NewMouseState, OldMouseState;
         public static KeyboardState NewKeyboardState, OldKeyboardState;
-        public static Random rand;
-        private BasicEffect @BasicEffect;
-        private Camera Cam;
-        private ColorDialog chooseColor;
-        private FolderBrowserDialog chooseDirectory;
+        public static Random Rand;
+        private BasicEffect _basicEffect;
+        private Camera _cam;
+        private ColorDialog _chooseColor;
+        private FolderBrowserDialog _chooseDirectory;
 
         private int CircleWaveZoom;
 
@@ -67,7 +68,7 @@ namespace _3DMusicVis2
         private bool IsStopped; //Dont get confused by the name! It's for the STOPPING not for PAUSING!!!!!!
         private bool lockMovement = true;
         private ColorMode myColorMode;
-        private TileField MyField = new TileField(Vector3.Zero, 20, 0, 20, FIELD_WIDTH, FIELD_WIDTH, Color.Black);
+        private TileField MyField;
         private bool MyIsFullScreen;
         private Texture2D OnePixelTexture;
 
@@ -75,6 +76,7 @@ namespace _3DMusicVis2
         private float PauseInformationFloatCounter;
         private bool PauseInformationFromFlowingIn = true;
         private float RainbowPointer;
+        private bool Automated; // Some kind of disco move you could say...
 
         /// <summary>
         /// The color mode:
@@ -105,7 +107,7 @@ namespace _3DMusicVis2
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -170,13 +172,15 @@ namespace _3DMusicVis2
 
             ModeProb = 2;
 
-            graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
-            graphics.PreferredBackBufferWidth = graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+            Graphics.IsFullScreen = false;
+            Graphics.PreferredBackBufferHeight = Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            Graphics.PreferredBackBufferWidth = Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
             InactiveSleepTime = new TimeSpan(0);
             //this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 60);
             //graphics.SynchronizeWithVerticalRetrace = false;
-            graphics.ApplyChanges();
+            Graphics.ApplyChanges();
+
+            this.MyField = new TileField(GraphicsDevice, Vector3.Zero, 20, INITAIL_HEIGHT, 20, FIELD_WIDTH, FIELD_WIDTH, Color.Black);
 
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -186,28 +190,33 @@ namespace _3DMusicVis2
             MediaPlayer.Volume = 0.4f;
             audioAnalysis=new AudioAnalysisXNAClass();
 
-            rand = new Random();
+            Rand = new Random();
 
             ClearColor = Color.Black;
-            BasicEffect = new BasicEffect(GraphicsDevice);
+            _basicEffect = new BasicEffect(GraphicsDevice)
+            {
+                World = Matrix.Identity,
+                VertexColorEnabled = true,
+                TextureEnabled = false
+            };
 
             //this.BasicEffect.LightingEnabled = true;
             //this.BasicEffect.EnableDefaultLighting();
 
             IsMouseVisible = true;
-            chooseColor = new ColorDialog();
-            chooseDirectory = new FolderBrowserDialog();
-            chooseDirectory.RootFolder = Environment.SpecialFolder.Desktop;
+            _chooseColor = new ColorDialog();
+            _chooseDirectory = new FolderBrowserDialog();
+            _chooseDirectory.RootFolder = Environment.SpecialFolder.Desktop;
             waveColor = Color.Red;
             WaveWaveZoomProb = 86;
             CircleWaveZoomProb = 70;
 
-            OnePixelTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
+            OnePixelTexture = new Texture2D(Graphics.GraphicsDevice, 1, 1);
             OnePixelTexture.SetData(new[] {Color.White});
 
             Songs = new SpecialSong[0];
 
-            Cam = new Camera(GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
+            _cam = new Camera(GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
 
             if (!Directory.Exists("3DMusicVis2"))
             {
@@ -356,7 +365,7 @@ namespace _3DMusicVis2
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             SplashScreen = Content.Load<Texture2D>("Vira");
             InformationFont = Content.Load<SpriteFont>("InformationFont");
@@ -370,8 +379,8 @@ namespace _3DMusicVis2
             spriteBatch.Draw(
                 texture,
                 new Rectangle(
-                    (int) leftTop.X + graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width/2 - rectangle.Width/2,
-                    (int) leftTop.Y + graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height/2 - rectangle.Height/2,
+                    (int) leftTop.X + Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width/2 - rectangle.Width/2,
+                    (int) leftTop.Y + Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height/2 - rectangle.Height/2,
                     rectangle.Width,
                     rectangle.Height),
                 Color.White*transparancy);
@@ -483,7 +492,8 @@ namespace _3DMusicVis2
                     if (NewKeyboardState.IsKeyUp(Keys.Tab) && OldKeyboardState.IsKeyDown(Keys.Tab))
                     {
                         ModeProb++;
-                        MyField = new TileField(Vector3.Zero, 20, 2, 20, FIELD_WIDTH, FIELD_WIDTH, edgeColor);
+                        //MyField = new TileField(Vector3.Zero, 20, 2, 20, FIELD_WIDTH, FIELD_WIDTH, edgeColor);
+                        MyField.ResetHeight(INITAIL_HEIGHT);
                     }
                     if (NewKeyboardState.IsKeyUp(Keys.I) && OldKeyboardState.IsKeyDown(Keys.I))
                     {
@@ -603,7 +613,8 @@ namespace _3DMusicVis2
                     }
                     if (NewKeyboardState.IsKeyUp(Keys.NumPad0) && OldKeyboardState.IsKeyDown(Keys.NumPad0))
                     {
-                        MyField = new TileField(Vector3.Zero, 20, 2, 20, 100, 100, edgeColor);
+                        //MyField = new TileField(Vector3.Zero, 20, 2, 20, 100, 100, edgeColor);
+                        MyField.ResetHeight(INITAIL_HEIGHT);
                         if (ModeProb == 1)
                         {
                             flatModeInWave = !flatModeInWave;
@@ -619,7 +630,7 @@ namespace _3DMusicVis2
                     }
                     if (NewKeyboardState.IsKeyUp(Keys.NumPad9) && OldKeyboardState.IsKeyDown(Keys.NumPad9))
                     {
-                        Cam = new Camera(GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
+                        _cam = new Camera(GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
                     }
                     if (NewKeyboardState.IsKeyUp(Keys.Left) && OldKeyboardState.IsKeyDown(Keys.Left))
                     {
@@ -662,9 +673,9 @@ namespace _3DMusicVis2
                             {
                                 IsNowSelectingADirectory = true;
 
-                                if (chooseDirectory.ShowDialog() == DialogResult.OK)
+                                if (_chooseDirectory.ShowDialog() == DialogResult.OK)
                                 {
-                                    SongDirectory = chooseDirectory.SelectedPath;
+                                    SongDirectory = _chooseDirectory.SelectedPath;
                                 }
 
                                 ReloadSongs();
@@ -690,11 +701,11 @@ namespace _3DMusicVis2
                                         MediaPlayer.Pause();
                                         IsPlaying = false;
                                     }
-                                    if (chooseColor.ShowDialog(new Form {TopMost = true}) == DialogResult.OK)
+                                    if (_chooseColor.ShowDialog(new Form {TopMost = true}) == DialogResult.OK)
                                     {
-                                        waveColor = new Color(chooseColor.Color.R, chooseColor.Color.G,
-                                            chooseColor.Color.B,
-                                            chooseColor.Color.A);
+                                        waveColor = new Color(_chooseColor.Color.R, _chooseColor.Color.G,
+                                            _chooseColor.Color.B,
+                                            _chooseColor.Color.A);
                                     }
                                     if (!paused && !TogglePauseWhenSelectingColor)
                                     {
@@ -721,10 +732,10 @@ namespace _3DMusicVis2
                                         MediaPlayer.Pause();
                                         IsPlaying = false;
                                     }
-                                    if (chooseColor.ShowDialog(new Form {TopMost = true}) == DialogResult.OK)
+                                    if (_chooseColor.ShowDialog(new Form {TopMost = true}) == DialogResult.OK)
                                     {
-                                        FadeOutColor = new Color(chooseColor.Color.R, chooseColor.Color.G,
-                                            chooseColor.Color.B, chooseColor.Color.A);
+                                        FadeOutColor = new Color(_chooseColor.Color.R, _chooseColor.Color.G,
+                                            _chooseColor.Color.B, _chooseColor.Color.A);
                                     }
                                     if (!paused && !TogglePauseWhenSelectingColor)
                                     {
@@ -751,11 +762,11 @@ namespace _3DMusicVis2
                                         MediaPlayer.Pause();
                                         IsPlaying = false;
                                     }
-                                    if (chooseColor.ShowDialog(new Form {TopMost = true}) == DialogResult.OK)
+                                    if (_chooseColor.ShowDialog(new Form {TopMost = true}) == DialogResult.OK)
                                     {
-                                        ClearColor = new Color(chooseColor.Color.R, chooseColor.Color.G,
-                                            chooseColor.Color.B,
-                                            chooseColor.Color.A);
+                                        ClearColor = new Color(_chooseColor.Color.R, _chooseColor.Color.G,
+                                            _chooseColor.Color.B,
+                                            _chooseColor.Color.A);
                                     }
                                     if (!paused && !TogglePauseWhenSelectingColor)
                                     {
@@ -782,15 +793,16 @@ namespace _3DMusicVis2
                                         MediaPlayer.Pause();
                                         IsPlaying = false;
                                     }
-                                    if (chooseColor.ShowDialog(new Form {TopMost = true}) == DialogResult.OK &&
+                                    if (_chooseColor.ShowDialog(new Form {TopMost = true}) == DialogResult.OK &&
                                         edgeColor !=
-                                        new Color(chooseColor.Color.R, chooseColor.Color.G, chooseColor.Color.B,
-                                            chooseColor.Color.A))
+                                        new Color(_chooseColor.Color.R, _chooseColor.Color.G, _chooseColor.Color.B,
+                                            _chooseColor.Color.A))
                                     {
-                                        edgeColor = new Color(chooseColor.Color.R, chooseColor.Color.G,
-                                            chooseColor.Color.B,
-                                            chooseColor.Color.A);
-                                        MyField = new TileField(Vector3.Zero, 20, 2, 20, 100, 100, edgeColor);
+                                        edgeColor = new Color(_chooseColor.Color.R, _chooseColor.Color.G,
+                                            _chooseColor.Color.B,
+                                            _chooseColor.Color.A);
+                                        //MyField = new TileField(Vector3.Zero, 20, 2, 20, 100, 100, edgeColor);
+                                        MyField.ResetHeight(INITAIL_HEIGHT);
                                     }
                                     if (!paused && !TogglePauseWhenSelectingColor)
                                     {
@@ -813,70 +825,99 @@ namespace _3DMusicVis2
 
                     if (!IsStopped)
                     {
-                        if ((wave_3D || wave_2D)&&IsPlaying)
+                        if (IsPlaying)
                         {
-                            MediaPlayer.GetVisualizationData(visData);
-                        }
-
-                        if (IsPlaying&&wave_3D)
-                        {
-                            //audioAnalysis.Update();
-                            //audioAnalysis.updateAverageLowFrequencyData();
-                            //audioAnalysis.updateAverageMidFrequencyData();
-                            //audioAnalysis.updateAverageHighFrequencyData();
-                            //bool shoot = audioAnalysis.getBool_2StepLowFrq(0.49f);
-
-                            float[] mixed=new float[256];
-                            for (int i = 0; i < 256; i++)
+                            if (wave_3D || wave_2D)
                             {
-                                mixed[i] = visData.Frequencies[i];
+                                MediaPlayer.GetVisualizationData(visData);
+                                audioAnalysis.Update();
+                                audioAnalysis.updateAverageLowFrequencyData();
+                                audioAnalysis.updateAverageMidFrequencyData();
+                                audioAnalysis.updateAverageHighFrequencyData();
                             }
 
-                            if (ColorGenerater==0)
+                            if (wave_3D)
                             {
-                                if (ModeProb == 1)
+                                if (ColorGenerater == 0)
                                 {
-                                    MyField.Update(mixed.ToArray(),
-                                        mixed.Length/WaveWaveZoomProb, waveColor, ModeProb, FadeOutColor,
-                                        myColorMode, flatModeInWave, heightMultiplier);
+                                    switch (ModeProb)
+                                    {
+                                        case 1:
+                                            MyField.Update(visData.Frequencies,
+                                                visData.Frequencies.Count/WaveWaveZoomProb, waveColor, ModeProb, FadeOutColor,
+                                                myColorMode, flatModeInWave, heightMultiplier);
+                                            break;
+                                        case 2:
+                                            MyField.Update(visData.Frequencies,
+                                                visData.Frequencies.Count / CircleWaveZoomProb, waveColor, ModeProb, FadeOutColor,
+                                                myColorMode, flatModeInCircle, heightMultiplier);
+                                            break;
+                                    }
                                 }
-                                else if (ModeProb == 2)
+                                else if (ColorGenerater == 1)
                                 {
-                                    MyField.Update(mixed.ToArray(),
-                                        mixed.Length / CircleWaveZoomProb, waveColor, ModeProb, FadeOutColor,
-                                        myColorMode, flatModeInCircle, heightMultiplier);
+                                    switch (ModeProb)
+                                    {
+                                        case 1:
+                                            MyField.Update(visData.Frequencies,
+                                                visData.Frequencies.Count / WaveWaveZoomProb, GetRainbowColor(RainbowPointerProb),
+                                                ModeProb, FadeOutColor, myColorMode, flatModeInWave, heightMultiplier);
+                                            break;
+                                        case 2:
+                                            MyField.Update(visData.Frequencies,
+                                                visData.Frequencies.Count / CircleWaveZoomProb,
+                                                GetRainbowColor(RainbowPointerProb), ModeProb, FadeOutColor, myColorMode,
+                                                flatModeInCircle, heightMultiplier);
+                                            break;
+                                    }
+                                }
+                                else if (ColorGenerater == 2)
+                                {
+                                    switch (ModeProb)
+                                    {
+                                        case 1:
+                                            MyField.Update(visData.Frequencies,
+                                                visData.Frequencies.Count / WaveWaveZoomProb, GetRandomColor(), ModeProb,
+                                                FadeOutColor, myColorMode, flatModeInWave, heightMultiplier);
+                                            break;
+                                        case 2:
+                                            MyField.Update(visData.Frequencies,
+                                                visData.Frequencies.Count / CircleWaveZoomProb, GetRandomColor(), ModeProb,
+                                                FadeOutColor, myColorMode, flatModeInCircle, heightMultiplier);
+                                            break;
+                                    }
                                 }
                             }
-                            else if (ColorGenerater == 1)
+
+                            if (_cam.Orbit)
                             {
-                                if (ModeProb == 1)
+                                if (Automated)
                                 {
-                                    MyField.Update(mixed.ToArray(),
-                                        mixed.Length / WaveWaveZoomProb, GetRainbowColor(RainbowPointerProb),
-                                        ModeProb, FadeOutColor, myColorMode, flatModeInWave, heightMultiplier);
+                                    if (audioAnalysis.getBool_2StepLowFrq(0.54f))
+                                    {
+                                        _cam.NegateOrbit = !_cam.NegateOrbit;
+                                    }
+
+                                    _cam.Position =
+                                        Vector3.Transform(_cam.Position - new Vector3(10, 0, 10),
+                                            Matrix.CreateFromAxisAngle(new Vector3(0, (_cam.NegateOrbit ? -1 : 1),0),
+                                                audioAnalysis.getFloat_2StepLowFrq(orbitSpeed, .1f, 0.45f))) +
+                                        new Vector3(10, 0, 10);
+                                    _cam.View = Matrix.CreateLookAt(_cam.Position, new Vector3(10, 0, 10), Vector3.Up);
                                 }
-                                else if (ModeProb == 2)
+                                else
                                 {
-                                    MyField.Update(mixed.ToArray(),
-                                        mixed.Length / CircleWaveZoomProb,
-                                        GetRainbowColor(RainbowPointerProb), ModeProb, FadeOutColor, myColorMode,
-                                        flatModeInCircle, heightMultiplier);
+                                    _cam.Position =
+                                        Vector3.Transform(_cam.Position - new Vector3(10, 0, 10),
+                                            Matrix.CreateFromAxisAngle(new Vector3(0, (_cam.NegateOrbit ? -1 : 1), 0),
+                                                orbitSpeed)) +
+                                        new Vector3(10, 0, 10);
+                                    _cam.View = Matrix.CreateLookAt(_cam.Position, new Vector3(10, 0, 10), Vector3.Up);
                                 }
-                            }
-                            else if (ColorGenerater==2)
-                            {
-                                if (ModeProb == 1)
-                                {
-                                    MyField.Update(mixed.ToArray(),
-                                        mixed.Length / WaveWaveZoomProb, GetRandomColor(), ModeProb,
-                                        FadeOutColor, myColorMode, flatModeInWave, heightMultiplier);
-                                }
-                                else if (ModeProb == 2)
-                                {
-                                    MyField.Update(mixed.ToArray(),
-                                        mixed.Length / CircleWaveZoomProb, GetRandomColor(), ModeProb,
-                                        FadeOutColor, myColorMode, flatModeInCircle, heightMultiplier);
-                                }
+
+                                //Cam.Position = Vector3.Transform(Cam.Position, Matrix.CreateRotationY(audioAnalysis.getFloat_2StepLowFrq(orbitSpeed, .1f, 0.45f)));
+                                //Cam.Target = new Vector3(10, 0, 10);
+                                //Cam.View = Matrix.CreateLookAt(Cam.Position, Cam.Target, Vector3.Up);
                             }
                         }
                     }
@@ -895,23 +936,18 @@ namespace _3DMusicVis2
 
                     if (!lockMovement)
                     {
-                        Cam.Update(gameTime);
-                        Mouse.SetPosition(graphics.GraphicsDevice.Viewport.Width/2,
-                            graphics.GraphicsDevice.Viewport.Height/2);
+                        _cam.Update(gameTime);
+                        Mouse.SetPosition(Graphics.GraphicsDevice.Viewport.Width/2,
+                            Graphics.GraphicsDevice.Viewport.Height/2);
                     }
                     else
                     {
                         if (NewKeyboardState.IsKeyUp(Keys.O) &&
                             OldKeyboardState.IsKeyDown(Keys.O))
                         {
-                            Cam.Orbit = !Cam.Orbit;
-                        }
-
-                        if (Cam.Orbit)
-                        {
-                            Cam.Position = Vector3.Transform(Cam.Position, Matrix.CreateRotationY(orbitSpeed));
-                            Cam.Target = new Vector3(10, 0, 10);
-                            Cam.View = Matrix.CreateLookAt(Cam.Position, Cam.Target, Vector3.Up);
+                            _cam.Position = new Vector3(10, 14.5f, -9.5f);
+                            _cam.Rotation = new Vector3(0.65f, 0, 0);
+                            _cam.Orbit = !_cam.Orbit;
                         }
                     }
 
@@ -948,7 +984,7 @@ namespace _3DMusicVis2
                                                               Songs[SongPointerProb - 1].TagLibFile.Tag.FirstGenre).X <
                                 0)
                             {
-                                InformationOffset = -graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width + 254;
+                                InformationOffset = -Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width + 254;
                                 //this.InformationOffset = 0;
                             }
                         }
@@ -991,9 +1027,9 @@ namespace _3DMusicVis2
                         {
                             IsNowSelectingADirectory = true;
 
-                            if (chooseDirectory.ShowDialog() == DialogResult.OK)
+                            if (_chooseDirectory.ShowDialog() == DialogResult.OK)
                             {
-                                SongDirectory = chooseDirectory.SelectedPath;
+                                SongDirectory = _chooseDirectory.SelectedPath;
                             }
 
                             ReloadSongs();
@@ -1040,7 +1076,7 @@ namespace _3DMusicVis2
 
         private Color GetRandomColor()
         {
-            return new Color(rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
+            return new Color(Rand.Next(0, 256), Rand.Next(0, 256), Rand.Next(0, 256));
         }
 
         /// <summary>
@@ -1064,29 +1100,31 @@ namespace _3DMusicVis2
             //        window.Activate();
             //    }
             //}
-
-            GraphicsDevice.Clear(this.ClearColor);
-
+            
             if (Songs.Length > 0)
             {
                 if (splash)
                 {
-                    spriteBatch.Begin();
+                    GraphicsDevice.Clear(Color.Black);
+                    SpriteBatch.Begin();
                     DrawInCenter(
-                        spriteBatch,
+                        SpriteBatch,
                         new Rectangle(
                             0, 0,
-                            SplashScreen.Width.Clamp(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width / 4,
-                                graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width),
-                            SplashScreen.Height.Clamp(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height / 4,
-                                graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height)),
+                            SplashScreen.Width.Clamp(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width / 4,
+                                Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width),
+                            SplashScreen.Height.Clamp(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height / 4,
+                                Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height)),
                         SplashScreen,
                         Vector2.Zero);
 
-                    spriteBatch.End();
+                    SpriteBatch.End();
                 }
                 else
                 {
+                    //GraphicsDevice.Clear(this.waveColor.DarkenColor(225));
+                    GraphicsDevice.Clear(ClearColor);
+
                     var temp = GraphicsDevice.RasterizerState = new RasterizerState()
                     {
                         CullMode = CullMode.None,
@@ -1098,22 +1136,13 @@ namespace _3DMusicVis2
 
                     if (!IsStopped&&wave_3D)
                     {
-                        BasicEffect.Projection = Cam.Projektion;
-                        BasicEffect.View = Cam.View;
-                        BasicEffect.World = Matrix.Identity;
-                        BasicEffect.VertexColorEnabled = true;
-                        BasicEffect.TextureEnabled = false;
+                        _basicEffect.Projection = _cam.Projektion;
+                        _basicEffect.View = _cam.View;
 
-                        for (int i = 0; i < BasicEffect.CurrentTechnique.Passes.Count; i++)
-                        {
-                            BasicEffect.CurrentTechnique.Passes[i].Apply();
-
-                            GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, MyField.GetData(), 0,
-                                MyField.GetElementCount() / 3);
-                        }
+                        MyField.Draw(_basicEffect,Graphics.GraphicsDevice);
                     }
 
-                    spriteBatch.Begin();
+                    SpriteBatch.Begin();
                     if (wave_2D)
                     {
                         Color drawColor = Color.Black;
@@ -1145,7 +1174,7 @@ namespace _3DMusicVis2
                                     ((visData.Samples[s] > 0.0f ? 1 : -1f)*visData.Samples[s]*
                                      GraphicsDevice.Viewport.Height/4f);
 
-                            spriteBatch.Draw(this.OnePixelTexture, new Rectangle(x, y, width, height),
+                            SpriteBatch.Draw(this.OnePixelTexture, new Rectangle(x, y, width, height),
                                 drawColor);
                         }
 
@@ -1155,8 +1184,8 @@ namespace _3DMusicVis2
                             y = (int)(GraphicsDevice.Viewport.Height - visData.Frequencies[f] * GraphicsDevice.Viewport.Height / 2);
                             width = 1;
                             height = (int)(visData.Frequencies[f] * GraphicsDevice.Viewport.Height / 2);
-                            spriteBatch.Draw(this.OnePixelTexture, new Rectangle(x+width*2, y, width, height), drawColor.Negate());
-                            spriteBatch.Draw(this.OnePixelTexture, new Rectangle(x, y, width*2, height), drawColor);
+                            SpriteBatch.Draw(this.OnePixelTexture, new Rectangle(x+width*2, y, width, height), drawColor.Negate());
+                            SpriteBatch.Draw(this.OnePixelTexture, new Rectangle(x, y, width*2, height), drawColor);
                         }
                     }
 
@@ -1164,35 +1193,35 @@ namespace _3DMusicVis2
                     {
                         if (!IsPlaying)
                         {
-                            spriteBatch.Draw(OnePixelTexture, new Rectangle(252, 52, 104, 50), Color.White);
-                            spriteBatch.Draw(OnePixelTexture, new Rectangle(254, 54, 100, 46), Color.Black);
-                            spriteBatch.DrawString(InformationFont, "Paused", new Vector2(261, 63), Color.Red);
+                            SpriteBatch.Draw(OnePixelTexture, new Rectangle(252, 52, 104, 50), Color.White);
+                            SpriteBatch.Draw(OnePixelTexture, new Rectangle(254, 54, 100, 46), Color.Black);
+                            SpriteBatch.DrawString(InformationFont, "Paused", new Vector2(261, 63), Color.Red);
                         }
 
                         if (lockMovement)
                         {
-                            spriteBatch.Draw(OnePixelTexture, new Rectangle(252, 100, 104, 50), Color.White);
-                            spriteBatch.Draw(OnePixelTexture, new Rectangle(254, 102, 100, 46), Color.Black);
-                            spriteBatch.DrawString(InformationFont, "Locked", new Vector2(261, 111), Color.Red);
+                            SpriteBatch.Draw(OnePixelTexture, new Rectangle(252, 100, 104, 50), Color.White);
+                            SpriteBatch.Draw(OnePixelTexture, new Rectangle(254, 102, 100, 46), Color.Black);
+                            SpriteBatch.DrawString(InformationFont, "Locked", new Vector2(261, 111), Color.Red);
                         }
 
                         if (TopMost)
                         {
-                            spriteBatch.Draw(OnePixelTexture, new Rectangle(252, 148, 130, 50), Color.White);
-                            spriteBatch.Draw(OnePixelTexture, new Rectangle(254, 150, 126, 46), Color.Black);
-                            spriteBatch.DrawString(InformationFont, "Top most", new Vector2(261, 156), Color.Red);
+                            SpriteBatch.Draw(OnePixelTexture, new Rectangle(252, 148, 130, 50), Color.White);
+                            SpriteBatch.Draw(OnePixelTexture, new Rectangle(254, 150, 126, 46), Color.Black);
+                            SpriteBatch.DrawString(InformationFont, "Top most", new Vector2(261, 156), Color.Red);
                         }
 
-                        spriteBatch.Draw(OnePixelTexture,
-                            new Rectangle(0, 0, graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width, 54),
+                        SpriteBatch.Draw(OnePixelTexture,
+                            new Rectangle(0, 0, Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width, 54),
                             Color.White);
-                        spriteBatch.Draw(OnePixelTexture,
-                            new Rectangle(2, 2, graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width - 4, 50),
+                        SpriteBatch.Draw(OnePixelTexture,
+                            new Rectangle(2, 2, Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width - 4, 50),
                             Color.Black);
 
                         if (PauseInformationFromFlowingIn)
                         {
-                            spriteBatch.DrawString(InformationFont,
+                            SpriteBatch.DrawString(InformationFont,
                                 "  Song:  " + Songs[SongPointerProb - 1].TagLibFile.Tag.Title + " || Album:  " +
                                 Songs[SongPointerProb - 1].TagLibFile.Tag.Album + " || Artist:  " +
                                 Songs[SongPointerProb - 1].MySong.Artist.Name + " || Duration:  " +
@@ -1201,7 +1230,7 @@ namespace _3DMusicVis2
                         }
                         else
                         {
-                            spriteBatch.DrawString(InformationFont,
+                            SpriteBatch.DrawString(InformationFont,
                                 "  Song:  " + Songs[SongPointerProb - 1].TagLibFile.Tag.Title + " || Album:  " +
                                 Songs[SongPointerProb - 1].TagLibFile.Tag.Album + " || Artist:  " +
                                 Songs[SongPointerProb - 1].MySong.Artist.Name + " || Duration:  " +
@@ -1215,23 +1244,23 @@ namespace _3DMusicVis2
                                 new Vector2(255 - InformationOffset, 20), Color.White);
                         }
 
-                        spriteBatch.Draw(OnePixelTexture, new Rectangle(0, 0, 258, 258), Color.White);
-                        spriteBatch.Draw(OnePixelTexture, new Rectangle(2, 2, 254, 254), Color.Black);
+                        SpriteBatch.Draw(OnePixelTexture, new Rectangle(0, 0, 258, 258), Color.White);
+                        SpriteBatch.Draw(OnePixelTexture, new Rectangle(2, 2, 254, 254), Color.Black);
 
                         if (Songs[SongPointerProb - 1].TagLibFile.Tag.Pictures.Length >= 1)
                         {
-                            spriteBatch.Draw(Songs[SongPointerProb - 1].Thumbnail, new Rectangle(4, 4, 250, 250),
+                            SpriteBatch.Draw(Songs[SongPointerProb - 1].Thumbnail, new Rectangle(4, 4, 250, 250),
                                 Color.White);
                         }
                         else
                         {
-                            spriteBatch.DrawString(InformationFont,
+                            SpriteBatch.DrawString(InformationFont,
                                 "There is \nno thumbnail\nto display here!\n                ", new Vector2(20, 20),
                                 Color.Red);
                         }
                     }
 
-                    spriteBatch.End();
+                    SpriteBatch.End();
                     GraphicsDevice.RasterizerState = temp;
                 }
             }
@@ -1239,41 +1268,41 @@ namespace _3DMusicVis2
             {
                 if (Information)
                 {
-                    spriteBatch.Begin();
+                    SpriteBatch.Begin();
 
                     if (!IsPlaying)
                     {
-                        spriteBatch.Draw(OnePixelTexture, new Rectangle(252, 52, 104, 50), Color.White);
-                        spriteBatch.Draw(OnePixelTexture, new Rectangle(254, 54, 100, 46), Color.Black);
-                        spriteBatch.DrawString(InformationFont, "Paused", new Vector2(261, 63), Color.Red);
+                        SpriteBatch.Draw(OnePixelTexture, new Rectangle(252, 52, 104, 50), Color.White);
+                        SpriteBatch.Draw(OnePixelTexture, new Rectangle(254, 54, 100, 46), Color.Black);
+                        SpriteBatch.DrawString(InformationFont, "Paused", new Vector2(261, 63), Color.Red);
                     }
 
                     if (lockMovement)
                     {
-                        spriteBatch.Draw(OnePixelTexture, new Rectangle(252, 100, 104, 50), Color.White);
-                        spriteBatch.Draw(OnePixelTexture, new Rectangle(254, 102, 100, 46), Color.Black);
-                        spriteBatch.DrawString(InformationFont, "Locked", new Vector2(261, 111), Color.Red);
+                        SpriteBatch.Draw(OnePixelTexture, new Rectangle(252, 100, 104, 50), Color.White);
+                        SpriteBatch.Draw(OnePixelTexture, new Rectangle(254, 102, 100, 46), Color.Black);
+                        SpriteBatch.DrawString(InformationFont, "Locked", new Vector2(261, 111), Color.Red);
                     }
 
                     if (TopMost)
                     {
-                        spriteBatch.Draw(OnePixelTexture, new Rectangle(252, 148, 130, 50), Color.White);
-                        spriteBatch.Draw(OnePixelTexture, new Rectangle(254, 150, 126, 46), Color.Black);
-                        spriteBatch.DrawString(InformationFont, "Top most", new Vector2(261, 156), Color.Red);
+                        SpriteBatch.Draw(OnePixelTexture, new Rectangle(252, 148, 130, 50), Color.White);
+                        SpriteBatch.Draw(OnePixelTexture, new Rectangle(254, 150, 126, 46), Color.Black);
+                        SpriteBatch.DrawString(InformationFont, "Top most", new Vector2(261, 156), Color.Red);
                     }
 
-                    spriteBatch.Draw(OnePixelTexture,
-                        new Rectangle(0, 0, graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width, 54), Color.White);
-                    spriteBatch.Draw(OnePixelTexture,
-                        new Rectangle(2, 2, graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width - 4, 50),
+                    SpriteBatch.Draw(OnePixelTexture,
+                        new Rectangle(0, 0, Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width, 54), Color.White);
+                    SpriteBatch.Draw(OnePixelTexture,
+                        new Rectangle(2, 2, Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width - 4, 50),
                         Color.Black);
 
-                    spriteBatch.Draw(OnePixelTexture, new Rectangle(0, 0, 258, 258), Color.White);
-                    spriteBatch.Draw(OnePixelTexture, new Rectangle(2, 2, 254, 254), Color.Black);
-                    spriteBatch.DrawString(InformationFont,
+                    SpriteBatch.Draw(OnePixelTexture, new Rectangle(0, 0, 258, 258), Color.White);
+                    SpriteBatch.Draw(OnePixelTexture, new Rectangle(2, 2, 254, 254), Color.Black);
+                    SpriteBatch.DrawString(InformationFont,
                         "There are \nno music file\nin your folder!\n                ", new Vector2(20, 20), Color.Red);
 
-                    spriteBatch.End();
+                    SpriteBatch.End();
                 }
             }
 

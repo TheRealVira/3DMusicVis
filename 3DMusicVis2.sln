@@ -1,13 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25029.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_3DMusicVis2", "3DMusicVis2\_3DMusicVis2\_3DMusicVis2.csproj", "{A167B572-4D4F-4379-A26A-4F7369DFC5E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_3DMusicVis2Content", "3DMusicVis2\_3DMusicVis2Content\_3DMusicVis2Content.contentproj", "{31EBE966-47B4-4B6A-B34A-B8F3808C8956}"
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86

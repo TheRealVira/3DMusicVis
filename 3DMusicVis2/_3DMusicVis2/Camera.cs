@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Camera.cs
 // Date - created: 2015.08.26 - 14:47
-// Date - current: 2016.05.08 - 11:01
+// Date - current: 2016.05.16 - 22:02
 
 #endregion
 
@@ -31,6 +31,7 @@ namespace _3DMusicVis2
         internal List<BoundingBox> collisionBoxes = new List<BoundingBox>();
         public Vector3 mouseRotationBuffer;
         private float movespeedmultiplikator;
+        public bool NegateOrbit;
         public bool Orbit;
         private Matrix view;
 
@@ -185,8 +186,8 @@ namespace _3DMusicVis2
             if (Game1.NewMouseState != Game1.OldMouseState)
             {
                 //Cache mouse location
-                deltaX = Game1.NewMouseState.X - (Game1.graphics.GraphicsDevice.Viewport.Width/2F);
-                deltaY = Game1.NewMouseState.Y - (Game1.graphics.GraphicsDevice.Viewport.Height/2F);
+                deltaX = Game1.NewMouseState.X - (Game1.Graphics.GraphicsDevice.Viewport.Width/2F);
+                deltaY = Game1.NewMouseState.Y - (Game1.Graphics.GraphicsDevice.Viewport.Height/2F);
 
                 mouseRotationBuffer.X -= deltaX*dt*0.14f;
                 mouseRotationBuffer.Y -= deltaY*dt*0.14f;

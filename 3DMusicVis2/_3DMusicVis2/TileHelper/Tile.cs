@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Tile.cs
 // Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.08 - 11:01
+// Date - current: 2016.05.16 - 22:02
 
 #endregion
 
@@ -23,7 +23,7 @@ namespace _3DMusicVis2.TileHelper
     {
         public bool UpdatedSide;
 
-        public Tile(Vector3 position, float width, float height, float depth, Color color)
+        public Tile(GraphicsDevice device, Vector3 position, float width, float height, float depth, Color color)
         {
             Position = position;
             Width = width;
@@ -91,8 +91,13 @@ namespace _3DMusicVis2.TileHelper
         public Color CenterColor { get; private set; }
         public float LastSampleValue { get; set; }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(BasicEffect basicEffect, GraphicsDevice device)
         {
+            for (int i = 0; i < basicEffect.CurrentTechnique.Passes.Count; i++)
+            {
+                basicEffect.CurrentTechnique.Passes[i].Apply();
+                device.DrawUserPrimitives(PrimitiveType.TriangleList, this.Verts, 0, this.Verts.Length / 3);
+            }
         }
 
         public void ChangeAllColors(Color color)
@@ -125,22 +130,23 @@ namespace _3DMusicVis2.TileHelper
 
         public void ChangeSideColorsDynamic(Color fadeOut)
         {
-            Verts[0].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[0].Position.Y.Normalize(0, 1));
-            Verts[2].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[2].Position.Y.Normalize(0, 1));
-            Verts[3].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[3].Position.Y.Normalize(0, 1));
-            Verts[4].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[4].Position.Y.Normalize(0, 1));
-            Verts[6].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[6].Position.Y.Normalize(0, 1));
-            Verts[7].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[7].Position.Y.Normalize(0, 1));
-            Verts[10].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[10].Position.Y.Normalize(0, 1));
-            Verts[11].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[11].Position.Y.Normalize(0, 1));
-            Verts[13].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[13].Position.Y.Normalize(0, 1));
-            Verts[14].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[14].Position.Y.Normalize(0, 1));
-            Verts[16].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[16].Position.Y.Normalize(0, 1));
-            Verts[17].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[17].Position.Y.Normalize(0, 1));
-            Verts[19].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[19].Position.Y.Normalize(0, 1));
-            Verts[20].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[20].Position.Y.Normalize(0,1));
-            Verts[22].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[22].Position.Y.Normalize(0, 1));
-            Verts[23].Color = Color.Lerp(this.CenterColor, fadeOut, 1 - Verts[23].Position.Y.Normalize(0, 1));
+            // Also a great performance eater
+            Verts[0].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[0].Position.Y.Normalize(0, 1));
+            Verts[2].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[2].Position.Y.Normalize(0, 1));
+            Verts[3].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[3].Position.Y.Normalize(0, 1));
+            Verts[4].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[4].Position.Y.Normalize(0, 1));
+            Verts[6].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[6].Position.Y.Normalize(0, 1));
+            Verts[7].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[7].Position.Y.Normalize(0, 1));
+            Verts[10].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[10].Position.Y.Normalize(0, 1));
+            Verts[11].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[11].Position.Y.Normalize(0, 1));
+            Verts[13].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[13].Position.Y.Normalize(0, 1));
+            Verts[14].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[14].Position.Y.Normalize(0, 1));
+            Verts[16].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[16].Position.Y.Normalize(0, 1));
+            Verts[17].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[17].Position.Y.Normalize(0, 1));
+            Verts[19].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[19].Position.Y.Normalize(0, 1));
+            Verts[20].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[20].Position.Y.Normalize(0, 1));
+            Verts[22].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[22].Position.Y.Normalize(0, 1));
+            Verts[23].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[23].Position.Y.Normalize(0, 1));
         }
 
         public void ChangeMiddleColors(Color color)
@@ -218,8 +224,9 @@ namespace _3DMusicVis2.TileHelper
             Verts[23].Position.Y = height;
         }
 
-        public void ChangeOutsideHeight(Tile[,] field, Point myPosition)
+        public void UpdateOutsideHeight(Tile[,] field, Point myPosition)
         {
+            // Also a great performance eater
             int fieldWidth = field.GetLength(0) - 1, fieldHeight = field.GetLength(1) - 1;
             var right = myPosition.X == fieldWidth ? fieldWidth : myPosition.X + 1;
             var top = myPosition.Y == 0 ? 0 : myPosition.Y - 1;
@@ -255,6 +262,18 @@ namespace _3DMusicVis2.TileHelper
             ChangeRightEdge((field[right, myPosition.Y].CenterHeight + CenterHeight)/2.0f);
             ChangeBottomEdge((field[myPosition.X, top].CenterHeight + CenterHeight)/2.0f);
             ChangeLeftEdge((field[left, myPosition.Y].CenterHeight + CenterHeight)/2.0f);
+        }
+
+        public void ChangeOutSideHeihgt(float height)
+        {
+            ChangeTopRightCorner(height);
+            ChangeBottomRightCorner(height);
+            ChangeTopLeftCorner(height);
+            ChangeBottomLeftCorner(height);
+            ChangeTopEdge(height);
+            ChangeRightEdge(height);
+            ChangeBottomEdge(height);
+            ChangeLeftEdge(height);
         }
     }
 }

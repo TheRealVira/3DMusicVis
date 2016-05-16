@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ColorMode.cs
 // Date - created: 2016.05.08 - 10:51
-// Date - current: 2016.05.08 - 11:01
+// Date - current: 2016.05.16 - 22:02
 
 #endregion
 
