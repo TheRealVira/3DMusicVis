@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TileField.cs
 // Date - created: 2015.08.26 - 14:46
-// Date - current: 2016.05.08 - 11:01
+// Date - current: 2016.05.17 - 16:53
 
 #endregion
 
@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -26,7 +25,8 @@ namespace _3DMusicVis2.TileHelper
     {
         private readonly Tile[,] Tiles;
 
-        public TileField(GraphicsDevice device, Vector3 position, float width, float height, float depth, int tileCountWidth,
+        public TileField(GraphicsDevice device, Vector3 position, float width, float height, float depth,
+            int tileCountWidth,
             int tileCountDepth, Color color)
         {
             Tiles = new Tile[tileCountWidth, tileCountDepth];
@@ -37,7 +37,8 @@ namespace _3DMusicVis2.TileHelper
             {
                 for (var z = 0; z < tileCountDepth; z++)
                 {
-                    Tiles[x, z] = new Tile(device, new Vector3(position.X + x*tileWidth, position.Y, position.Z + z*tileDepth),
+                    Tiles[x, z] = new Tile(device,
+                        new Vector3(position.X + x*tileWidth, position.Y, position.Z + z*tileDepth),
                         tileWidth, height, tileDepth, color);
                 }
             }
@@ -51,9 +52,9 @@ namespace _3DMusicVis2.TileHelper
 
         public void Draw(BasicEffect basicEffect, GraphicsDevice device)
         {
-            for (int i = 0; i < Tiles.GetLength(0); i++)
+            for (var i = 0; i < Tiles.GetLength(0); i++)
             {
-                for (int j = 0; j < Tiles.GetLength(1); j++)
+                for (var j = 0; j < Tiles.GetLength(1); j++)
                 {
                     Tiles[i, j].Draw(basicEffect, device);
                 }
@@ -78,7 +79,8 @@ namespace _3DMusicVis2.TileHelper
         // Mode:
         // 1: LTR
         // 2: Middle to Edge
-        internal void Update(ReadOnlyCollection<float> samples, int arrayStep, Color centerColorHue, int mode, Color fadeOutColor,
+        internal void Update(ReadOnlyCollection<float> samples, int arrayStep, Color centerColorHue, int mode,
+            Color fadeOutColor,
             ColorMode colorMode = ColorMode.OnlyCenter, bool onlycenter = false, float heightMulitplier = 1f)
         {
             if (samples != null && samples.Count != 0)
@@ -95,18 +97,19 @@ namespace _3DMusicVis2.TileHelper
                 }
             }
 
-            for (int index00 = 0; index00 < Tiles.GetLength(0); index00++)
-                for (int index01 = 0; index01 < Tiles.GetLength(1); index01++)
+            for (var index00 = 0; index00 < Tiles.GetLength(0); index00++)
+                for (var index01 = 0; index01 < Tiles.GetLength(1); index01++)
                 {
                     var tile = Tiles[index00, index01];
                     tile.UpdatedSide = false;
                 }
         }
 
-        private void UpdateCircleMode(ReadOnlyCollection<float> samples, int arrayStep, Color centerColorHue, Color fadeOutColor,
+        private void UpdateCircleMode(ReadOnlyCollection<float> samples, int arrayStep, Color centerColorHue,
+            Color fadeOutColor,
             ColorMode colorMode = ColorMode.OnlyCenter, bool onlycenter = false, float heightMulitplier = 1f)
         {
-            var center = new Vector2((Tiles.GetLength(0))/2 - 1, (Tiles.GetLength(1))/ 2 - 1);
+            var center = new Vector2((Tiles.GetLength(0))/2 - 1, (Tiles.GetLength(1))/2 - 1);
 
             for (var x = 0; x < Tiles.GetLength(0); x++)
             {
@@ -115,9 +118,9 @@ namespace _3DMusicVis2.TileHelper
                     var calculatedCen = Math.Round((decimal) Vector2.Distance(center, new Vector2(x, y)))*arrayStep;
 
                     Tiles[x, y].ChangeMiddleColors(Color.Lerp(centerColorHue, fadeOutColor,
-                        1 -samples[(int)calculatedCen].Normalize(0,1)));
+                        1 - samples[(int) calculatedCen].Normalize(0, 1)));
                     Tiles[x, y].ChangeCenterHeight(
-                        samples[(int)calculatedCen] *1.5f*heightMulitplier);
+                        samples[(int) calculatedCen]*1.5f*heightMulitplier);
                 }
             }
 
@@ -146,11 +149,11 @@ namespace _3DMusicVis2.TileHelper
                             throw new ArgumentOutOfRangeException(nameof(colorMode), colorMode, null);
                     }
                 }
-
             }
         }
 
-        private void UpdateLinearMode(ReadOnlyCollection<float> samples, int arrayStep, Color centerColorHue, Color fadeOutColor,
+        private void UpdateLinearMode(ReadOnlyCollection<float> samples, int arrayStep, Color centerColorHue,
+            Color fadeOutColor,
             ColorMode colorMode = ColorMode.OnlyCenter, bool onlycenter = false, float heightMulitplier = 1f)
         {
             for (var x = Tiles.GetLength(0) - 1; x > -1; x--)
@@ -161,11 +164,11 @@ namespace _3DMusicVis2.TileHelper
                 }
 
                 Tiles[x, 0].ChangeMiddleColors(Color.Lerp(centerColorHue, fadeOutColor,
-                    1 - samples[samples.Count - 1-x * arrayStep].Normalize(0, 1)));
-                Tiles[x, 0].ChangeCenterHeight(samples[samples.Count - 1 - x *arrayStep]*1.5f*heightMulitplier);
+                    1 - samples[samples.Count - 1 - x*arrayStep].Normalize(0, 1)));
+                Tiles[x, 0].ChangeCenterHeight(samples[samples.Count - 1 - x*arrayStep]*1.5f*heightMulitplier);
             }
 
-            for (var x = Tiles.GetLength(0)-1; x>-1; x--)
+            for (var x = Tiles.GetLength(0) - 1; x > -1; x--)
             {
                 if (samples.Count < x*arrayStep)
                 {

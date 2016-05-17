@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Tile.cs
 // Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.16 - 22:02
+// Date - current: 2016.05.17 - 16:53
 
 #endregion
 
@@ -93,10 +93,10 @@ namespace _3DMusicVis2.TileHelper
 
         public void Draw(BasicEffect basicEffect, GraphicsDevice device)
         {
-            for (int i = 0; i < basicEffect.CurrentTechnique.Passes.Count; i++)
+            for (var i = 0; i < basicEffect.CurrentTechnique.Passes.Count; i++)
             {
                 basicEffect.CurrentTechnique.Passes[i].Apply();
-                device.DrawUserPrimitives(PrimitiveType.TriangleList, this.Verts, 0, this.Verts.Length / 3);
+                device.DrawUserPrimitives(PrimitiveType.TriangleList, Verts, 0, Verts.Length/3);
             }
         }
 
