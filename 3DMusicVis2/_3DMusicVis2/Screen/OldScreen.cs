@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: OldScreen.cs
 // Date - created: 2016.05.19 - 19:23
-// Date - current: 2016.05.19 - 20:03
+// Date - current: 2016.05.22 - 12:52
 
 #endregion
 
@@ -40,12 +40,14 @@ namespace _3DMusicVis2.Screen
         private const float INITAIL_HEIGHT = 0;
         public static Random Rand;
         private readonly BasicEffect _basicEffect;
-
-        private readonly VisualizationData visData = new VisualizationData();
-        private Camera _cam;
         private readonly ColorDialog _chooseColor;
         private readonly FolderBrowserDialog _chooseDirectory;
         private readonly AudioAnalysisXNAClass audioAnalysis;
+        private readonly TileField MyField;
+        private readonly Texture2D OnePixelTexture;
+
+        private readonly VisualizationData visData = new VisualizationData();
+        private Camera _cam;
         private bool Automated; // Some kind of disco move you could say...
 
         private int CircleWaveZoom;
@@ -76,11 +78,9 @@ namespace _3DMusicVis2.Screen
         private bool IsStopped; //Dont get confused by the name! It's for the STOPPING not for PAUSING!!!!!!
         private bool lockMovement = true;
         private ColorMode myColorMode;
-        private readonly TileField MyField;
         private bool MyIsFullScreen;
 
         private RasterizerState MyRastState;
-        private readonly Texture2D OnePixelTexture;
 
         private float orbitSpeed = 0.001f;
         private float PauseInformationFloatCounter;
@@ -133,7 +133,7 @@ namespace _3DMusicVis2.Screen
             waveColor = Color.Red;
             WaveWaveZoomProb = 86;
             CircleWaveZoomProb = 70;
-            ModeProb = 1;
+            ModeProb = 2;
             MyRastState = GDM.GraphicsDevice.RasterizerState;
 
             OnePixelTexture = new Texture2D(gdm.GraphicsDevice, 1, 1);

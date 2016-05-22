@@ -105,12 +105,18 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Resolution.cs" />
+    <Compile Include="Screen\Credits.cs" />
     <Compile Include="Screen\OldScreen.cs" />
+    <Compile Include="Screen\TestForm.cs" />
     <Compile Include="SpecialSong.cs" />
     <Compile Include="TileHelper\Tile.cs" />
     <Compile Include="TileHelper\TileField.cs" />
     <Compile Include="Screen\SplashScreen.cs" />
     <Compile Include="Screen\Screen.cs" />
+    <Compile Include="VisualControls\Button.cs" />
+    <Compile Include="VisualControls\Label.cs" />
+    <Compile Include="VisualControls\ListBox.cs" />
+    <Compile Include="VisualControls\VisualControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

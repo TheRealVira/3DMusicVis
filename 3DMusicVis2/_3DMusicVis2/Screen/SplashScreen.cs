@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: SplashScreen.cs
 // Date - created: 2016.05.19 - 18:04
-// Date - current: 2016.05.19 - 20:03
+// Date - current: 2016.05.22 - 12:52
 
 #endregion
 
@@ -22,8 +22,8 @@ namespace _3DMusicVis2.Screen
 {
     class SplashScreen : Screen
     {
-        private float DurationTillDetimination;
         private readonly Texture2D Texture;
+        private float DurationTillDetimination;
 
         public SplashScreen(GraphicsDeviceManager gdm, Texture2D texture, float duration = Game1.SplashMaxCount)
             : base(gdm)

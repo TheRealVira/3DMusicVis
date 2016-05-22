@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Game1.cs
 // Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.19 - 20:03
+// Date - current: 2016.05.22 - 12:52
 
 #endregion
 
@@ -27,15 +27,21 @@ namespace _3DMusicVis2
     public class Game1 : Game
     {
         public const float SplashMaxCount = 1000;
+        public static Rectangle VIRTUAL_RESOLUTION;
+
         public static GraphicsDeviceManager Graphics;
         public static SpriteBatch SpriteBatch;
         public static Game1 FreeBeer;
         public static SpriteFont InformationFont;
-        public static Texture2D SplashScreen;
         public static MouseState NewMouseState;
         public static MouseState OldMouseState;
         public static KeyboardState NewKeyboardState;
         public static KeyboardState OldKeyboardState;
+
+        public static Texture2D ViraLogo;
+        public static Texture2D FamouseOnePixel;
+        public static Texture2D GhostPixel;
+        private Texture2D _3DMusicVisLogo;
 
         public Game1()
         {
@@ -62,18 +68,17 @@ namespace _3DMusicVis2
             //graphics.SynchronizeWithVerticalRetrace = false;
             Graphics.ApplyChanges();
 
+            FamouseOnePixel = new Texture2D(Graphics.GraphicsDevice, 1, 1);
+            FamouseOnePixel.SetData(new[] {Color.White});
+            GhostPixel = new Texture2D(GraphicsDevice, 1, 1);
+            GhostPixel.SetData(new[] {Color.Transparent});
+
+            VIRTUAL_RESOLUTION = new Rectangle(0, 0, 1920, 1080);
+
             Resolution.Init(ref Graphics);
-            Resolution.SetVirtualResolution(1920, 1080);
+            Resolution.SetVirtualResolution(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
             Resolution.SetResolution(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
                 Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, true);
-
-            ScreenManager.Initialise(new List<Screen.Screen>
-            {
-                new SplashScreen(Graphics, Content.Load<Texture2D>("Vira")),
-#if(DEBUG)
-                new OldScreen(Graphics)
-#endif
-            });
 
 
             base.Initialize();
@@ -88,8 +93,17 @@ namespace _3DMusicVis2
             // Create a new SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            SplashScreen = Content.Load<Texture2D>("Vira");
+            ViraLogo = Content.Load<Texture2D>("Splashscreens/Vira");
+            _3DMusicVisLogo = Content.Load<Texture2D>("Splashscreens/3DMusicVisLogo");
             InformationFont = Content.Load<SpriteFont>("InformationFont");
+
+            ScreenManager.Initialise(new List<Screen.Screen>
+            {
+                new SplashScreen(Graphics, ViraLogo),
+                new SplashScreen(Graphics, _3DMusicVisLogo),
+                new Credits(Graphics),
+                new TestForm(Graphics)
+            });
 
             GraphicsDevice.Present();
         }
