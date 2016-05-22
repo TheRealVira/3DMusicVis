@@ -104,6 +104,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="RenderFrame\2DFrequencyRenderer.cs" />
+    <Compile Include="RenderFrame\2DMsuciVisRenderFrame.cs" />
+    <Compile Include="RenderFrame\2DSampleRenderer.cs" />
+    <Compile Include="RenderFrame\3DCirclularWaveRenderer.cs" />
+    <Compile Include="RenderFrame\3DLinearWaveRenderer.cs" />
+    <Compile Include="RenderFrame\3DMusicVisRenderFrame.cs" />
     <Compile Include="Resolution.cs" />
     <Compile Include="Screen\Credits.cs" />
     <Compile Include="Screen\OldScreen.cs" />

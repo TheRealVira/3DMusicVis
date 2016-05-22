@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Credits.cs
 // Date - created: 2016.05.22 - 11:49
-// Date - current: 2016.05.22 - 12:52
+// Date - current: 2016.05.22 - 16:48
 
 #endregion
 
@@ -35,7 +35,8 @@ namespace _3DMusicVis2.Screen
                     Game1.GhostPixel, new[]
                     {
                         "Audio Analysis Framework - Created by Stephen Hoult. (\"http://bit.ly/1U6BtBU\")",
-                        "Resolution calculations - Copyright (c) 2010 David Amador (\"http://www.david-amador.com\")"
+                        "Resolution calculations - Copyright (c) 2010 David Amador (\"http://www.david-amador.com\")",
+                        "All other stuff - Copyright (c) Vira"
                     }.ToList(), Game1.GhostPixel, Game1.InformationFont);
 
             _namingList.Scroll(Game1.VIRTUAL_RESOLUTION.Height/2);

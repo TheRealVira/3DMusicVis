@@ -6,13 +6,13 @@
 // Project: _3DMusicVis2
 // Filename: ColorMode.cs
 // Date - created: 2016.05.08 - 10:51
-// Date - current: 2016.05.22 - 12:52
+// Date - current: 2016.05.22 - 16:48
 
 #endregion
 
 namespace _3DMusicVis2
 {
-    enum ColorMode
+    public enum ColorMode
     {
         OnlyCenter,
         SideEqualsCenter,

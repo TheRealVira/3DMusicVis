@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TileField.cs
 // Date - created: 2015.08.26 - 14:46
-// Date - current: 2016.05.22 - 12:52
+// Date - current: 2016.05.22 - 16:48
 
 #endregion
 
@@ -21,6 +21,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DMusicVis2.TileHelper
 {
+    public delegate void UpdateMethod(Tile[,] Tiles, ReadOnlyCollection<float> samples, int arrayStep,
+        Color fadeOutColor,
+        ColorMode colorMode = ColorMode.OnlyCenter, bool onlycenter = false, float heightMulitplier = 1f);
+
     class TileField
     {
         private readonly Tile[,] Tiles;
@@ -103,6 +107,14 @@ namespace _3DMusicVis2.TileHelper
                     var tile = Tiles[index00, index01];
                     tile.UpdatedSide = false;
                 }
+        }
+
+        public void Update(UpdateMethod method, ReadOnlyCollection<float> samples, int arrayStep,
+            Color fadeOutColor,
+            ColorMode colorMode = ColorMode.OnlyCenter, bool onlycenter = false, float heightMulitplier = 1f)
+        {
+            method(Tiles, samples, arrayStep, fadeOutColor, colorMode,
+                onlycenter, heightMulitplier);
         }
 
         private void UpdateCircleMode(ReadOnlyCollection<float> samples, int arrayStep, Color centerColorHue,

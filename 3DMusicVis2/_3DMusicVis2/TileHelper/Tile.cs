@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Tile.cs
 // Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.22 - 12:52
+// Date - current: 2016.05.22 - 16:48
 
 #endregion
 
@@ -19,7 +19,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DMusicVis2.TileHelper
 {
-    class Tile
+    public class Tile
     {
         public bool UpdatedSide;
 

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Game1.cs
 // Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.22 - 12:52
+// Date - current: 2016.05.22 - 16:48
 
 #endregion
 
@@ -14,11 +14,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.Manager;
+using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Screen;
+using Color = Microsoft.Xna.Framework.Color;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
+using Point = Microsoft.Xna.Framework.Point;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 #endregion
 
@@ -26,6 +33,9 @@ namespace _3DMusicVis2
 {
     public class Game1 : Game
     {
+        public const float PAUSEINFORMATIONFLOATMAXCOUNTER = 20000;
+        public const int FIELD_WIDTH = 100;
+        public const float INITAIL_HEIGHT = 0;
         public const float SplashMaxCount = 1000;
         public static Rectangle VIRTUAL_RESOLUTION;
 
@@ -37,6 +47,9 @@ namespace _3DMusicVis2
         public static MouseState OldMouseState;
         public static KeyboardState NewKeyboardState;
         public static KeyboardState OldKeyboardState;
+        public static Random Rand;
+        public static AudioAnalysisXNAClass AudioAnalysis;
+        public static BasicEffect BasicEffect;
 
         public static Texture2D ViraLogo;
         public static Texture2D FamouseOnePixel;
@@ -68,6 +81,7 @@ namespace _3DMusicVis2
             //graphics.SynchronizeWithVerticalRetrace = false;
             Graphics.ApplyChanges();
 
+            Rand = new Random(DateTime.Now.Millisecond);
             FamouseOnePixel = new Texture2D(Graphics.GraphicsDevice, 1, 1);
             FamouseOnePixel.SetData(new[] {Color.White});
             GhostPixel = new Texture2D(GraphicsDevice, 1, 1);
@@ -78,8 +92,20 @@ namespace _3DMusicVis2
             Resolution.Init(ref Graphics);
             Resolution.SetVirtualResolution(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
             Resolution.SetResolution(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
-                Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, true);
+                Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, false);
 
+            AudioAnalysis = new AudioAnalysisXNAClass();
+            BasicEffect = new BasicEffect(GraphicsDevice)
+            {
+                World = Matrix.Identity,
+                VertexColorEnabled = true,
+                TextureEnabled = false
+            };
+
+            _3DCirclularWaveRenderer.Initialise(GraphicsDevice);
+            _3DLinearWaveRenderer.Initialise(GraphicsDevice);
+            _2DSampleRenderer.Initialise(GraphicsDevice);
+            _2DFrequencyRenderer.Initialise(GraphicsDevice);
 
             base.Initialize();
         }
@@ -101,7 +127,7 @@ namespace _3DMusicVis2
             {
                 new SplashScreen(Graphics, ViraLogo),
                 new SplashScreen(Graphics, _3DMusicVisLogo),
-                new Credits(Graphics),
+                //new Credits(Graphics),
                 new TestForm(Graphics)
             });
 
@@ -132,6 +158,50 @@ namespace _3DMusicVis2
                 FreeBeer.Exit();
             }
 
+            if (NewKeyboardState.IsKeyDown(Keys.RightAlt) && NewKeyboardState.IsKeyUp(Keys.Enter) &&
+                OldKeyboardState.IsKeyDown(Keys.Enter))
+            {
+                var window = Control.FromHandle(FreeBeer.Window.Handle) as Form;
+                var formPosition = new Point(window.Location.X, window.Location.Y);
+                var dispayXMulitplikator =
+                    (int) Math.Round(formPosition.X/(decimal) Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width);
+                if (dispayXMulitplikator == 0)
+                {
+                    if (formPosition.X < -100)
+                    {
+                        dispayXMulitplikator = -1;
+                    }
+                    else
+                    {
+                        dispayXMulitplikator = 1;
+                    }
+                }
+                var displayXMultiplikatorForLocation = dispayXMulitplikator;
+                //int dispayYMulitplikator = this.GraphicsDevice.Adapter.CurrentDisplayMode.Height / formPosition.Y;
+
+                if (displayXMultiplikatorForLocation > 0)
+                {
+                    displayXMultiplikatorForLocation--;
+                }
+
+                if (window.WindowState == FormWindowState.Normal)
+                {
+                    window.FormBorderStyle = FormBorderStyle.None;
+                    window.WindowState = FormWindowState.Maximized;
+                }
+                else
+                {
+                    window.FormBorderStyle = FormBorderStyle.FixedSingle;
+                    window.WindowState = FormWindowState.Normal;
+                    window.Location =
+                        new System.Drawing.Point(
+                            (Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation),
+                            0);
+                    window.Size = new Size(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
+                        Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
+                }
+            }
+
             ScreenManager.Update(gameTime);
 
             OldKeyboardState = NewKeyboardState;
@@ -146,6 +216,8 @@ namespace _3DMusicVis2
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.Black);
+
             SpriteBatch.Begin(0, null, null, null, null, null, Resolution.getTransformationMatrix());
 
             ScreenManager.Draw(SpriteBatch, gameTime);

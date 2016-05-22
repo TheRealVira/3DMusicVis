@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: OldScreen.cs
 // Date - created: 2016.05.19 - 19:23
-// Date - current: 2016.05.22 - 12:52
+// Date - current: 2016.05.22 - 16:48
 
 #endregion
 
@@ -35,14 +35,8 @@ namespace _3DMusicVis2.Screen
 {
     class OldScreen : Screen
     {
-        private const float PAUSEINFORMATIONFLOATMAXCOUNTER = 20000;
-        private const int FIELD_WIDTH = 100;
-        private const float INITAIL_HEIGHT = 0;
-        public static Random Rand;
-        private readonly BasicEffect _basicEffect;
         private readonly ColorDialog _chooseColor;
         private readonly FolderBrowserDialog _chooseDirectory;
-        private readonly AudioAnalysisXNAClass audioAnalysis;
         private readonly TileField MyField;
         private readonly Texture2D OnePixelTexture;
 
@@ -102,7 +96,8 @@ namespace _3DMusicVis2.Screen
 
         public OldScreen(GraphicsDeviceManager gdm) : base(gdm)
         {
-            MyField = new TileField(gdm.GraphicsDevice, Vector3.Zero, 20, INITAIL_HEIGHT, 20, FIELD_WIDTH, FIELD_WIDTH,
+            MyField = new TileField(gdm.GraphicsDevice, Vector3.Zero, 20, Game1.INITAIL_HEIGHT, 20, Game1.FIELD_WIDTH,
+                Game1.FIELD_WIDTH,
                 Color.Black);
 
             gdm.GraphicsDevice.BlendState = BlendState.Opaque;
@@ -111,17 +106,9 @@ namespace _3DMusicVis2.Screen
 
             MediaPlayer.IsVisualizationEnabled = true;
             MediaPlayer.Volume = 0.4f;
-            audioAnalysis = new AudioAnalysisXNAClass();
-
-            Rand = new Random();
+            //Game1.AudioAnalysis = new AudioAnalysisXNAClass();
 
             ClearColor = Color.Black;
-            _basicEffect = new BasicEffect(gdm.GraphicsDevice)
-            {
-                World = Matrix.Identity,
-                VertexColorEnabled = true,
-                TextureEnabled = false
-            };
 
             //this._basicEffect.LightingEnabled = true;
             //this._basicEffect.EnableDefaultLighting();
@@ -369,10 +356,10 @@ namespace _3DMusicVis2.Screen
 
                 if (!IsStopped && wave_3D)
                 {
-                    _basicEffect.Projection = _cam.Projektion;
-                    _basicEffect.View = _cam.View;
+                    Game1.BasicEffect.Projection = _cam.Projektion;
+                    Game1.BasicEffect.View = _cam.View;
 
-                    MyField.Draw(_basicEffect, GDM.GraphicsDevice);
+                    MyField.Draw(Game1.BasicEffect, GDM.GraphicsDevice);
                 }
 
                 sB.Begin();
@@ -628,7 +615,7 @@ namespace _3DMusicVis2.Screen
                 {
                     ModeProb++;
                     //MyField = new TileField(Vector3.Zero, 20, 2, 20, FIELD_WIDTH, FIELD_WIDTH, edgeColor);
-                    MyField.ResetHeight(INITAIL_HEIGHT);
+                    MyField.ResetHeight(Game1.INITAIL_HEIGHT);
                 }
                 if (Game1.NewKeyboardState.IsKeyUp(Keys.I) && Game1.OldKeyboardState.IsKeyDown(Keys.I))
                 {
@@ -757,7 +744,7 @@ namespace _3DMusicVis2.Screen
                 if (Game1.NewKeyboardState.IsKeyUp(Keys.NumPad0) && Game1.OldKeyboardState.IsKeyDown(Keys.NumPad0))
                 {
                     //MyField = new TileField(Vector3.Zero, 20, 2, 20, 100, 100, edgeColor);
-                    MyField.ResetHeight(INITAIL_HEIGHT);
+                    MyField.ResetHeight(Game1.INITAIL_HEIGHT);
                     if (ModeProb == 1)
                     {
                         flatModeInWave = !flatModeInWave;
@@ -945,7 +932,7 @@ namespace _3DMusicVis2.Screen
                                         _chooseColor.Color.B,
                                         _chooseColor.Color.A);
                                     //MyField = new TileField(Vector3.Zero, 20, 2, 20, 100, 100, edgeColor);
-                                    MyField.ResetHeight(INITAIL_HEIGHT);
+                                    MyField.ResetHeight(Game1.INITAIL_HEIGHT);
                                 }
                                 if (!paused && !TogglePauseWhenSelectingColor)
                                 {
@@ -974,10 +961,10 @@ namespace _3DMusicVis2.Screen
                         if (wave_3D || wave_2D)
                         {
                             MediaPlayer.GetVisualizationData(visData);
-                            audioAnalysis.Update();
-                            audioAnalysis.updateAverageLowFrequencyData();
-                            audioAnalysis.updateAverageMidFrequencyData();
-                            audioAnalysis.updateAverageHighFrequencyData();
+                            Game1.AudioAnalysis.Update();
+                            Game1.AudioAnalysis.updateAverageLowFrequencyData();
+                            Game1.AudioAnalysis.updateAverageMidFrequencyData();
+                            Game1.AudioAnalysis.updateAverageHighFrequencyData();
                         }
 
                         if (wave_3D)
@@ -1040,7 +1027,7 @@ namespace _3DMusicVis2.Screen
                         {
                             if (Automated)
                             {
-                                if (audioAnalysis.getBool_2StepLowFrq(0.54f))
+                                if (Game1.AudioAnalysis.getBool_2StepLowFrq(0.54f))
                                 {
                                     _cam.NegateOrbit = !_cam.NegateOrbit;
                                 }
@@ -1048,7 +1035,7 @@ namespace _3DMusicVis2.Screen
                                 _cam.Position =
                                     Vector3.Transform(_cam.Position - new Vector3(10, 0, 10),
                                         Matrix.CreateFromAxisAngle(new Vector3(0, (_cam.NegateOrbit ? -1 : 1), 0),
-                                            audioAnalysis.getFloat_2StepLowFrq(orbitSpeed, .1f, 0.45f))) +
+                                            Game1.AudioAnalysis.getFloat_2StepLowFrq(orbitSpeed, .1f, 0.45f))) +
                                     new Vector3(10, 0, 10);
                                 _cam.View = Matrix.CreateLookAt(_cam.Position, new Vector3(10, 0, 10), Vector3.Up);
                             }
@@ -1062,7 +1049,7 @@ namespace _3DMusicVis2.Screen
                                 _cam.View = Matrix.CreateLookAt(_cam.Position, new Vector3(10, 0, 10), Vector3.Up);
                             }
 
-                            //Cam.Position = Vector3.Transform(Cam.Position, Matrix.CreateRotationY(audioAnalysis.getFloat_2StepLowFrq(orbitSpeed, .1f, 0.45f)));
+                            //Cam.Position = Vector3.Transform(Cam.Position, Matrix.CreateRotationY(Game1.AudioAnalysis.getFloat_2StepLowFrq(orbitSpeed, .1f, 0.45f)));
                             //Cam.Target = new Vector3(10, 0, 10);
                             //Cam.View = Matrix.CreateLookAt(Cam.Position, Cam.Target, Vector3.Up);
                         }
@@ -1137,7 +1124,7 @@ namespace _3DMusicVis2.Screen
                         }
                     }
                     PauseInformationFloatCounter += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
-                    if (PauseInformationFloatCounter >= PAUSEINFORMATIONFLOATMAXCOUNTER)
+                    if (PauseInformationFloatCounter >= Game1.PAUSEINFORMATIONFLOATMAXCOUNTER)
                     {
                         PauseInformationFromFlowingIn = !PauseInformationFromFlowingIn;
                         PauseInformationFloatCounter = 0;
@@ -1198,7 +1185,7 @@ namespace _3DMusicVis2.Screen
 
         private Color GetRandomColor()
         {
-            return new Color(Rand.Next(0, 256), Rand.Next(0, 256), Rand.Next(0, 256));
+            return new Color(Game1.Rand.Next(0, 256), Game1.Rand.Next(0, 256), Game1.Rand.Next(0, 256));
         }
     }
 }
