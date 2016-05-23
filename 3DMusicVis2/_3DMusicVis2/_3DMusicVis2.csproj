@@ -99,8 +99,11 @@
     <Compile Include="Camera.cs" />
     <Compile Include="ColorMode.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Manager\MediaPlayerManager.cs" />
     <Compile Include="Manager\ScreenManager.cs" />
     <Compile Include="MyMath.cs" />
+    <Compile Include="OutPutConsole\OutputManagerEventHandeling.cs" />
+    <Compile Include="OutPutConsole\OutputManagerEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Screen\SplashScreen.cs" />
     <Compile Include="Screen\Screen.cs" />
     <Compile Include="VisualControls\Button.cs" />
+    <Compile Include="VisualControls\Console.cs" />
     <Compile Include="VisualControls\Label.cs" />
     <Compile Include="VisualControls\ListBox.cs" />
     <Compile Include="VisualControls\VisualControl.cs" />

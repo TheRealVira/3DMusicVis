@@ -6,21 +6,20 @@
 // Project: _3DMusicVis2
 // Filename: TestForm.cs
 // Date - created: 2016.05.22 - 11:30
-// Date - current: 2016.05.22 - 16:48
+// Date - current: 2016.05.23 - 21:16
 
 #endregion
 
 #region Usings
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using _3DMusicVis2.Manager;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.VisualControls;
+using Console = System.Console;
 
 #endregion
 
@@ -28,15 +27,16 @@ namespace _3DMusicVis2.Screen
 {
     class TestForm : Screen
     {
+        private readonly Camera _cam;
         private readonly Button MyButton;
         private readonly Label MyLabel;
         private readonly ListBox MyListBox;
         private readonly VisualizationData visData = new VisualizationData();
-        private readonly Camera _cam;
 
-        public TestForm(GraphicsDeviceManager gdm) : base(gdm)
+        public TestForm(GraphicsDeviceManager gdm) : base(gdm, "TestForm")
         {
-            MyButton = new Button(new Rectangle(100, 100, 200, 50), Game1.GhostPixel, Game1.InformationFont, "MyButton");
+            MyButton = new Button(new Rectangle(100, 100, 200, 50), Game1.FamouseOnePixel, Game1.InformationFont,
+                "MyButton");
             MyLabel = new Label(new Rectangle(100, 200, 200, 50), Game1.GhostPixel, Game1.InformationFont, "MyLabel");
             MyListBox = new ListBox(new Rectangle(100, 300, 200, 500), Game1.GhostPixel,
                 new[] {"MyListBox_1", "MyListBox_2", "MyListBox_3", "MyListBox_4", "MyListBox_5", "MyListBox_6"}.ToList(),
@@ -44,12 +44,13 @@ namespace _3DMusicVis2.Screen
 
             _cam = new Camera(gdm.GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
             Game1.FreeBeer.IsMouseVisible = true;
+        }
 
-            var temp = new List<SpecialSong>();
-            temp.AddRange(from item in Directory.GetFiles(@"3DMusicVis2\Music", "*.wav")
-                let songName = item.Substring(18, item.Length - 22)
-                select new SpecialSong(songName, new Uri(item, UriKind.RelativeOrAbsolute), GDM.GraphicsDevice));
-            MediaPlayer.Play(temp[0].MySong);
+        public override void LoadedUp()
+        {
+            base.LoadedUp();
+            Console.WriteLine("Loaded me!");
+            MediaPlayerManager.Play();
         }
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)

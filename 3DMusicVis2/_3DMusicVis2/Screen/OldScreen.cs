@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: OldScreen.cs
 // Date - created: 2016.05.19 - 19:23
-// Date - current: 2016.05.22 - 16:48
+// Date - current: 2016.05.23 - 21:16
 
 #endregion
 
@@ -94,7 +94,7 @@ namespace _3DMusicVis2.Screen
 
         private int WaveWaveZoom;
 
-        public OldScreen(GraphicsDeviceManager gdm) : base(gdm)
+        public OldScreen(GraphicsDeviceManager gdm) : base(gdm, "OldScreen")
         {
             MyField = new TileField(gdm.GraphicsDevice, Vector3.Zero, 20, Game1.INITAIL_HEIGHT, 20, Game1.FIELD_WIDTH,
                 Game1.FIELD_WIDTH,

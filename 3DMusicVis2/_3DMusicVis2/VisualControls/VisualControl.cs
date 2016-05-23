@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: VisualControl.cs
 // Date - created: 2016.05.22 - 11:03
-// Date - current: 2016.05.22 - 16:48
+// Date - current: 2016.05.23 - 21:16
 
 #endregion
 
@@ -35,17 +35,23 @@ namespace _3DMusicVis2.VisualControls
 
     public delegate void ScrolledDownHandler(object sender, EventArgs e);
 
-    abstract class VisualControl
+    public abstract class VisualControl
     {
+        public static Color DefaultDrawColor = new Color(50, 50, 50, 200);
+        protected Color BorderColor;
         public Rectangle Bounding;
         protected Color DrawColor;
+        protected Color FontColor;
         protected Texture2D Texture;
 
-        protected VisualControl(Rectangle bounding, Texture2D texture, Color drawColor)
+        protected VisualControl(Rectangle bounding, Texture2D texture, Color drawColor, Color borderColor,
+            Color fontColor)
         {
             Bounding = bounding;
             Texture = texture;
             DrawColor = drawColor;
+            BorderColor = borderColor;
+            FontColor = fontColor;
         }
 
         public bool WasHovering { protected get; set; }
@@ -130,14 +136,14 @@ namespace _3DMusicVis2.VisualControls
             Draw(gameTime, spriteBatch);
 
             spriteBatch.Draw(Game1.FamouseOnePixel,
-                new Rectangle(Bounding.Left, Bounding.Top, borderWidth, Bounding.Height), DrawColor); // Left
+                new Rectangle(Bounding.Left, Bounding.Top, borderWidth, Bounding.Height), BorderColor); // Left
             spriteBatch.Draw(Game1.FamouseOnePixel,
-                new Rectangle(Bounding.Right, Bounding.Top, borderWidth, Bounding.Height + borderWidth), DrawColor);
+                new Rectangle(Bounding.Right, Bounding.Top, borderWidth, Bounding.Height + borderWidth), BorderColor);
             // Right
             spriteBatch.Draw(Game1.FamouseOnePixel,
-                new Rectangle(Bounding.Left, Bounding.Top, Bounding.Width, borderWidth), DrawColor); // Top
+                new Rectangle(Bounding.Left, Bounding.Top, Bounding.Width, borderWidth), BorderColor); // Top
             spriteBatch.Draw(Game1.FamouseOnePixel,
-                new Rectangle(Bounding.Left, Bounding.Bottom, Bounding.Width, borderWidth), DrawColor); // Bottom
+                new Rectangle(Bounding.Left, Bounding.Bottom, Bounding.Width, borderWidth), BorderColor); // Bottom
         }
 
         protected event MouseHoverEventHandler MouseHover;

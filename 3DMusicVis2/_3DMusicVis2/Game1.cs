@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Game1.cs
 // Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.22 - 16:48
+// Date - current: 2016.05.23 - 21:16
 
 #endregion
 
@@ -23,6 +23,7 @@ using _3DMusicVis2.Manager;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Screen;
 using Color = Microsoft.Xna.Framework.Color;
+using Console = _3DMusicVis2.VisualControls.Console;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
@@ -37,12 +38,17 @@ namespace _3DMusicVis2
         public const int FIELD_WIDTH = 100;
         public const float INITAIL_HEIGHT = 0;
         public const float SplashMaxCount = 1000;
-        public static Rectangle VIRTUAL_RESOLUTION;
+        public static Rectangle VIRTUAL_RESOLUTION = new Rectangle(0, 0, 1920, 1080);
 
         public static GraphicsDeviceManager Graphics;
         public static SpriteBatch SpriteBatch;
+
+        // A public instance of this class. (This is a nice work arround if you want to access public-non-static members)
         public static Game1 FreeBeer;
+
         public static SpriteFont InformationFont;
+        public static SpriteFont ConsoleFont;
+
         public static MouseState NewMouseState;
         public static MouseState OldMouseState;
         public static KeyboardState NewKeyboardState;
@@ -50,6 +56,8 @@ namespace _3DMusicVis2
         public static Random Rand;
         public static AudioAnalysisXNAClass AudioAnalysis;
         public static BasicEffect BasicEffect;
+
+        public static Console MyConsole;
 
         public static Texture2D ViraLogo;
         public static Texture2D FamouseOnePixel;
@@ -86,13 +94,18 @@ namespace _3DMusicVis2
             FamouseOnePixel.SetData(new[] {Color.White});
             GhostPixel = new Texture2D(GraphicsDevice, 1, 1);
             GhostPixel.SetData(new[] {Color.Transparent});
+            InformationFont = Content.Load<SpriteFont>("Fonts/InformationFont");
+            ConsoleFont = Content.Load<SpriteFont>("Fonts/Console");
 
-            VIRTUAL_RESOLUTION = new Rectangle(0, 0, 1920, 1080);
+            MyConsole = new Console(Console.ConsoleBoundings, FamouseOnePixel);
+
+            System.Console.WriteLine("Initialised the OutputManager...");
 
             Resolution.Init(ref Graphics);
             Resolution.SetVirtualResolution(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
             Resolution.SetResolution(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
                 Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, false);
+            System.Console.WriteLine("Initialised the Resolution...");
 
             AudioAnalysis = new AudioAnalysisXNAClass();
             BasicEffect = new BasicEffect(GraphicsDevice)
@@ -102,12 +115,20 @@ namespace _3DMusicVis2
                 TextureEnabled = false
             };
 
+            MediaPlayerManager.Initialise();
+            System.Console.WriteLine("Initialised the MediaPlayerManager...");
+
             _3DCirclularWaveRenderer.Initialise(GraphicsDevice);
+            System.Console.WriteLine("Initialised the _3DCirclularWaveRenderer...");
             _3DLinearWaveRenderer.Initialise(GraphicsDevice);
+            System.Console.WriteLine("Initialised the _3DLinearWaveRenderer...");
             _2DSampleRenderer.Initialise(GraphicsDevice);
+            System.Console.WriteLine("Initialised the _2DSampleRenderer...");
             _2DFrequencyRenderer.Initialise(GraphicsDevice);
+            System.Console.WriteLine("Initialised the _2DFrequencyRenderer...");
 
             base.Initialize();
+            System.Console.WriteLine("Finished initialising 3DMusicVis2!");
         }
 
         /// <summary>
@@ -121,7 +142,6 @@ namespace _3DMusicVis2
 
             ViraLogo = Content.Load<Texture2D>("Splashscreens/Vira");
             _3DMusicVisLogo = Content.Load<Texture2D>("Splashscreens/3DMusicVisLogo");
-            InformationFont = Content.Load<SpriteFont>("InformationFont");
 
             ScreenManager.Initialise(new List<Screen.Screen>
             {
@@ -130,6 +150,9 @@ namespace _3DMusicVis2
                 //new Credits(Graphics),
                 new TestForm(Graphics)
             });
+
+            MediaPlayerManager.LoadContent(Content, @"3DMusicVis2\Music", true, GraphicsDevice);
+            System.Console.WriteLine("Finished loading the content!");
 
             GraphicsDevice.Present();
         }
@@ -157,6 +180,8 @@ namespace _3DMusicVis2
             {
                 FreeBeer.Exit();
             }
+
+            MyConsole.Update(gameTime);
 
             if (NewKeyboardState.IsKeyDown(Keys.RightAlt) && NewKeyboardState.IsKeyUp(Keys.Enter) &&
                 OldKeyboardState.IsKeyDown(Keys.Enter))
@@ -221,6 +246,7 @@ namespace _3DMusicVis2
             SpriteBatch.Begin(0, null, null, null, null, null, Resolution.getTransformationMatrix());
 
             ScreenManager.Draw(SpriteBatch, gameTime);
+            MyConsole.Draw(gameTime, SpriteBatch, 2);
 
             SpriteBatch.End();
 

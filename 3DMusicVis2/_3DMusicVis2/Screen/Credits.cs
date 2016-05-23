@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Credits.cs
 // Date - created: 2016.05.22 - 11:49
-// Date - current: 2016.05.22 - 16:48
+// Date - current: 2016.05.23 - 21:16
 
 #endregion
 
@@ -28,7 +28,7 @@ namespace _3DMusicVis2.Screen
 
         private float waiting = 1000;
 
-        public Credits(GraphicsDeviceManager gdm) : base(gdm)
+        public Credits(GraphicsDeviceManager gdm) : base(gdm, "Credits")
         {
             _namingList =
                 new ListBox(new Rectangle(0, 0, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height),

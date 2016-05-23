@@ -6,12 +6,13 @@
 // Project: _3DMusicVis2
 // Filename: Screen.cs
 // Date - created: 2016.05.19 - 17:57
-// Date - current: 2016.05.22 - 16:48
+// Date - current: 2016.05.23 - 21:16
 
 #endregion
 
 #region Usings
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -21,11 +22,14 @@ namespace _3DMusicVis2.Screen
 {
     abstract class Screen
     {
+        public readonly string Name;
         protected GraphicsDeviceManager GDM;
 
-        protected Screen(GraphicsDeviceManager gdm)
+        protected Screen(GraphicsDeviceManager gdm, string name)
         {
             GDM = gdm;
+            Name = name;
+            Console.WriteLine($"Initialising {name}...");
         }
 
         public float Alpha { get; }
@@ -34,5 +38,9 @@ namespace _3DMusicVis2.Screen
         public abstract void Draw(SpriteBatch sB, GameTime gameTime);
 
         public abstract void Update(GameTime gameTime);
+
+        public virtual void LoadedUp()
+        {
+        }
     }
 }

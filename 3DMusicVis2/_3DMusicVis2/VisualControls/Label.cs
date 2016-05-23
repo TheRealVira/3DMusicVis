@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Label.cs
 // Date - created: 2016.05.22 - 11:50
-// Date - current: 2016.05.22 - 16:48
+// Date - current: 2016.05.23 - 21:16
 
 #endregion
 
@@ -26,7 +26,7 @@ namespace _3DMusicVis2.VisualControls
         public string Text;
 
         public Label(Rectangle bounding, Texture2D texture, SpriteFont font, string text)
-            : base(bounding, texture, Color.White)
+            : base(bounding, texture, DefaultDrawColor, Color.White, Color.White)
         {
             _font = font;
             Text = text;
@@ -35,10 +35,9 @@ namespace _3DMusicVis2.VisualControls
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
-
             spriteBatch.DrawString(_font, Text,
                 new Vector2(Bounding.Center.X - _font.MeasureString(Text).X/2,
-                    Bounding.Center.Y - _font.MeasureString(Text).Y/2), DrawColor);
+                    Bounding.Center.Y - _font.MeasureString(Text).Y/2), FontColor);
         }
     }
 }

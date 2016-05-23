@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ListBox.cs
 // Date - created: 2016.05.22 - 11:57
-// Date - current: 2016.05.22 - 16:48
+// Date - current: 2016.05.23 - 21:16
 
 #endregion
 
@@ -26,12 +26,12 @@ namespace _3DMusicVis2.VisualControls
     {
         private const int SCROLL_SPEED = 10;
 
-        public List<Label> Labels;
+        public List<Label> Items;
 
         public ListBox(Rectangle bounding, Texture2D texture, List<string> textList, Texture2D induvidualBackground,
-            SpriteFont font) : base(bounding, texture, Color.White)
+            SpriteFont font) : base(bounding, texture, DefaultDrawColor, Color.White, Color.White)
         {
-            Labels = BakeLabels(textList, induvidualBackground, font);
+            Items = BakeLabels(textList, induvidualBackground, font);
 
             ScrolledUp += ListBox_ScrolledUp;
             ScrolledDown += ListBox_ScrolledDown;
@@ -49,7 +49,7 @@ namespace _3DMusicVis2.VisualControls
 
         public void Scroll(int value)
         {
-            foreach (var label in Labels)
+            foreach (var label in Items)
             {
                 label.Bounding.Y += value;
             }
@@ -74,7 +74,7 @@ namespace _3DMusicVis2.VisualControls
         {
             base.Draw(gameTime, spriteBatch);
 
-            foreach (var label in Labels)
+            foreach (var label in Items)
             {
                 if (Bounding.Contains(label.Bounding))
                 {
@@ -87,27 +87,48 @@ namespace _3DMusicVis2.VisualControls
         {
             base.Draw(gameTime, spriteBatch, borderWidth);
 
-            foreach (var label in Labels)
+            foreach (var label in Items)
             {
-                if (Bounding.Contains(label.Bounding))
-                {
-                    label.Draw(gameTime, spriteBatch, borderWidth);
-                }
+                //if (Bounding.Contains(label.Bounding))
+                //{
+                label.Draw(gameTime, spriteBatch, borderWidth);
+                //}
             }
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            foreach (var label in Labels)
+            foreach (var label in Items)
             {
                 label.Update(gameTime);
             }
         }
 
+        public void Add(string value, Texture2D background, SpriteFont font,
+            int labelHeight = 100)
+        {
+            if (Items.Count > 0)
+            {
+                Items.Add(
+                    new Label(
+                        new Rectangle(Bounding.X,
+                            Items[Items.Count - 1].Bounding.Y + labelHeight, Bounding.Width,
+                            labelHeight), background, font, value));
+            }
+            else
+            {
+                Items.Add(
+                    new Label(
+                        new Rectangle(Bounding.X,
+                            Bounding.Y, Bounding.Width,
+                            labelHeight), background, font, value));
+            }
+        }
+
         public bool AllItemsAreOutSideTheBounding()
         {
-            return Labels.All(label => !Bounding.Contains(label.Bounding));
+            return Items.All(label => !Bounding.Contains(label.Bounding));
         }
     }
 }

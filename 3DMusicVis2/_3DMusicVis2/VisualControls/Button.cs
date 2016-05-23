@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Button.cs
 // Date - created: 2016.05.22 - 11:02
-// Date - current: 2016.05.22 - 16:48
+// Date - current: 2016.05.23 - 21:16
 
 #endregion
 
@@ -27,7 +27,7 @@ namespace _3DMusicVis2.VisualControls
         public string Text;
 
         public Button(Rectangle bounding, Texture2D texture, SpriteFont font, string text)
-            : base(bounding, texture, Color.White)
+            : base(bounding, texture, DefaultDrawColor, Color.White, Color.White)
         {
             _font = font;
             Text = text;
@@ -42,7 +42,7 @@ namespace _3DMusicVis2.VisualControls
 
             spriteBatch.DrawString(_font, Text,
                 new Vector2(Bounding.Center.X - _font.MeasureString(Text).X/2,
-                    Bounding.Center.Y - _font.MeasureString(Text).Y/2), DrawColor);
+                    Bounding.Center.Y - _font.MeasureString(Text).Y/2), FontColor);
         }
 
         private void Button_MousePressed(object sender, EventArgs e)
@@ -52,7 +52,7 @@ namespace _3DMusicVis2.VisualControls
 
         private void Button_MouseExits(object sender, EventArgs e)
         {
-            DrawColor = Color.White;
+            DrawColor = DefaultDrawColor;
         }
 
         private void Button_MouseHover(object sender, EventArgs e)
