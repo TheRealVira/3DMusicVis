@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: ScreenManager.cs
-// Date - created: 2016.05.19 - 18:44
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DMusicVis2.Manager
 {
-    static class ScreenManager
+    internal static class ScreenManager
     {
         private static List<Screen.Screen> Screens;
 
@@ -29,24 +29,40 @@ namespace _3DMusicVis2.Manager
             Screens = screens;
         }
 
-        public static void Delete(Screen.Screen screen)
+        public static void LoadNextScreen(Screen.Screen screen)
         {
-            Screens.Remove(screen);
-            Screens[0].LoadedUp();
+            Unload(screen);
+            Screens[0]?.LoadedUp();
         }
 
         public static void Update(GameTime gameTime)
         {
             if (Screens.Count < 1) return;
 
-            Screens[0].Update(gameTime);
+            Screens[0]?.Update(gameTime);
         }
 
         public static void Draw(SpriteBatch sB, GameTime gameTime)
         {
             if (Screens.Count < 1) return;
 
-            Screens[0].Draw(sB, gameTime);
+            Screens[0]?.Draw(sB, gameTime);
+        }
+
+        public static void Unload(Screen.Screen screen)
+        {
+            screen?.Unloade();
+            Screens.Remove(screen);
+        }
+
+        public static void UnloadAll()
+        {
+            if (Screens.Count < 1) return;
+
+            for (var i = Screens.Count - 1; i > -1; i--)
+            {
+                Unload(Screens[i]);
+            }
         }
     }
 }

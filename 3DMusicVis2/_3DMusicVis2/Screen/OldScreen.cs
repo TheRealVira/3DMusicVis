@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: OldScreen.cs
-// Date - created: 2016.05.19 - 19:23
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -33,7 +33,7 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace _3DMusicVis2.Screen
 {
-    class OldScreen : Screen
+    internal class OldScreen : Screen
     {
         private readonly ColorDialog _chooseColor;
         private readonly FolderBrowserDialog _chooseDirectory;
@@ -250,7 +250,7 @@ namespace _3DMusicVis2.Screen
         public int ModeProb
         {
             get { return Mode; }
-            set { Mode = 2 - (value%2); }
+            set { Mode = 2 - value%2; }
         }
 
         public int Mode { get; private set; }
@@ -258,7 +258,7 @@ namespace _3DMusicVis2.Screen
         public float RainbowPointerProb
         {
             get { return RainbowPointer; }
-            set { RainbowPointer = ((value*100)%100)/100; }
+            set { RainbowPointer = value*100%100/100; }
         }
 
         public int WaveWaveZoomProb
@@ -540,7 +540,7 @@ namespace _3DMusicVis2.Screen
                 //{
                 //    if (!this.IsActive)
                 //    {
-                //        if (MediaPlayer.State == MediaState.Playing)
+                //        if (MediaPlayer.State == MediaState.IsPlaying)
                 //        {
                 //            MediaPlayer.Pause();
                 //        }
@@ -604,7 +604,7 @@ namespace _3DMusicVis2.Screen
                         window.WindowState = FormWindowState.Normal;
                         window.Location =
                             new System.Drawing.Point(
-                                (GDM.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation),
+                                GDM.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation,
                                 0);
                         window.Size = new Size(GDM.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
                             GDM.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
@@ -1034,7 +1034,7 @@ namespace _3DMusicVis2.Screen
 
                                 _cam.Position =
                                     Vector3.Transform(_cam.Position - new Vector3(10, 0, 10),
-                                        Matrix.CreateFromAxisAngle(new Vector3(0, (_cam.NegateOrbit ? -1 : 1), 0),
+                                        Matrix.CreateFromAxisAngle(new Vector3(0, _cam.NegateOrbit ? -1 : 1, 0),
                                             Game1.AudioAnalysis.getFloat_2StepLowFrq(orbitSpeed, .1f, 0.45f))) +
                                     new Vector3(10, 0, 10);
                                 _cam.View = Matrix.CreateLookAt(_cam.Position, new Vector3(10, 0, 10), Vector3.Up);
@@ -1043,7 +1043,7 @@ namespace _3DMusicVis2.Screen
                             {
                                 _cam.Position =
                                     Vector3.Transform(_cam.Position - new Vector3(10, 0, 10),
-                                        Matrix.CreateFromAxisAngle(new Vector3(0, (_cam.NegateOrbit ? -1 : 1), 0),
+                                        Matrix.CreateFromAxisAngle(new Vector3(0, _cam.NegateOrbit ? -1 : 1, 0),
                                             orbitSpeed)) +
                                     new Vector3(10, 0, 10);
                                 _cam.View = Matrix.CreateLookAt(_cam.Position, new Vector3(10, 0, 10), Vector3.Up);
@@ -1162,8 +1162,8 @@ namespace _3DMusicVis2.Screen
 
         private Color GetRainbowColor(float progress)
         {
-            var div = (Math.Abs(progress%1)*6);
-            var ascending = (int) ((div%1)*255);
+            var div = Math.Abs(progress%1)*6;
+            var ascending = (int) (div%1*255);
             var descending = 255 - ascending;
 
             switch ((int) div)

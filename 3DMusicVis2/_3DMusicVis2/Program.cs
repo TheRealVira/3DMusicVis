@@ -1,24 +1,24 @@
 #region License
 
-// Copyright (c) 2015, Vira
+// Copyright (c) 2016, Vira
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Program.cs
-// Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:04
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
 namespace _3DMusicVis2
 {
 #if WINDOWS || XBOX
-    static class Program
+    internal static class Program
     {
         /// <summary>
         ///     The main entry point for the application.
         /// </summary>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             using (var game = new Game1())
             {

@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: 3DLinearWaveRenderer.cs
-// Date - created: 2016.05.22 - 16:11
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -22,7 +22,7 @@ using _3DMusicVis2.TileHelper;
 
 namespace _3DMusicVis2.RenderFrame
 {
-    static class _3DLinearWaveRenderer
+    internal static class _3DLinearWaveRenderer
     {
         private static _3DMusicVisRenderFrame _renderer;
         private static TileField Field;
@@ -33,8 +33,6 @@ namespace _3DMusicVis2.RenderFrame
             _renderer =
                 new _3DMusicVisRenderFrame
                 {
-                    MyRenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true,
-                        device.DisplayMode.Format, DepthFormat.Depth24),
                     Render = Target,
                     UpdateRenderer = UpdateRenderer,
                     ClearColor = Color.Transparent,
@@ -66,7 +64,7 @@ namespace _3DMusicVis2.RenderFrame
                 }
 
                 tiles[x, 0].ChangeMiddleColors(Color.Lerp(_renderer.ForeGroundColor, fadeOutColor,
-                    1 - samples[samples.Count - 1 - x*arrayStep].Normalize(0, 1)));
+                    1 - samples[samples.Count - 1 - x*arrayStep].Normalize()));
                 tiles[x, 0].ChangeCenterHeight(samples[samples.Count - 1 - x*arrayStep]*1.5f*heightMulitplier);
             }
 
@@ -125,12 +123,15 @@ namespace _3DMusicVis2.RenderFrame
 
         public static Texture2D Target(GraphicsDevice device, GameTime gameTime, Camera cam)
         {
+            var pp = device.PresentationParameters;
+            var MyRenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true,
+                device.DisplayMode.Format, DepthFormat.Depth24);
             device.BlendState = BlendState.Opaque;
             device.DepthStencilState = DepthStencilState.Default;
             device.RasterizerState = _renderer.RastState;
             device.SamplerStates[0] = SamplerState.AnisotropicWrap;
 
-            device.SetRenderTarget(_renderer.MyRenderTarget);
+            device.SetRenderTarget(MyRenderTarget);
             device.Clear(_renderer.ClearColor);
             using (var sprite = new SpriteBatch(device))
             {
@@ -144,7 +145,7 @@ namespace _3DMusicVis2.RenderFrame
 
             device.SetRenderTarget(null);
 
-            return _renderer.MyRenderTarget;
+            return MyRenderTarget;
             //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, _renderer.ClearColor, 1.0f, 0);
             //using (SpriteBatch sprite = new SpriteBatch(device))
             //{

@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Credits.cs
-// Date - created: 2016.05.22 - 11:49
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -22,7 +22,7 @@ using _3DMusicVis2.VisualControls;
 
 namespace _3DMusicVis2.Screen
 {
-    class Credits : Screen
+    internal class Credits : Screen
     {
         private readonly ListBox _namingList;
 
@@ -60,7 +60,7 @@ namespace _3DMusicVis2.Screen
 
             if (_namingList.AllItemsAreOutSideTheBounding())
             {
-                ScreenManager.Delete(this);
+                ScreenManager.LoadNextScreen(this);
             }
         }
     }

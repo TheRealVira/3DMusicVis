@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: OutputManagerEventHandeling.cs
-// Date - created: 2016.05.23 - 16:08
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -21,7 +21,7 @@ using _3DMusicVis2.OutputConsole;
 
 namespace _3DMusicVis2.OutPutConsole
 {
-    class OutputManagerEventHandeling : TextWriter
+    internal class OutputManagerEventHandeling : TextWriter
     {
         public override Encoding Encoding => Encoding.UTF8;
 

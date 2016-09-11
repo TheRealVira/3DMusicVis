@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: MediaPlayerManager.cs
-// Date - created: 2016.05.23 - 15:55
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -24,11 +24,13 @@ using Microsoft.Xna.Framework.Media;
 
 namespace _3DMusicVis2.Manager
 {
-    static class MediaPlayerManager
+    internal static class MediaPlayerManager
     {
         private static List<SpecialSong> SongList;
 
         private static int SongPointer;
+
+        public static bool IsPlaying { get; private set; }
 
         private static int SongPointerProb
         {
@@ -38,7 +40,7 @@ namespace _3DMusicVis2.Manager
                 if (SongList.Count > 0)
                 {
                     value = Math.Abs(value);
-                    SongPointer = (value %= SongList.Count) == 0 ? SongList.Count : value;
+                    SongPointer = (value %= SongList.Count) == 0 ? 0 : value;
                 }
             }
         }
@@ -95,24 +97,46 @@ namespace _3DMusicVis2.Manager
 
         public static void Play()
         {
+            IsPlaying = true;
+            SongPointerProb++;
+            SongPointerProb++;
             MediaPlayer.Play(SongList[SongPointerProb].MySong);
             SongPointerProb++;
         }
 
         public static void Pause()
         {
+            IsPlaying = false;
+            MediaPlayer.Pause();
         }
 
         public static void Next()
         {
+            IsPlaying = true;
+            MediaPlayer.Stop();
+            Play();
+        }
+
+        public static void Resume()
+        {
+            IsPlaying = true;
+            MediaPlayer.Resume();
         }
 
         public static void Previous()
         {
+            IsPlaying = true;
+            MediaPlayer.Stop();
+            SongPointerProb --;
+            Play();
         }
 
         public static void Update()
         {
+            IsPlaying = MediaPlayer.State != MediaState.Stopped;
+            if (IsPlaying) return;
+
+            Play();
         }
     }
 }

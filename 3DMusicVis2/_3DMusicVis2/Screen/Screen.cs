@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Screen.cs
-// Date - created: 2016.05.19 - 17:57
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DMusicVis2.Screen
 {
-    abstract class Screen
+    internal abstract class Screen
     {
         public readonly string Name;
         protected GraphicsDeviceManager GDM;
@@ -40,6 +40,10 @@ namespace _3DMusicVis2.Screen
         public abstract void Update(GameTime gameTime);
 
         public virtual void LoadedUp()
+        {
+        }
+
+        public virtual void Unloade()
         {
         }
     }

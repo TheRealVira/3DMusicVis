@@ -1,12 +1,12 @@
 ﻿#region License
 
-// Copyright (c) 2015, Vira
+// Copyright (c) 2016, Vira
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: SpecialSong.cs
-// Date - created: 2015.09.01 - 16:11
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:04
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -39,7 +39,7 @@ namespace _3DMusicVis2
 
             if (TagLibFile.Tag.Pictures.Length > 0)
             {
-                var bin = (TagLibFile.Tag.Pictures[0].Data.Data);
+                var bin = TagLibFile.Tag.Pictures[0].Data.Data;
                 Thumbnail = Texture2D.FromStream(graphics, new MemoryStream(bin));
             }
         }

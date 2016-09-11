@@ -1,12 +1,12 @@
 #region License
 
-// Copyright (c) 2015, Vira
+// Copyright (c) 2016, Vira
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Game1.cs
-// Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:04
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.Manager;
+using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Screen;
 using Color = Microsoft.Xna.Framework.Color;
@@ -69,6 +70,14 @@ namespace _3DMusicVis2
             Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             FreeBeer = this;
+            Exiting += Game1_Exiting;
+        }
+
+        private void Game1_Exiting(object sender, EventArgs e)
+        {
+            ScreenManager.UnloadAll();
+            RealTimeRecording.UnloadMe();
+            RealTimeRecording.UnloadMe();
         }
 
         /// <summary>
@@ -126,6 +135,10 @@ namespace _3DMusicVis2
             System.Console.WriteLine("Initialised the _2DSampleRenderer...");
             _2DFrequencyRenderer.Initialise(GraphicsDevice);
             System.Console.WriteLine("Initialised the _2DFrequencyRenderer...");
+            _2DFFTRenderer.Initialise(GraphicsDevice);
+            System.Console.WriteLine("Initialised the _2DFFTRenderer...");
+            RealTimeRecording.Initialize();
+            System.Console.WriteLine("Initialised the RealTimeRecorder...");
 
             base.Initialize();
             System.Console.WriteLine("Finished initialising 3DMusicVis2!");
@@ -176,8 +189,9 @@ namespace _3DMusicVis2
             NewKeyboardState = Keyboard.GetState();
             NewMouseState = Mouse.GetState();
 
-            if (NewKeyboardState.IsKeyUp(Keys.Escape) && OldKeyboardState.IsKeyDown(Keys.Escape))
+            if (Keys.Escape.KeyWasClicked())
             {
+                ScreenManager.UnloadAll();
                 FreeBeer.Exit();
             }
 
@@ -220,7 +234,7 @@ namespace _3DMusicVis2
                     window.WindowState = FormWindowState.Normal;
                     window.Location =
                         new System.Drawing.Point(
-                            (Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation),
+                            Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation,
                             0);
                     window.Size = new Size(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
                         Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
@@ -246,7 +260,7 @@ namespace _3DMusicVis2
             SpriteBatch.Begin(0, null, null, null, null, null, Resolution.getTransformationMatrix());
 
             ScreenManager.Draw(SpriteBatch, gameTime);
-            MyConsole.Draw(gameTime, SpriteBatch, 2);
+            //MyConsole.Draw(gameTime, SpriteBatch, 2);
 
             SpriteBatch.End();
 

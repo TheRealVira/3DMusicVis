@@ -1,12 +1,12 @@
 ﻿#region License
 
-// Copyright (c) 2015, Vira
+// Copyright (c) 2016, Vira
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Tile.cs
-// Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -132,22 +132,22 @@ namespace _3DMusicVis2.TileHelper
         {
             // Also a great performance eater
             // TODO: Gather more performances
-            Verts[0].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[0].Position.Y.Normalize(0, 1));
-            Verts[2].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[2].Position.Y.Normalize(0, 1));
-            Verts[3].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[3].Position.Y.Normalize(0, 1));
-            Verts[4].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[4].Position.Y.Normalize(0, 1));
-            Verts[6].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[6].Position.Y.Normalize(0, 1));
-            Verts[7].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[7].Position.Y.Normalize(0, 1));
-            Verts[10].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[10].Position.Y.Normalize(0, 1));
-            Verts[11].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[11].Position.Y.Normalize(0, 1));
-            Verts[13].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[13].Position.Y.Normalize(0, 1));
-            Verts[14].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[14].Position.Y.Normalize(0, 1));
-            Verts[16].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[16].Position.Y.Normalize(0, 1));
-            Verts[17].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[17].Position.Y.Normalize(0, 1));
-            Verts[19].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[19].Position.Y.Normalize(0, 1));
-            Verts[20].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[20].Position.Y.Normalize(0, 1));
-            Verts[22].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[22].Position.Y.Normalize(0, 1));
-            Verts[23].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[23].Position.Y.Normalize(0, 1));
+            Verts[0].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[0].Position.Y.Normalize());
+            Verts[2].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[2].Position.Y.Normalize());
+            Verts[3].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[3].Position.Y.Normalize());
+            Verts[4].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[4].Position.Y.Normalize());
+            Verts[6].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[6].Position.Y.Normalize());
+            Verts[7].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[7].Position.Y.Normalize());
+            Verts[10].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[10].Position.Y.Normalize());
+            Verts[11].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[11].Position.Y.Normalize());
+            Verts[13].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[13].Position.Y.Normalize());
+            Verts[14].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[14].Position.Y.Normalize());
+            Verts[16].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[16].Position.Y.Normalize());
+            Verts[17].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[17].Position.Y.Normalize());
+            Verts[19].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[19].Position.Y.Normalize());
+            Verts[20].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[20].Position.Y.Normalize());
+            Verts[22].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[22].Position.Y.Normalize());
+            Verts[23].Color = Color.Lerp(CenterColor, fadeOut, 1 - Verts[23].Position.Y.Normalize());
         }
 
         public void ChangeMiddleColors(Color color)

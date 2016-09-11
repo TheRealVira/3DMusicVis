@@ -1,12 +1,12 @@
 ﻿#region License
 
-// Copyright (c) 2015, Vira
+// Copyright (c) 2016, Vira
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: TileField.cs
-// Date - created: 2015.08.26 - 14:46
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -25,7 +25,7 @@ namespace _3DMusicVis2.TileHelper
         Color fadeOutColor,
         ColorMode colorMode = ColorMode.OnlyCenter, bool onlycenter = false, float heightMulitplier = 1f);
 
-    class TileField
+    internal class TileField
     {
         private readonly Tile[,] Tiles;
 
@@ -121,7 +121,7 @@ namespace _3DMusicVis2.TileHelper
             Color fadeOutColor,
             ColorMode colorMode = ColorMode.OnlyCenter, bool onlycenter = false, float heightMulitplier = 1f)
         {
-            var center = new Vector2((Tiles.GetLength(0))/2 - 1, (Tiles.GetLength(1))/2 - 1);
+            var center = new Vector2(Tiles.GetLength(0)/2 - 1, Tiles.GetLength(1)/2 - 1);
 
             for (var x = 0; x < Tiles.GetLength(0); x++)
             {
@@ -130,7 +130,7 @@ namespace _3DMusicVis2.TileHelper
                     var calculatedCen = Math.Round((decimal) Vector2.Distance(center, new Vector2(x, y)))*arrayStep;
 
                     Tiles[x, y].ChangeMiddleColors(Color.Lerp(centerColorHue, fadeOutColor,
-                        1 - samples[(int) calculatedCen].Normalize(0, 1)));
+                        1 - samples[(int) calculatedCen].Normalize()));
                     Tiles[x, y].ChangeCenterHeight(
                         samples[(int) calculatedCen]*1.5f*heightMulitplier);
                 }
@@ -176,7 +176,7 @@ namespace _3DMusicVis2.TileHelper
                 }
 
                 Tiles[x, 0].ChangeMiddleColors(Color.Lerp(centerColorHue, fadeOutColor,
-                    1 - samples[samples.Count - 1 - x*arrayStep].Normalize(0, 1)));
+                    1 - samples[samples.Count - 1 - x*arrayStep].Normalize()));
                 Tiles[x, 0].ChangeCenterHeight(samples[samples.Count - 1 - x*arrayStep]*1.5f*heightMulitplier);
             }
 

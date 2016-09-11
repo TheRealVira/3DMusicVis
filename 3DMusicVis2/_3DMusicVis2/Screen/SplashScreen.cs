@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: SplashScreen.cs
-// Date - created: 2016.05.19 - 18:04
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -20,7 +20,7 @@ using _3DMusicVis2.Manager;
 
 namespace _3DMusicVis2.Screen
 {
-    class SplashScreen : Screen
+    internal class SplashScreen : Screen
     {
         private readonly Texture2D Texture;
         private float DurationTillDetimination;
@@ -50,7 +50,7 @@ namespace _3DMusicVis2.Screen
 
             if (DurationTillDetimination < 1)
             {
-                ScreenManager.Delete(this);
+                ScreenManager.LoadNextScreen(this);
             }
         }
     }

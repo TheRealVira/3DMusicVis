@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: ColorMode.cs
-// Date - created: 2016.05.08 - 10:51
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:04
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 

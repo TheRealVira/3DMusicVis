@@ -5,23 +5,21 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: 2DMsuciVisRenderFrame.cs
-// Date - created: 2016.05.22 - 16:17
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
 #region Usings
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
 namespace _3DMusicVis2.RenderFrame
 {
-    struct _2DMusicVisRenderFrame
+    internal struct _2DMusicVisRenderFrame
     {
-        public RenderTarget2D MyRenderTarget;
         public RenderToTexture Render;
         public Update UpdateRenderer;
         public Color ClearColor;

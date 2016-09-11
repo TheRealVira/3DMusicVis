@@ -1,12 +1,12 @@
 ﻿#region License
 
-// Copyright (c) 2015, Vira
+// Copyright (c) 2016, Vira
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Camera.cs
-// Date - created: 2015.08.26 - 14:47
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:04
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -145,7 +145,7 @@ namespace _3DMusicVis2
             //Sprint-Key
             movespeedmultiplikator = Game1.NewKeyboardState.IsKeyDown(Keys.LeftShift) ? 2.5F : 1.6F;
 
-            var dt = (float) (gameTime.ElapsedGameTime.TotalSeconds);
+            var dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
             var moveVector = Vector3.Zero;
 
@@ -186,8 +186,8 @@ namespace _3DMusicVis2
             if (Game1.NewMouseState != Game1.OldMouseState)
             {
                 //Cache mouse location
-                deltaX = Game1.NewMouseState.X - (Game1.Graphics.GraphicsDevice.Viewport.Width/2F);
-                deltaY = Game1.NewMouseState.Y - (Game1.Graphics.GraphicsDevice.Viewport.Height/2F);
+                deltaX = Game1.NewMouseState.X - Game1.Graphics.GraphicsDevice.Viewport.Width/2F;
+                deltaY = Game1.NewMouseState.Y - Game1.Graphics.GraphicsDevice.Viewport.Height/2F;
 
                 mouseRotationBuffer.X -= deltaX*dt*0.14f;
                 mouseRotationBuffer.Y -= deltaY*dt*0.14f;

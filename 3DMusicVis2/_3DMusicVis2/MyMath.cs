@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: MyMath.cs
-// Date - created: 2016.05.09 - 16:14
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:04
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -25,7 +25,7 @@ namespace _3DMusicVis2
             return value > 0 ? value : -value;
         }
 
-        public static float Normalize(this float value, float min, float max) => (value - min)/(max - min);
+        public static float Normalize(this float value) => 1f - 1f/(1f + value);
 
         public static Color Negate(this Color color)
         {

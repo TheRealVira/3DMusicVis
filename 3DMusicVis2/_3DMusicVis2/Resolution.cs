@@ -1,32 +1,37 @@
-﻿//////////////////////////////////////////////////////////////////////////
-////License:  The MIT License (MIT)
-////Copyright (c) 2010 David Amador (http://www.david-amador.com)
-////
-////Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-////
-////The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-////
-////THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//////////////////////////////////////////////////////////////////////////
+﻿#region License
+
+// Copyright (c) 2016, Vira
+// All rights reserved.
+// Solution: 3DMusicVis2
+// Project: _3DMusicVis2
+// Filename: Resolution.cs
+// Date - created:2016.07.02 - 17:04
+// Date - current: 2016.09.11 - 17:35
+
+#endregion
+
+#region Usings
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+#endregion
+
 namespace _3DMusicVis2
 {
-    static class Resolution
+    internal static class Resolution
     {
-        static private GraphicsDeviceManager _Device = null;
+        private static GraphicsDeviceManager _Device;
 
-        static private int _Width = 800;
-        static private int _Height = 600;
-        static private int _VWidth = 1024;
-        static private int _VHeight = 768;
-        static private Matrix _ScaleMatrix;
-        static private bool _FullScreen = false;
-        static private bool _dirtyMatrix = true;
+        private static int _Width = 800;
+        private static int _Height = 600;
+        private static int _VWidth = 1024;
+        private static int _VHeight = 768;
+        private static Matrix _ScaleMatrix;
+        private static bool _FullScreen;
+        private static bool _dirtyMatrix = true;
 
-        static public void Init(ref GraphicsDeviceManager device)
+        public static void Init(ref GraphicsDeviceManager device)
         {
             _Width = device.PreferredBackBufferWidth;
             _Height = device.PreferredBackBufferHeight;
@@ -36,14 +41,14 @@ namespace _3DMusicVis2
         }
 
 
-        static public Matrix getTransformationMatrix()
+        public static Matrix getTransformationMatrix()
         {
             if (_dirtyMatrix) RecreateScaleMatrix();
 
             return _ScaleMatrix;
         }
 
-        static public void SetResolution(int Width, int Height, bool FullScreen)
+        public static void SetResolution(int Width, int Height, bool FullScreen)
         {
             _Width = Width;
             _Height = Height;
@@ -53,7 +58,7 @@ namespace _3DMusicVis2
             ApplyResolutionSettings();
         }
 
-        static public void SetVirtualResolution(int Width, int Height)
+        public static void SetVirtualResolution(int Width, int Height)
         {
             _VWidth = Width;
             _VHeight = Height;
@@ -61,9 +66,8 @@ namespace _3DMusicVis2
             _dirtyMatrix = true;
         }
 
-        static private void ApplyResolutionSettings()
+        private static void ApplyResolutionSettings()
         {
-
 #if XBOX360
            _FullScreen = true;
 #endif
@@ -87,7 +91,7 @@ namespace _3DMusicVis2
                 // adapter can handle the video mode we are trying to set.  To do this, we will
                 // iterate through the display modes supported by the adapter and check them against
                 // the mode we want to set.
-                foreach (DisplayMode dm in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
+                foreach (var dm in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
                 {
                     // Check the width and height of each mode against the passed values
                     if ((dm.Width == _Width) && (dm.Height == _Height))
@@ -108,10 +112,10 @@ namespace _3DMusicVis2
         }
 
         /// <summary>
-        /// Sets the device to use the draw pump
-        /// Sets correct aspect ratio
+        ///     Sets the device to use the draw pump
+        ///     Sets correct aspect ratio
         /// </summary>
-        static public void BeginDraw()
+        public static void BeginDraw()
         {
             // Start by reseting viewport to (0,0,1,1)
             FullViewport();
@@ -125,19 +129,19 @@ namespace _3DMusicVis2
             _Device.GraphicsDevice.Clear(Color.CornflowerBlue);
         }
 
-        static private void RecreateScaleMatrix()
+        private static void RecreateScaleMatrix()
         {
             _dirtyMatrix = false;
             _ScaleMatrix = Matrix.CreateScale(
-                           (float)_Device.GraphicsDevice.Viewport.Width / _VWidth,
-                           (float)_Device.GraphicsDevice.Viewport.Width / _VWidth,
-                           1f);
+                (float) _Device.GraphicsDevice.Viewport.Width/_VWidth,
+                (float) _Device.GraphicsDevice.Viewport.Width/_VWidth,
+                1f);
         }
 
 
-        static public void FullViewport()
+        public static void FullViewport()
         {
-            Viewport vp = new Viewport();
+            var vp = new Viewport();
             vp.X = vp.Y = 0;
             vp.Width = _Width;
             vp.Height = _Height;
@@ -145,35 +149,35 @@ namespace _3DMusicVis2
         }
 
         /// <summary>
-        /// Get virtual Mode Aspect Ratio
+        ///     Get virtual Mode Aspect Ratio
         /// </summary>
         /// <returns>aspect ratio</returns>
-        static public float getVirtualAspectRatio()
+        public static float getVirtualAspectRatio()
         {
-            return (float)_VWidth / (float)_VHeight;
+            return _VWidth/(float) _VHeight;
         }
 
-        static public void ResetViewport()
+        public static void ResetViewport()
         {
-            float targetAspectRatio = getVirtualAspectRatio();
+            var targetAspectRatio = getVirtualAspectRatio();
             // figure out the largest area that fits in this resolution at the desired aspect ratio
-            int width = _Device.PreferredBackBufferWidth;
-            int height = (int)(width / targetAspectRatio + .5f);
-            bool changed = false;
+            var width = _Device.PreferredBackBufferWidth;
+            var height = (int) (width/targetAspectRatio + .5f);
+            var changed = false;
 
             if (height > _Device.PreferredBackBufferHeight)
             {
                 height = _Device.PreferredBackBufferHeight;
                 // PillarBox
-                width = (int)(height * targetAspectRatio + .5f);
+                width = (int) (height*targetAspectRatio + .5f);
                 changed = true;
             }
 
             // set up the new viewport centered in the backbuffer
-            Viewport viewport = new Viewport();
+            var viewport = new Viewport();
 
-            viewport.X = (_Device.PreferredBackBufferWidth / 2) - (width / 2);
-            viewport.Y = (_Device.PreferredBackBufferHeight / 2) - (height / 2);
+            viewport.X = _Device.PreferredBackBufferWidth/2 - width/2;
+            viewport.Y = _Device.PreferredBackBufferHeight/2 - height/2;
             viewport.Width = width;
             viewport.Height = height;
             viewport.MinDepth = 0;
@@ -186,6 +190,5 @@ namespace _3DMusicVis2
 
             _Device.GraphicsDevice.Viewport = viewport;
         }
-
     }
 }

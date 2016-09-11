@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: VisualControl.cs
-// Date - created: 2016.05.22 - 11:03
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -146,13 +146,13 @@ namespace _3DMusicVis2.VisualControls
                 new Rectangle(Bounding.Left, Bounding.Bottom, Bounding.Width, borderWidth), BorderColor); // Bottom
         }
 
-        protected event MouseHoverEventHandler MouseHover;
-        protected event MouseExitsEventHandler MouseExits;
-        protected event MouseButtonUpHandler MouseButtonUp;
-        protected event MouseButtonDownHandler MouseButtonDown;
-        protected event MousePressedHandler MousePressed;
-        protected event ScrolledUpHandler ScrolledUp;
-        protected event ScrolledDownHandler ScrolledDown;
+        public event MouseHoverEventHandler MouseHover;
+        public event MouseExitsEventHandler MouseExits;
+        public event MouseButtonUpHandler MouseButtonUp;
+        public event MouseButtonDownHandler MouseButtonDown;
+        public event MousePressedHandler MousePressed;
+        public event ScrolledUpHandler ScrolledUp;
+        public event ScrolledDownHandler ScrolledDown;
 
         protected virtual void OnMouseHover()
         {

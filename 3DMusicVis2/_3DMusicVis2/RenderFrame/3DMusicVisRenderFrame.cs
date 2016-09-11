@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: 3DMusicVisRenderFrame.cs
-// Date - created: 2016.05.22 - 14:01
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -20,9 +20,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DMusicVis2.RenderFrame
 {
-    struct _3DMusicVisRenderFrame
+    internal struct _3DMusicVisRenderFrame
     {
-        public RenderTarget2D MyRenderTarget;
         public RasterizerState RastState;
         public RenderToTexture Render;
         public Update UpdateRenderer;

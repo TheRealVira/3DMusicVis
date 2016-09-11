@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Label.cs
-// Date - created: 2016.05.22 - 11:50
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -19,7 +19,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DMusicVis2.VisualControls
 {
-    class Label : VisualControl
+    internal class Label : VisualControl
     {
         private readonly SpriteFont _font;
 

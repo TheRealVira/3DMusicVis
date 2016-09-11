@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Console.cs
-// Date - created: 2016.05.23 - 17:59
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -28,10 +28,10 @@ namespace _3DMusicVis2.VisualControls
         private readonly ListBox _lines;
 
         private readonly Label ConsoleSignLabel;
+        private readonly int MAX_CONSOLE_TEXT = 7;
 
         private readonly OutputManagerEventHandeling Writer;
         private float _timer;
-        private readonly int MAX_CONSOLE_TEXT = 7;
         private float VANISH = 1000;
 
         public Console(Rectangle bounding, Texture2D texture)

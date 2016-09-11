@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Button.cs
-// Date - created: 2016.05.22 - 11:02
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DMusicVis2.VisualControls
 {
-    class Button : VisualControl
+    internal class Button : VisualControl
     {
         private readonly SpriteFont _font;
 
@@ -33,7 +33,6 @@ namespace _3DMusicVis2.VisualControls
             Text = text;
             MouseHover += Button_MouseHover;
             MouseExits += Button_MouseExits;
-            MousePressed += Button_MousePressed;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -45,17 +44,12 @@ namespace _3DMusicVis2.VisualControls
                     Bounding.Center.Y - _font.MeasureString(Text).Y/2), FontColor);
         }
 
-        private void Button_MousePressed(object sender, EventArgs e)
-        {
-            DrawColor = Color.Yellow;
-        }
-
-        private void Button_MouseExits(object sender, EventArgs e)
+        public void Button_MouseExits(object sender, EventArgs e)
         {
             DrawColor = DefaultDrawColor;
         }
 
-        private void Button_MouseHover(object sender, EventArgs e)
+        public void Button_MouseHover(object sender, EventArgs e)
         {
             DrawColor = Color.Blue;
         }

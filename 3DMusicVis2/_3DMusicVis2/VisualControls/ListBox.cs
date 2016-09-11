@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: ListBox.cs
-// Date - created: 2016.05.22 - 11:57
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -22,7 +22,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _3DMusicVis2.VisualControls
 {
-    class ListBox : VisualControl
+    internal class ListBox : VisualControl
     {
         private const int SCROLL_SPEED = 10;
 
@@ -89,10 +89,10 @@ namespace _3DMusicVis2.VisualControls
 
             foreach (var label in Items)
             {
-                //if (Bounding.Contains(label.Bounding))
-                //{
-                label.Draw(gameTime, spriteBatch, borderWidth);
-                //}
+                if (Bounding.Intersects(label.Bounding))
+                {
+                    label.Draw(gameTime, spriteBatch, borderWidth);
+                }
             }
         }
 

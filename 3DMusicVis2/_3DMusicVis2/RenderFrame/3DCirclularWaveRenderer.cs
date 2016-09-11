@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: 3DCirclularWaveRenderer.cs
-// Date - created: 2016.05.22 - 14:02
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -22,19 +22,16 @@ using _3DMusicVis2.TileHelper;
 
 namespace _3DMusicVis2.RenderFrame
 {
-    static class _3DCirclularWaveRenderer
+    internal static class _3DCirclularWaveRenderer
     {
         private static _3DMusicVisRenderFrame _renderer;
         private static TileField Field;
 
         public static void Initialise(GraphicsDevice device)
         {
-            var pp = device.PresentationParameters;
             _renderer =
                 new _3DMusicVisRenderFrame
                 {
-                    MyRenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true,
-                        device.DisplayMode.Format, DepthFormat.Depth24),
                     Render = Target,
                     UpdateRenderer = UpdateRenderer,
                     ClearColor = Color.Transparent,
@@ -58,7 +55,7 @@ namespace _3DMusicVis2.RenderFrame
         private static void MyMethod(Tile[,] tiles, ReadOnlyCollection<float> samples, int arrayStep, Color fadeOutColor,
             ColorMode colorMode, bool onlycenter, float heightMulitplier)
         {
-            var center = new Vector2((tiles.GetLength(0))/2 - 1, (tiles.GetLength(1))/2 - 1);
+            var center = new Vector2(tiles.GetLength(0)/2 - 1, tiles.GetLength(1)/2 - 1);
 
             for (var x = 0; x < tiles.GetLength(0); x++)
             {
@@ -67,7 +64,7 @@ namespace _3DMusicVis2.RenderFrame
                     var calculatedCen = Math.Round((decimal) Vector2.Distance(center, new Vector2(x, y)))*arrayStep;
 
                     tiles[x, y].ChangeMiddleColors(Color.Lerp(_renderer.ForeGroundColor, fadeOutColor,
-                        1 - samples[(int) calculatedCen].Normalize(0, 1)));
+                        1 - samples[(int) calculatedCen].Normalize()));
                     tiles[x, y].ChangeCenterHeight(
                         samples[(int) calculatedCen]*1.5f*heightMulitplier);
                 }
@@ -109,12 +106,15 @@ namespace _3DMusicVis2.RenderFrame
 
         public static Texture2D Target(GraphicsDevice device, GameTime gameTime, Camera cam)
         {
+            var pp = device.PresentationParameters;
+            var MyRenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true,
+                device.DisplayMode.Format, DepthFormat.Depth24);
             device.BlendState = BlendState.Opaque;
             device.DepthStencilState = DepthStencilState.Default;
             device.RasterizerState = _renderer.RastState;
             device.SamplerStates[0] = SamplerState.AnisotropicWrap;
 
-            device.SetRenderTarget(_renderer.MyRenderTarget);
+            device.SetRenderTarget(MyRenderTarget);
             device.Clear(_renderer.ClearColor);
             using (var sprite = new SpriteBatch(device))
             {
@@ -128,7 +128,7 @@ namespace _3DMusicVis2.RenderFrame
 
             device.SetRenderTarget(null);
 
-            return _renderer.MyRenderTarget;
+            return MyRenderTarget;
             //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, _renderer.ClearColor, 1.0f, 0);
             //using (SpriteBatch sprite = new SpriteBatch(device))
             //{

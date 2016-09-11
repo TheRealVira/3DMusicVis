@@ -1,9 +1,14 @@
-﻿//
-//Audio Analysis Framework - Created by Stephen Hoult.
-//Downloaded from: http://www.codeproject.com/Articles/593627/An-Audio-Analysis-Framework-for-XNA-Developers
-//Contact: Through the linked articles comments and discussions. 
-//Please do not remove this :).
-//
+﻿#region License
+
+// Copyright (c) 2016, Vira
+// All rights reserved.
+// Solution: 3DMusicVis2
+// Project: _3DMusicVis2
+// Filename: AudioAnalysisXNAClass.cs
+// Date - created:2016.07.02 - 17:04
+// Date - current: 2016.09.11 - 17:35
+
+#endregion
 
 #region Usings
 
@@ -27,7 +32,7 @@ namespace _3DMusicVis2 //<---------- Change this to your projects namespace.
         //This is where the audio Frequencies/Amplitude and Sample Wave data is stored.
         //Frequencies are an array of 256 amplitude float values from 0f to 1f
         //Samples are an array of 256 wave float values from -1f to 1f
-        readonly VisualizationData visData = new VisualizationData();
+        private readonly VisualizationData visData = new VisualizationData();
 
         //Constructor to switch visulization data on:
         public AudioAnalysisXNAClass()
@@ -778,7 +783,7 @@ namespace _3DMusicVis2 //<---------- Change this to your projects namespace.
             if (LowFrBandAverage > min && LowFrBandAverage <= max)
                 return colour_MediumResponce;
 
-                //High responce dependent on the average amplitude of the low frq band: <------------------
+            //High responce dependent on the average amplitude of the low frq band: <------------------
             if (LowFrBandAverage > max)
                 return colour_HighResponce;
 
@@ -795,7 +800,7 @@ namespace _3DMusicVis2 //<---------- Change this to your projects namespace.
             if (MidFrBandAverage > min && MidFrBandAverage <= max)
                 return colour_MediumResponce;
 
-                //High responce dependent on the average amplitude of the low frq band: <------------------
+            //High responce dependent on the average amplitude of the low frq band: <------------------
             if (MidFrBandAverage > max)
                 return colour_HighResponce;
 
@@ -812,7 +817,7 @@ namespace _3DMusicVis2 //<---------- Change this to your projects namespace.
             if (HighFrBandAverage > min && HighFrBandAverage <= max)
                 return colour_MediumResponce;
 
-                //High responce dependent on the average amplitude of the low frq band: <------------------
+            //High responce dependent on the average amplitude of the low frq band: <------------------
             if (HighFrBandAverage > max)
                 return colour_HighResponce;
 
@@ -921,7 +926,7 @@ namespace _3DMusicVis2 //<---------- Change this to your projects namespace.
             if (LowFrBandAverage > min && LowFrBandAverage <= max)
                 return colourArray_MediumResponce;
 
-                //High responce:
+            //High responce:
             if (LowFrBandAverage > max)
                 return colourArray_HighResponce;
 
@@ -938,7 +943,7 @@ namespace _3DMusicVis2 //<---------- Change this to your projects namespace.
             if (MidFrBandAverage > min && MidFrBandAverage <= max)
                 return colourArray_MediumResponce;
 
-                //High responce:
+            //High responce:
             if (MidFrBandAverage > max)
                 return colourArray_HighResponce;
 
@@ -955,7 +960,7 @@ namespace _3DMusicVis2 //<---------- Change this to your projects namespace.
             if (HighFrBandAverage > min && HighFrBandAverage <= max)
                 return colourArray_MediumResponce;
 
-                //High responce:
+            //High responce:
             if (HighFrBandAverage > max)
                 return colourArray_HighResponce;
 

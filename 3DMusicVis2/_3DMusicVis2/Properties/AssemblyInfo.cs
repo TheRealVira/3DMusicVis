@@ -1,12 +1,12 @@
 ﻿#region License
 
-// Copyright (c) 2015, Vira
+// Copyright (c) 2016, Vira
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: AssemblyInfo.cs
-// Date - created: 2015.08.26 - 14:45
-// Date - current: 2016.05.23 - 21:16
+// Date - created:2016.07.02 - 17:05
+// Date - current: 2016.09.11 - 17:35
 
 #endregion
 
@@ -24,9 +24,9 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("3DMusicVis2")]
 [assembly: AssemblyProduct("_3DMusicVis2")]
-[assembly: AssemblyDescription("A programm that will visulize your MP3 and WAV files!")]
+[assembly: AssemblyDescription("A programm that will visulize your sounds!")]
 [assembly: AssemblyCompany("Vira")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
