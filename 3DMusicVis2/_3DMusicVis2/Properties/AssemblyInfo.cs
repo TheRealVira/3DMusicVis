@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("_3DMusicVis2")]
 [assembly: AssemblyDescription("A programm that will visulize your sounds!")]
 [assembly: AssemblyCompany("Vira")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
