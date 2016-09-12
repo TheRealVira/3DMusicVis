@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 2DFrequencyRenderer.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.11 - 17:35
+// Date - current: 2016.09.12 - 21:23
 
 #endregion
 
@@ -53,7 +53,8 @@ namespace _3DMusicVis2.RenderFrame
             if (Frequencies == null) return Game1.FamouseOnePixel;
 
             var pp = device.PresentationParameters;
-            var MyRenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true,
+            var MyRenderTarget = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
+                Game1.VIRTUAL_RESOLUTION.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
             device.SetRenderTarget(MyRenderTarget);
             device.Clear(_renderer.ClearColor);

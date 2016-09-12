@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: AssemblyInfo.cs
-// Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.11 - 17:35
+// Date - created:2016.09.12 - 21:22
+// Date - current: 2016.09.12 - 21:23
 
 #endregion
 

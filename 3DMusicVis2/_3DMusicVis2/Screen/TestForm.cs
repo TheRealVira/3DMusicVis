@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TestForm.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.11 - 17:35
+// Date - current: 2016.09.12 - 21:23
 
 #endregion
 
@@ -94,7 +94,7 @@ namespace _3DMusicVis2.Screen
             //sB.Draw(sampleTexture, new Rectangle(0, (int)+((1 / 3f - 1 / 2f)*Game1.VIRTUAL_RESOLUTION.Height), Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height), Color.White);
             _2DSampleRenderer.PunctionalDrawing = true;
             var sampleTexturePun = _2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
-            sB.Draw(sampleTexturePun, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.Draw(sampleTexturePun, Vector2.Zero, Color.White);
             sB.Draw(sampleTexturePun, new Vector2(0, -200), Color.White);
             sB.Draw(sampleTexturePun, new Vector2(0, 200), Color.White);
 

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Resolution.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.09.11 - 17:35
+// Date - current: 2016.09.12 - 21:23
 
 #endregion
 
@@ -28,7 +28,7 @@ namespace _3DMusicVis2
         private static int _VWidth = 1024;
         private static int _VHeight = 768;
         private static Matrix _ScaleMatrix;
-        private static bool _FullScreen;
+        public static bool _FullScreen;
         private static bool _dirtyMatrix = true;
 
         public static void Init(ref GraphicsDeviceManager device)

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: SampleAggregator.cs
 // Date - created:2016.09.11 - 15:46
-// Date - current: 2016.09.11 - 17:35
+// Date - current: 2016.09.12 - 21:23
 
 #endregion
 
@@ -27,8 +27,8 @@ namespace _3DMusicVis2
         // This Complex is NAudio's own! 
         private readonly Complex[] fftBuffer;
         private readonly int fftLength;
-        private int fftPos;
         private readonly int m;
+        private int fftPos;
 
         public SampleAggregator(int fftLength)
         {
