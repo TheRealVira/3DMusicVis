@@ -53,8 +53,7 @@ namespace _3DMusicVis2.RenderFrame
             if (Frequencies == null) return Game1.FamouseOnePixel;
 
             var pp = device.PresentationParameters;
-            var MyRenderTarget = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height, true,
+            var MyRenderTarget = new RenderTarget2D(device, device.Adapter.CurrentDisplayMode.Width, device.Adapter.CurrentDisplayMode.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
             device.SetRenderTarget(MyRenderTarget);
             device.Clear(_renderer.ClearColor);

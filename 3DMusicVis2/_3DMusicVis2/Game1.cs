@@ -14,6 +14,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -21,7 +24,11 @@ using _3DMusicVis2.Manager;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Screen;
+using Color = Microsoft.Xna.Framework.Color;
 using Console = _3DMusicVis2.VisualControls.Console;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
+using Point = Microsoft.Xna.Framework.Point;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 #endregion
 
@@ -57,6 +64,12 @@ namespace _3DMusicVis2
         public static Texture2D ViraLogo;
         public static Texture2D FamouseOnePixel;
         public static Texture2D GhostPixel;
+
+        private static FormBorderStyle OrigStyle;
+        private static FormWindowState OrigState;
+        private static Size OrigSize;
+        private static System.Drawing.Point OrigLocation;
+
         private Texture2D _3DMusicVisLogo;
 
         public Game1()
@@ -108,6 +121,13 @@ namespace _3DMusicVis2
             Resolution.SetVirtualResolution(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
             Resolution.SetResolution(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
                 Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, false);
+
+            var window = Control.FromHandle(FreeBeer.Window.Handle) as Form;
+            OrigSize = new Size(window.Size.Width,window.Size.Height);
+            OrigState = window.WindowState;
+            OrigStyle = window.FormBorderStyle;
+            OrigLocation = window.Location;
+
             System.Console.WriteLine("Initialised the Resolution...");
 
             AudioAnalysis = new AudioAnalysisXNAClass();
@@ -194,46 +214,42 @@ namespace _3DMusicVis2
             if (NewKeyboardState.IsKeyDown(Keys.RightAlt) && NewKeyboardState.IsKeyUp(Keys.Enter) &&
                 OldKeyboardState.IsKeyDown(Keys.Enter))
             {
-                //var window = Control.FromHandle(FreeBeer.Window.Handle) as Form;
-                //var formPosition = new Point(window.Location.X, window.Location.Y);
-                //var dispayXMulitplikator =
-                //    (int) Math.Round(formPosition.X/(decimal) Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width);
-                //if (dispayXMulitplikator == 0)
-                //{
-                //    if (formPosition.X < -100)
-                //    {
-                //        dispayXMulitplikator = -1;
-                //    }
-                //    else
-                //    {
-                //        dispayXMulitplikator = 1;
-                //    }
-                //}
-                //var displayXMultiplikatorForLocation = dispayXMulitplikator;
-                ////int dispayYMulitplikator = this.GraphicsDevice.Adapter.CurrentDisplayMode.Height / formPosition.Y;
+                var window = Control.FromHandle(FreeBeer.Window.Handle) as Form;
+                var formPosition = new Point(window.Location.X, window.Location.Y);
+                var dispayXMulitplikator =
+                    (int)Math.Round(formPosition.X / (decimal)Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width);
+                if (dispayXMulitplikator == 0)
+                {
+                    if (formPosition.X < -100)
+                    {
+                        dispayXMulitplikator = -1;
+                    }
+                    else
+                    {
+                        dispayXMulitplikator = 1;
+                    }
+                }
+                var displayXMultiplikatorForLocation = dispayXMulitplikator;
+                //int dispayYMulitplikator = this.GraphicsDevice.Adapter.CurrentDisplayMode.Height / formPosition.Y;
 
-                //if (displayXMultiplikatorForLocation > 0)
-                //{
-                //    displayXMultiplikatorForLocation--;
-                //}
+                if (displayXMultiplikatorForLocation > 0)
+                {
+                    displayXMultiplikatorForLocation--;
+                }
 
-                //if (window.WindowState == FormWindowState.Normal)
-                //{
-                //    window.FormBorderStyle = FormBorderStyle.None;
-                //    window.WindowState = FormWindowState.Maximized;
-                //}
-                //else
-                //{
-                //    window.FormBorderStyle = FormBorderStyle.FixedSingle;
-                //    window.WindowState = FormWindowState.Normal;
-                //    window.Location =
-                //        new System.Drawing.Point(
-                //            Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation-23,
-                //            -15);
-                //    window.Size = new Size(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width, Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height+22);
-                //}
-                Resolution.SetResolution(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
-                    Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, !Resolution._FullScreen);
+                if (window.WindowState == FormWindowState.Normal)
+                {
+                    window.FormBorderStyle = FormBorderStyle.None;
+                    window.WindowState = FormWindowState.Maximized;
+                }
+                else
+                {
+                    window.FormBorderStyle = OrigStyle;
+                    window.WindowState = OrigState;
+                    //window.Location= new System.Drawing.Point(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width * displayXMultiplikatorForLocation, -23);
+                    window.Location = OrigLocation; // TEMP!!!
+                    window.Size = OrigSize;
+                }
             }
 
             ScreenManager.Update(gameTime);

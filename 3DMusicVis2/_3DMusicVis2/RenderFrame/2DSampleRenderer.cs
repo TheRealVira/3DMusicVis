@@ -15,8 +15,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 #endregion
 
@@ -60,8 +63,7 @@ namespace _3DMusicVis2.RenderFrame
             if (_samples == null) return Game1.FamouseOnePixel;
 
             var pp = device.PresentationParameters;
-            var MyRenderTarget = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height, true,
+            var MyRenderTarget = new RenderTarget2D(device, device.Adapter.CurrentDisplayMode.Width, device.Adapter.CurrentDisplayMode.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
             device.SetRenderTarget(MyRenderTarget);
             device.Clear(_renderer.ClearColor);

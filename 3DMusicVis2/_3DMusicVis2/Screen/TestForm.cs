@@ -87,7 +87,7 @@ namespace _3DMusicVis2.Screen
             _2DFrequencyRenderer.PunctionalDrawing = false;
             var temp = _2DFrequencyRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
             _2DFrequencyRenderer.PunctionalDrawing = true;
-            sB.Draw(temp, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.Draw(temp, Vector2.Zero, Color.White);
             //sB.Draw(temp,Game1.VIRTUAL_RESOLUTION,temp.Bounds,Color.White,0f,Vector2.Zero, SpriteEffects.FlipVertically, 0f);
             //var sampleTexture = ((RenderTarget2D)_2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam));
             //sB.Draw(sampleTexture, new Rectangle(0,(int)-((1/3f-1/2f) * Game1.VIRTUAL_RESOLUTION.Height), Game1.VIRTUAL_RESOLUTION.Width,Game1.VIRTUAL_RESOLUTION.Height), Color.White);
