@@ -145,6 +145,7 @@ namespace _3DMusicVis2
             vp.X = vp.Y = 0;
             vp.Width = _Width;
             vp.Height = _Height;
+            vp.MaxDepth = 1;
             _Device.GraphicsDevice.Viewport = vp;
         }
 

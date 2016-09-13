@@ -65,11 +65,6 @@ namespace _3DMusicVis2
         public static Texture2D FamouseOnePixel;
         public static Texture2D GhostPixel;
 
-        private static FormBorderStyle OrigStyle;
-        private static FormWindowState OrigState;
-        private static Size OrigSize;
-        private static System.Drawing.Point OrigLocation;
-
         private Texture2D _3DMusicVisLogo;
 
         public Game1()
@@ -121,12 +116,6 @@ namespace _3DMusicVis2
             Resolution.SetVirtualResolution(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
             Resolution.SetResolution(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
                 Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, false);
-
-            var window = Control.FromHandle(FreeBeer.Window.Handle) as Form;
-            OrigSize = new Size(window.Size.Width,window.Size.Height);
-            OrigState = window.WindowState;
-            OrigStyle = window.FormBorderStyle;
-            OrigLocation = window.Location;
 
             System.Console.WriteLine("Initialised the Resolution...");
 
@@ -237,18 +226,20 @@ namespace _3DMusicVis2
                     displayXMultiplikatorForLocation--;
                 }
 
-                if (window.WindowState == FormWindowState.Normal)
+                if (window.FormBorderStyle == FormBorderStyle.FixedSingle)
                 {
                     window.FormBorderStyle = FormBorderStyle.None;
-                    window.WindowState = FormWindowState.Maximized;
+                    //window.WindowState = FormWindowState.Maximized;
+                    window.Location = new System.Drawing.Point(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width * displayXMultiplikatorForLocation, -16);
+                    window.Size = new Size(VIRTUAL_RESOLUTION.Width + 6, VIRTUAL_RESOLUTION.Height + 16);
                 }
                 else
                 {
-                    window.FormBorderStyle = OrigStyle;
-                    window.WindowState = OrigState;
-                    //window.Location= new System.Drawing.Point(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width * displayXMultiplikatorForLocation, -23);
-                    window.Location = OrigLocation; // TEMP!!!
-                    window.Size = OrigSize;
+                    window.FormBorderStyle = FormBorderStyle.FixedSingle;
+                    //window.WindowState = OrigState;
+                    window.Location = new System.Drawing.Point(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width * displayXMultiplikatorForLocation, -16);
+                    //window.Location = OrigLocation; // TEMP!!!
+                    window.Size = new Size(VIRTUAL_RESOLUTION.Width + 6, VIRTUAL_RESOLUTION.Height + 16);
                 }
             }
 
@@ -270,6 +261,7 @@ namespace _3DMusicVis2
 
             SpriteBatch.Begin(0, null, null, null, null, null, Resolution.getTransformationMatrix());
 
+            //Resolution.BeginDraw();
             ScreenManager.Draw(SpriteBatch, gameTime);
             //MyConsole.Draw(gameTime, SpriteBatch, 2);
 
