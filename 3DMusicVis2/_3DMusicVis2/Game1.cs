@@ -231,7 +231,7 @@ namespace _3DMusicVis2
                     window.FormBorderStyle = FormBorderStyle.None;
                     //window.WindowState = FormWindowState.Maximized;
                     window.Location = new System.Drawing.Point(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width * displayXMultiplikatorForLocation, -16);
-                    window.Size = new Size(VIRTUAL_RESOLUTION.Width + 6, VIRTUAL_RESOLUTION.Height + 16);
+                    window.Size = new Size(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height + 16);
                 }
                 else
                 {
@@ -239,7 +239,7 @@ namespace _3DMusicVis2
                     //window.WindowState = OrigState;
                     window.Location = new System.Drawing.Point(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width * displayXMultiplikatorForLocation, -16);
                     //window.Location = OrigLocation; // TEMP!!!
-                    window.Size = new Size(VIRTUAL_RESOLUTION.Width + 6, VIRTUAL_RESOLUTION.Height + 16);
+                    window.Size = new Size(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height + 16);
                 }
             }
 
