@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ScreenManager.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
@@ -27,6 +27,19 @@ namespace _3DMusicVis2.Manager
         public static void Initialise(List<Screen.Screen> screens)
         {
             Screens = screens;
+        }
+
+        /// <summary>
+        ///     Loads a new window without unloading the current one. (NOTE: When exiting the temporarly loaded screen, it will
+        ///     enter back to the current)
+        /// </summary>
+        /// <param name="screen"></param>
+        public static void TempLoadScreen(Screen.Screen screen)
+        {
+            if (screen == null) return;
+
+            Screens.Insert(0, screen);
+            Screens[0].LoadedUp();
         }
 
         public static void LoadNextScreen(Screen.Screen screen)

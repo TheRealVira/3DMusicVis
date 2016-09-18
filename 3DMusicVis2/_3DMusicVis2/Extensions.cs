@@ -6,19 +6,16 @@
 // Project: _3DMusicVis2
 // Filename: Extensions.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
 #region Usings
 
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Keys = Microsoft.Xna.Framework.Input.Keys;
+using Microsoft.Xna.Framework.Input;
 
 #endregion
 

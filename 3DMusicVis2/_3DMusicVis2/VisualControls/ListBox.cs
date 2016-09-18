@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ListBox.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
@@ -27,6 +27,7 @@ namespace _3DMusicVis2.VisualControls
         private const int SCROLL_SPEED = 10;
 
         public List<Label> Items;
+        public Label SelectedItem;
 
         public ListBox(Rectangle bounding, Texture2D texture, List<string> textList, Texture2D induvidualBackground,
             SpriteFont font) : base(bounding, texture, DefaultDrawColor, Color.White, Color.White)
@@ -37,18 +38,27 @@ namespace _3DMusicVis2.VisualControls
             ScrolledDown += ListBox_ScrolledDown;
         }
 
-        private void ListBox_ScrolledDown(object sender, EventArgs e)
-        {
-            Scroll(-SCROLL_SPEED);
-        }
+        public event ItemSelected ItemWasSelected;
 
-        private void ListBox_ScrolledUp(object sender, EventArgs e)
+        private void ListBox_ScrolledDown(object sender, EventArgs e)
         {
             Scroll(SCROLL_SPEED);
         }
 
+        private void ListBox_ScrolledUp(object sender, EventArgs e)
+        {
+            Scroll(-SCROLL_SPEED);
+        }
+
         public void Scroll(int value)
         {
+            if (Items.Count == Bounding.Y) return;
+
+            if (value + Items[0].Bounding.Y < Bounding.Y)
+            {
+                value = Bounding.Y - Items[0].Bounding.Y;
+            }
+
             foreach (var label in Items)
             {
                 label.Bounding.Y += value;
@@ -63,15 +73,31 @@ namespace _3DMusicVis2.VisualControls
             var y = Bounding.Y;
             foreach (var text in toBeConverted)
             {
-                toRet.Add(new Label(new Rectangle(Bounding.X, y, Bounding.Width, labelHeight), background, font, text));
+                var temp = new Label(new Rectangle(Bounding.X, y, Bounding.Width, labelHeight), background, font, text);
+                temp.MousePressed += OnItem_MousePressed;
+                toRet.Add(temp);
                 y += labelHeight;
             }
 
             return toRet;
         }
 
+        private void OnItem_MousePressed(object sender, EventArgs e)
+        {
+            if (SelectedItem != null)
+            {
+                SelectedItem.DrawColor = DefaultDrawColor;
+            }
+
+            SelectedItem = (Label) sender;
+            SelectedItem.DrawColor = Color.Blue;
+            ItemWasSelected?.Invoke(this, EventArgs.Empty);
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            if (!IsVisible) return;
+
             base.Draw(gameTime, spriteBatch);
 
             foreach (var label in Items)
@@ -85,6 +111,8 @@ namespace _3DMusicVis2.VisualControls
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, int borderWidth)
         {
+            if (!IsVisible) return;
+
             base.Draw(gameTime, spriteBatch, borderWidth);
 
             foreach (var label in Items)
@@ -98,6 +126,8 @@ namespace _3DMusicVis2.VisualControls
 
         public override void Update(GameTime gameTime)
         {
+            if (!IsVisible) return;
+
             base.Update(gameTime);
             foreach (var label in Items)
             {

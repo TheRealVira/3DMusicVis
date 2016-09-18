@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: SplashScreen.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
@@ -41,7 +41,10 @@ namespace _3DMusicVis2.Screen
             var textureCenter = new Vector2(
                 Texture.Width/2,
                 Texture.Height/2);
+
+            sB.Begin();
             sB.Draw(Texture, screenCenter, null, Color.White, 0f, textureCenter, 1f, SpriteEffects.None, 1f);
+            sB.End();
         }
 
         public override void Update(GameTime gameTime)

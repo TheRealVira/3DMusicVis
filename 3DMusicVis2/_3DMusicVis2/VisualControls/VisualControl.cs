@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: VisualControl.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
@@ -35,13 +35,16 @@ namespace _3DMusicVis2.VisualControls
 
     public delegate void ScrolledDownHandler(object sender, EventArgs e);
 
+    public delegate void ItemSelected(object sender, EventArgs e);
+
     public abstract class VisualControl
     {
         public static Color DefaultDrawColor = new Color(50, 50, 50, 200);
         protected Color BorderColor;
         public Rectangle Bounding;
-        protected Color DrawColor;
+        public Color DrawColor;
         protected Color FontColor;
+        public bool IsVisible = true;
         protected Texture2D Texture;
 
         protected VisualControl(Rectangle bounding, Texture2D texture, Color drawColor, Color borderColor,
@@ -60,6 +63,8 @@ namespace _3DMusicVis2.VisualControls
 
         public virtual void Update(GameTime gameTime)
         {
+            if (!IsVisible) return;
+
             if (Bounding.Contains(new Point(Game1.NewMouseState.X, Game1.NewMouseState.Y)))
             {
                 if (!WasHovering)
@@ -122,7 +127,9 @@ namespace _3DMusicVis2.VisualControls
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
             spriteBatch.Draw(Texture, Bounding, DrawColor);
+            spriteBatch.End();
         }
 
         /// <summary>

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 2DFrequencyRenderer.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
@@ -25,7 +25,7 @@ namespace _3DMusicVis2.RenderFrame
         private static _2DMusicVisRenderFrame _renderer;
         private static ReadOnlyCollection<float> Frequencies;
 
-        public static bool PunctionalDrawing;
+        public static bool Dashed;
 
         public static void Initialise(GraphicsDevice device)
         {
@@ -52,8 +52,8 @@ namespace _3DMusicVis2.RenderFrame
         {
             if (Frequencies == null) return Game1.FamouseOnePixel;
 
-            var pp = device.PresentationParameters;
-            var MyRenderTarget = new RenderTarget2D(device, device.Adapter.CurrentDisplayMode.Width, device.Adapter.CurrentDisplayMode.Height, true,
+            var MyRenderTarget = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
+                Game1.VIRTUAL_RESOLUTION.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
             device.SetRenderTarget(MyRenderTarget);
             device.Clear(_renderer.ClearColor);
@@ -63,7 +63,7 @@ namespace _3DMusicVis2.RenderFrame
                 Game1.BasicEffect.Projection = cam.Projektion;
                 Game1.BasicEffect.View = cam.View;
 
-                if (PunctionalDrawing)
+                if (Dashed)
                 {
                     for (var f = 0; f < Frequencies.Count; f++)
                     {

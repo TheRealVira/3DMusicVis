@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: AudioAnalysisXNAClass.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 

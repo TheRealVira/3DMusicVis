@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 2DSampleRenderer.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
@@ -15,11 +15,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Color = Microsoft.Xna.Framework.Color;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 #endregion
 
@@ -30,11 +27,10 @@ namespace _3DMusicVis2.RenderFrame
         private static _2DMusicVisRenderFrame _renderer;
         private static ReadOnlyCollection<float> _samples;
 
-        public static bool PunctionalDrawing;
+        public static bool Dashed;
 
         public static void Initialise(GraphicsDevice device)
         {
-            var pp = device.PresentationParameters;
             _renderer =
                 new _2DMusicVisRenderFrame
                 {
@@ -62,8 +58,8 @@ namespace _3DMusicVis2.RenderFrame
         {
             if (_samples == null) return Game1.FamouseOnePixel;
 
-            var pp = device.PresentationParameters;
-            var MyRenderTarget = new RenderTarget2D(device, device.Adapter.CurrentDisplayMode.Width, device.Adapter.CurrentDisplayMode.Height, true,
+            var MyRenderTarget = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
+                Game1.VIRTUAL_RESOLUTION.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
             device.SetRenderTarget(MyRenderTarget);
             device.Clear(_renderer.ClearColor);
@@ -75,7 +71,7 @@ namespace _3DMusicVis2.RenderFrame
 
                 lock (_samples)
                 {
-                    if (PunctionalDrawing)
+                    if (Dashed)
                     {
                         for (var s = 0; s < _samples.Count; s++)
                         {

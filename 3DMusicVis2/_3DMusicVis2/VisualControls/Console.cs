@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Console.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
@@ -88,6 +88,8 @@ namespace _3DMusicVis2.VisualControls
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            if (!IsVisible) return;
+
             base.Draw(gameTime, spriteBatch);
 
             //int y = Game1.VIRTUAL_RESOLUTION.Height - (int)Game1.ConsoleFont.MeasureString("Test").Y * MAX_CONSOLE_TEXT + Spacing * 2;
@@ -108,6 +110,8 @@ namespace _3DMusicVis2.VisualControls
 
         public override void Update(GameTime gameTime)
         {
+            if (!IsVisible) return;
+
             base.Update(gameTime);
 
             //if (!(_lines.Count > 0)) return;

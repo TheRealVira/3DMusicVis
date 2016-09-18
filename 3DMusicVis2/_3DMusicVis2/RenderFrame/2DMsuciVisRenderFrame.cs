@@ -6,13 +6,14 @@
 // Project: _3DMusicVis2
 // Filename: 2DMsuciVisRenderFrame.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
 #region Usings
 
 using Microsoft.Xna.Framework;
+using _3DMusicVis2.Setting;
 
 #endregion
 
@@ -27,5 +28,7 @@ namespace _3DMusicVis2.RenderFrame
         public Color FadeOutColor;
         public ColorMode ColorMode;
         public float HightMultiplier;
+
+        public Transformation Trans;
     }
 }

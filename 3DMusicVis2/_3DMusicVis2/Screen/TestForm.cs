@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TestForm.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.12 - 21:23
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
@@ -18,7 +18,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.VisualControls;
@@ -34,7 +33,6 @@ namespace _3DMusicVis2.Screen
         private readonly Button MyButton;
         private readonly Label MyLabel;
         private readonly ListBox MyListBox;
-        private readonly VisualizationData visData = new VisualizationData();
         private bool DrawVisualControls = true;
 
         public TestForm(GraphicsDeviceManager gdm) : base(gdm, "TestForm")
@@ -48,7 +46,6 @@ namespace _3DMusicVis2.Screen
                 Game1.GhostPixel, Game1.InformationFont);
 
             _cam = new Camera(gdm.GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
-            Game1.FreeBeer.IsMouseVisible = true;
         }
 
         private void MyButton_MousePressed(object sender, EventArgs e)
@@ -76,6 +73,7 @@ namespace _3DMusicVis2.Screen
         {
             base.LoadedUp();
             Console.WriteLine("Loaded me!");
+            Game1.FreeBeer.IsMouseVisible = true;
             //MediaPlayerManager.Play();
             RealTimeRecording.StartRecording();
         }
@@ -84,15 +82,15 @@ namespace _3DMusicVis2.Screen
         {
             //sB.Draw(_3DCirclularWaveRenderer.Target(GDM.GraphicsDevice, gameTime, _cam), Game1.VIRTUAL_RESOLUTION, new Color(100, 100, 100, 100));
             //sB.Draw(temp, new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2,0, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height), new Color(0,0,255,100));
-            _2DFrequencyRenderer.PunctionalDrawing = false;
+            _2DFrequencyRenderer.Dashed = false;
             var temp = _2DFrequencyRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
-            _2DFrequencyRenderer.PunctionalDrawing = true;
+            _2DFrequencyRenderer.Dashed = true;
             sB.Draw(temp, Vector2.Zero, Color.White);
             //sB.Draw(temp,Game1.VIRTUAL_RESOLUTION,temp.Bounds,Color.White,0f,Vector2.Zero, SpriteEffects.FlipVertically, 0f);
             //var sampleTexture = ((RenderTarget2D)_2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam));
             //sB.Draw(sampleTexture, new Rectangle(0,(int)-((1/3f-1/2f) * Game1.VIRTUAL_RESOLUTION.Height), Game1.VIRTUAL_RESOLUTION.Width,Game1.VIRTUAL_RESOLUTION.Height), Color.White);
             //sB.Draw(sampleTexture, new Rectangle(0, (int)+((1 / 3f - 1 / 2f)*Game1.VIRTUAL_RESOLUTION.Height), Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height), Color.White);
-            _2DSampleRenderer.PunctionalDrawing = true;
+            _2DSampleRenderer.Dashed = true;
             var sampleTexturePun = _2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
             sB.Draw(sampleTexturePun, Vector2.Zero, Color.White);
             sB.Draw(sampleTexturePun, new Vector2(0, -200), Color.White);

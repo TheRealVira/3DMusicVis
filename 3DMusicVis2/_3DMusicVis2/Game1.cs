@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Game1.cs
-// Date - created:2015.07.02 - 17:04
-// Date - current: 2016.09.12 - 21:23
+// Date - created:2016.07.02 - 17:04
+// Date - current: 2016.09.18 - 13:12
 
 #endregion
 
@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -27,6 +26,7 @@ using _3DMusicVis2.Screen;
 using Color = Microsoft.Xna.Framework.Color;
 using Console = _3DMusicVis2.VisualControls.Console;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
+using MainMenu = _3DMusicVis2.Screen.MainMenu;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
@@ -112,10 +112,14 @@ namespace _3DMusicVis2
 
             System.Console.WriteLine("Initialised the OutputManager...");
 
-            Resolution.Init(ref Graphics);
-            Resolution.SetVirtualResolution(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
-            Resolution.SetResolution(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
-                Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, false);
+            //Resolution.Init(ref Graphics);
+            //Resolution.SetVirtualResolution(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
+            //Resolution.SetResolution(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
+            //    Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, false);
+            Graphics.PreferredBackBufferWidth = Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+            Graphics.PreferredBackBufferHeight = Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            Graphics.IsFullScreen = false;
+            Graphics.ApplyChanges();
 
             System.Console.WriteLine("Initialised the Resolution...");
 
@@ -138,13 +142,53 @@ namespace _3DMusicVis2
             System.Console.WriteLine("Initialised the _2DSampleRenderer...");
             _2DFrequencyRenderer.Initialise(GraphicsDevice);
             System.Console.WriteLine("Initialised the _2DFrequencyRenderer...");
-            _2DFFTRenderer.Initialise(GraphicsDevice);
-            System.Console.WriteLine("Initialised the _2DFFTRenderer...");
             RealTimeRecording.Initialize();
             System.Console.WriteLine("Initialised the RealTimeRecorder...");
 
             base.Initialize();
             System.Console.WriteLine("Finished initialising 3DMusicVis2!");
+
+
+            //Setting.Setting test = new Setting.Setting
+            //{
+            //    SettingName = "SamplesOnly",
+            //    Bundles = new List<SettingsBundle>
+            //    {
+            //        new SettingsBundle()
+            //        {
+            //            Type = TypeOfRenderer.Sample,
+            //            Trans = new Transformation() {Position = new Vector2(0, -400), Scale = Vector2.One},
+            //            Dashed = true
+            //        },
+            //        new SettingsBundle()
+            //        {
+            //            Type = TypeOfRenderer.Sample,
+            //            Trans = new Transformation() {Position = new Vector2(0, -200), Scale = Vector2.One},
+            //            Dashed = true
+            //        },
+            //        new SettingsBundle()
+            //        {
+            //            Type = TypeOfRenderer.Sample,
+            //            Trans = new Transformation() {Scale = Vector2.One},
+            //            Dashed = true
+            //        },
+            //        new SettingsBundle()
+            //        {
+            //            Type = TypeOfRenderer.Sample,
+            //            Trans = new Transformation() {Position = new Vector2(0, 200), Scale = Vector2.One},
+            //            Dashed = true
+            //        },
+            //        new SettingsBundle()
+            //        {
+            //            Type = TypeOfRenderer.Sample,
+            //            Trans = new Transformation() {Position = new Vector2(0, 400), Scale = Vector2.One},
+            //            Dashed = true
+            //        }
+            //    }
+            //};
+
+            //SettingsManager.SaveSetting(test);
+            //var test=SettingsManager.LoadSettings();
         }
 
         /// <summary>
@@ -164,7 +208,8 @@ namespace _3DMusicVis2
                 new SplashScreen(Graphics, ViraLogo),
                 new SplashScreen(Graphics, _3DMusicVisLogo),
                 //new Credits(Graphics),
-                new TestForm(Graphics)
+                //new TestForm(Graphics)
+                new MainMenu(Graphics)
             });
 
             MediaPlayerManager.LoadContent(Content, @"3DMusicVis2\Music", true, GraphicsDevice);
@@ -192,12 +237,6 @@ namespace _3DMusicVis2
             NewKeyboardState = Keyboard.GetState();
             NewMouseState = Mouse.GetState();
 
-            if (Keys.Escape.KeyWasClicked())
-            {
-                ScreenManager.UnloadAll();
-                FreeBeer.Exit();
-            }
-
             MyConsole.Update(gameTime);
 
             if (NewKeyboardState.IsKeyDown(Keys.RightAlt) && NewKeyboardState.IsKeyUp(Keys.Enter) &&
@@ -206,7 +245,7 @@ namespace _3DMusicVis2
                 var window = Control.FromHandle(FreeBeer.Window.Handle) as Form;
                 var formPosition = new Point(window.Location.X, window.Location.Y);
                 var dispayXMulitplikator =
-                    (int)Math.Round(formPosition.X / (decimal)Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width);
+                    (int) Math.Round(formPosition.X/(decimal) Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width);
                 if (dispayXMulitplikator == 0)
                 {
                     if (formPosition.X < -100)
@@ -226,19 +265,23 @@ namespace _3DMusicVis2
                     displayXMultiplikatorForLocation--;
                 }
 
-                if (window.FormBorderStyle == FormBorderStyle.FixedSingle)
+                if (window.FormBorderStyle == FormBorderStyle.FixedSingle) // If fullscreen
                 {
                     window.FormBorderStyle = FormBorderStyle.None;
-                    //window.WindowState = FormWindowState.Maximized;
-                    window.Location = new System.Drawing.Point(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width * displayXMultiplikatorForLocation, -16);
+                    window.Location =
+                        new System.Drawing.Point(
+                            Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation,
+                            -16);
                     window.Size = new Size(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height + 16);
+                    // I have to add 16, because of the titlebar
                 }
                 else
                 {
                     window.FormBorderStyle = FormBorderStyle.FixedSingle;
-                    //window.WindowState = OrigState;
-                    window.Location = new System.Drawing.Point(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width * displayXMultiplikatorForLocation, -16);
-                    //window.Location = OrigLocation; // TEMP!!!
+                    window.Location =
+                        new System.Drawing.Point(
+                            Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation,
+                            -16);
                     window.Size = new Size(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height + 16);
                 }
             }
@@ -259,13 +302,13 @@ namespace _3DMusicVis2
         {
             GraphicsDevice.Clear(Color.Black);
 
-            SpriteBatch.Begin(0, null, null, null, null, null, Resolution.getTransformationMatrix());
+            //SpriteBatch.Begin(0, null, null, null, null, null, Resolution.getTransformationMatrix());
 
             //Resolution.BeginDraw();
             ScreenManager.Draw(SpriteBatch, gameTime);
             //MyConsole.Draw(gameTime, SpriteBatch, 2);
 
-            SpriteBatch.End();
+            //SpriteBatch.End();
 
             base.Draw(gameTime);
         }
