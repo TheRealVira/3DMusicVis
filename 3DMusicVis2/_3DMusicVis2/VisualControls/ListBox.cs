@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ListBox.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.19 - 15:38
+// Date - current: 2016.09.19 - 16:56
 
 #endregion
 
@@ -27,7 +27,6 @@ namespace _3DMusicVis2.VisualControls
         private const int SCROLL_SPEED = 10;
 
         public List<Label> Items;
-        public Label SelectedItem;
 
         public ListBox(Rectangle bounding, Texture2D texture, List<string> textList, Texture2D induvidualBackground,
             SpriteFont font) : base(bounding, texture, DefaultDrawColor, Color.White, Color.White)
@@ -37,6 +36,9 @@ namespace _3DMusicVis2.VisualControls
             ScrolledUp += ListBox_ScrolledUp;
             ScrolledDown += ListBox_ScrolledDown;
         }
+
+        public Label SelectedItem { get; private set; }
+        public int SelectedIndex { get; private set; }
 
         public event ItemSelected ItemWasSelected;
 
@@ -96,6 +98,15 @@ namespace _3DMusicVis2.VisualControls
             if (SelectedItem != null)
             {
                 SelectedItem.DrawColor = DefaultDrawColor;
+            }
+
+            for (var i = 0; i < Items.Count; i++)
+            {
+                if (temp.Bounding.Y == Items[i].Bounding.Y)
+                {
+                    SelectedIndex = i;
+                    break;
+                }
             }
 
             SelectedItem = temp;

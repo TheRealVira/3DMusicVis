@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: AssemblyInfo.cs
 // Date - created:2016.09.12 - 21:22
-// Date - current: 2016.09.19 - 15:38
+// Date - current: 2016.09.19 - 16:56
 
 #endregion
 

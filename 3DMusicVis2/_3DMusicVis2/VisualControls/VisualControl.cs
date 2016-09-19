@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: VisualControl.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.19 - 15:38
+// Date - current: 2016.09.19 - 16:56
 
 #endregion
 
@@ -142,6 +142,7 @@ namespace _3DMusicVis2.VisualControls
         {
             Draw(gameTime, spriteBatch);
 
+            spriteBatch.Begin();
             spriteBatch.Draw(Game1.FamouseOnePixel,
                 new Rectangle(Bounding.Left, Bounding.Top, borderWidth, Bounding.Height), BorderColor); // Left
             spriteBatch.Draw(Game1.FamouseOnePixel,
@@ -151,6 +152,7 @@ namespace _3DMusicVis2.VisualControls
                 new Rectangle(Bounding.Left, Bounding.Top, Bounding.Width, borderWidth), BorderColor); // Top
             spriteBatch.Draw(Game1.FamouseOnePixel,
                 new Rectangle(Bounding.Left, Bounding.Bottom, Bounding.Width, borderWidth), BorderColor); // Bottom
+            spriteBatch.End();
         }
 
         public event MouseHoverEventHandler MouseHover;

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RealTimeRecording.cs
 // Date - created:2016.09.11 - 12:04
-// Date - current: 2016.09.19 - 15:38
+// Date - current: 2016.09.19 - 16:56
 
 #endregion
 
@@ -22,17 +22,20 @@ namespace _3DMusicVis2.RecordingType
 {
     internal static class RealTimeRecording
     {
+        public const int FftLength = 512; // NAudio fft wants powers of two!
         private static IWaveIn _capture;
         private static int BitsPerSample;
         private static int Channels;
         private static int BytesPerFrame;
         private static BufferedWaveProvider waveBuffer;
-        private static readonly int fftLength = 512; // NAudio fft wants powers of two!
 
         public static bool IsRecording;
 
         public static float[] CurrentSamples = new float[0];
         public static float[] FrequencySpectrum;
+
+        public static float[] TestSampleData;
+        public static float[] TestFrequencyleData;
 
         private static SampleAggregator aggregator;
 
@@ -49,9 +52,17 @@ namespace _3DMusicVis2.RecordingType
 
             waveBuffer = new BufferedWaveProvider(_capture.WaveFormat);
 
-            FrequencySpectrum = new float[waveBuffer.BufferLength];
+            FrequencySpectrum = new float[waveBuffer.BufferLength/999];
+            TestFrequencyleData = new float[FrequencySpectrum.Length];
+            TestSampleData = new float[FrequencySpectrum.Length];
 
-            aggregator = new SampleAggregator(fftLength) {PerformFFT = true};
+            for (var i = 0; i < TestFrequencyleData.Length; i++)
+            {
+                TestFrequencyleData[i] = (float) Game1.Rand.NextDouble()/2f;
+                TestSampleData[i] = (float) Game1.Rand.NextDouble()/2f - .25f;
+            }
+
+            aggregator = new SampleAggregator(FftLength) {PerformFFT = true};
             aggregator.FftCalculated += Aggregator_FftCalculated;
         }
 

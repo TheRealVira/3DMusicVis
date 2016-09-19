@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: LoadFromSetting.cs
 // Date - created:2016.09.19 - 15:03
-// Date - current: 2016.09.19 - 15:38
+// Date - current: 2016.09.19 - 16:56
 
 #endregion
 
@@ -104,7 +104,7 @@ namespace _3DMusicVis2.Screen
         {
             _use.Draw(gameTime, sB);
             _back.Draw(gameTime, sB);
-            _settingsBox.Draw(gameTime, sB);
+            _settingsBox.Draw(gameTime, sB, 3);
 
             _new?.Draw(gameTime, sB);
         }
