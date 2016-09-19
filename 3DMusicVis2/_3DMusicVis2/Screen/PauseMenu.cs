@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: PauseMenu.cs
 // Date - created:2016.09.18 - 11:56
-// Date - current: 2016.09.18 - 13:12
+// Date - current: 2016.09.19 - 15:38
 
 #endregion
 
@@ -25,6 +25,7 @@ namespace _3DMusicVis2.Screen
 {
     internal class PauseMenu : Screen
     {
+        private readonly Button _exit;
         private readonly Label _hadder;
         private readonly Button _menu;
         private readonly Button _resume;
@@ -32,22 +33,36 @@ namespace _3DMusicVis2.Screen
 
         public PauseMenu(GraphicsDeviceManager gdm) : base(gdm, "Pause Menu")
         {
-            _menu =
-                new Button(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2 - 100, 160,
-                        50), Game1.FamouseOnePixel, Game1.InformationFont, "Main Menu");
+            _hadder =
+                new Label(
+                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2 - 280, 160,
+                        50), Game1.FamouseOnePixel, Game1.InformationFont, "Menu")
+                {DrawColor = Color.Transparent};
+
             _resume =
                 new Button(
                     new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2, 160, 50),
                     Game1.FamouseOnePixel, Game1.InformationFont, "Resume");
-            _hadder =
-                new Label(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2 - 280, 160,
-                        50), Game1.FamouseOnePixel, Game1.InformationFont, "Menu");
-            _hadder.DrawColor = Color.Transparent;
+
+            _menu =
+                new Button(
+                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2 - 100, 160,
+                        50), Game1.FamouseOnePixel, Game1.InformationFont, "Main Menu");
+
+            _exit =
+                new Button(
+                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2 + 100, 160,
+                        50),
+                    Game1.FamouseOnePixel, Game1.InformationFont, "Exit");
 
             _menu.MousePressed += Menu_MousePressed;
             _resume.MousePressed += Resume_MousePressed;
+            _exit.MousePressed += _exit_MousePressed;
+        }
+
+        private void _exit_MousePressed(object sender, EventArgs e)
+        {
+            Game1.FreeBeer.Exit();
         }
 
         private void Resume_MousePressed(object sender, EventArgs e)
@@ -74,6 +89,7 @@ namespace _3DMusicVis2.Screen
             _hadder.Draw(gameTime, sB);
             _menu.Draw(gameTime, sB);
             _resume.Draw(gameTime, sB);
+            _exit.Draw(gameTime, sB);
         }
 
         public override void Update(GameTime gameTime)
@@ -81,6 +97,7 @@ namespace _3DMusicVis2.Screen
             _hadder.Update(gameTime);
             _menu.Update(gameTime);
             _resume.Update(gameTime);
+            _exit.Update(gameTime);
 
             if (Keys.Escape.KeyWasClicked())
             {

@@ -119,12 +119,16 @@
     <Compile Include="RenderFrame\3DMusicVisRenderFrame.cs" />
     <Compile Include="SampleAggregator.cs" />
     <Compile Include="Screen\Credits.cs" />
-    <Compile Include="Screen\LoadFromSetting.cs" />
+    <Compile Include="Screen\EditForm.cs" />
+    <Compile Include="Screen\LoadSetting\KindOfLoadingSettingScreen.cs" />
+    <Compile Include="Screen\LoadSetting\LoadFromSetting.cs" />
     <Compile Include="Screen\MainMenu.cs" />
     <Compile Include="Screen\OldScreen.cs" />
     <Compile Include="Screen\PauseMenu.cs" />
     <Compile Include="Screen\RenderForm.cs" />
     <Compile Include="Screen\TestForm.cs" />
+    <Compile Include="Setting\ColorMode.cs" />
+    <Compile Include="Setting\ColorSetting.cs" />
     <Compile Include="Setting\Setting.cs" />
     <Compile Include="Setting\SettingsBundle.cs" />
     <Compile Include="Setting\SettingsManager.cs" />

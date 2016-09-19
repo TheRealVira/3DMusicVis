@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: MainMenu.cs
 // Date - created:2016.09.18 - 09:43
-// Date - current: 2016.09.18 - 13:12
+// Date - current: 2016.09.19 - 15:38
 
 #endregion
 
@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.Manager;
+using _3DMusicVis2.Screen.LoadSetting;
 using _3DMusicVis2.VisualControls;
 
 #endregion
@@ -38,14 +39,20 @@ namespace _3DMusicVis2.Screen
                 "Credits");
             _exit = new Button(new Rectangle(100, 500, 200, 50), Game1.FamouseOnePixel, Game1.InformationFont, "Exit");
 
-            _exit.MousePressed += _exit_MousePressed;
             _load.MousePressed += _load_MousePressed;
+            _edit.MousePressed += _edit_MousePressed;
             _credits.MousePressed += _credits_MousePressed;
+            _exit.MousePressed += _exit_MousePressed;
+        }
+
+        private void _edit_MousePressed(object sender, EventArgs e)
+        {
+            ScreenManager.TempLoadScreen(new LoadFromSetting(Game1.Graphics, KindOfLoadingSettingScreen.LoadOrCreate));
         }
 
         private void _load_MousePressed(object sender, EventArgs e)
         {
-            ScreenManager.TempLoadScreen(new LoadFromSetting(Game1.Graphics));
+            ScreenManager.TempLoadScreen(new LoadFromSetting(Game1.Graphics, KindOfLoadingSettingScreen.OnlyLoad));
         }
 
         private void _credits_MousePressed(object sender, EventArgs e)

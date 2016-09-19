@@ -4,8 +4,8 @@
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
-// Filename: TypeOfRenderer.cs
-// Date - created:2016.09.18 - 10:20
+// Filename: ColorSetting.cs
+// Date - created:2016.09.19 - 13:43
 // Date - current: 2016.09.19 - 15:38
 
 #endregion
@@ -13,15 +13,16 @@
 #region Usings
 
 using System;
+using Microsoft.Xna.Framework;
 
 #endregion
 
 namespace _3DMusicVis2.Setting
 {
     [Serializable]
-    internal enum TypeOfRenderer
+    internal struct ColorSetting
     {
-        Frequency,
-        Sample
+        public Color Color;
+        public ColorMode Mode;
     }
 }

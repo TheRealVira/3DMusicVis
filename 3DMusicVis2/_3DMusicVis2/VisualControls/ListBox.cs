@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ListBox.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.18 - 13:12
+// Date - current: 2016.09.19 - 15:38
 
 #endregion
 
@@ -52,16 +52,21 @@ namespace _3DMusicVis2.VisualControls
 
         public void Scroll(int value)
         {
-            if (Items.Count == Bounding.Y) return;
+            if (Items.Count == 0) return;
 
-            if (value + Items[0].Bounding.Y < Bounding.Y)
+            if (value + Items[0].Bounding.Y + Items[0].Bounding.Height > Bounding.Y + Bounding.Height)
             {
-                value = Bounding.Y - Items[0].Bounding.Y;
+                value = Bounding.Y + Bounding.Height - (Items[0].Bounding.Y + Items[0].Bounding.Height);
+            }
+            else if (value + Items[Items.Count - 1].Bounding.Y < Bounding.Y)
+            {
+                value = Bounding.Y - Items[Items.Count - 1].Bounding.Y;
             }
 
             foreach (var label in Items)
             {
                 label.Bounding.Y += value;
+                label.IsVisible = Bounding.Intersects(label.Bounding);
             }
         }
 
@@ -84,12 +89,16 @@ namespace _3DMusicVis2.VisualControls
 
         private void OnItem_MousePressed(object sender, EventArgs e)
         {
+            var temp = (Label) sender;
+
+            if (!temp.IsVisible) return;
+
             if (SelectedItem != null)
             {
                 SelectedItem.DrawColor = DefaultDrawColor;
             }
 
-            SelectedItem = (Label) sender;
+            SelectedItem = temp;
             SelectedItem.DrawColor = Color.Blue;
             ItemWasSelected?.Invoke(this, EventArgs.Empty);
         }
@@ -102,7 +111,7 @@ namespace _3DMusicVis2.VisualControls
 
             foreach (var label in Items)
             {
-                if (Bounding.Contains(label.Bounding))
+                if (label.IsVisible)
                 {
                     label.Draw(gameTime, spriteBatch);
                 }
@@ -117,7 +126,7 @@ namespace _3DMusicVis2.VisualControls
 
             foreach (var label in Items)
             {
-                if (Bounding.Intersects(label.Bounding))
+                if (label.IsVisible)
                 {
                     label.Draw(gameTime, spriteBatch, borderWidth);
                 }

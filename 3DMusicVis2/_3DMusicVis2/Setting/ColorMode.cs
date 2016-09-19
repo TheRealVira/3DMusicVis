@@ -5,17 +5,17 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: ColorMode.cs
-// Date - created:2016.07.02 - 17:04
+// Date - created:2016.09.19 - 13:43
 // Date - current: 2016.09.19 - 15:38
 
 #endregion
 
-namespace _3DMusicVis2
+namespace _3DMusicVis2.Setting
 {
-    public enum ColorMode
+    internal enum ColorMode
     {
-        OnlyCenter,
-        SideEqualsCenter,
-        DynamicSideColorShiat
+        Static,
+        Breath,
+        Rainbow
     }
 }

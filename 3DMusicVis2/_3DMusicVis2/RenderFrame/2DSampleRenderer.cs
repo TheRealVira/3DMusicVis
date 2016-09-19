@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 2DSampleRenderer.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.18 - 13:12
+// Date - current: 2016.09.19 - 15:38
 
 #endregion
 
@@ -39,7 +39,7 @@ namespace _3DMusicVis2.RenderFrame
                     ClearColor = Color.Transparent,
                     ColorMode = ColorMode.SideEqualsCenter,
                     FadeOutColor = Color.Black,
-                    ForeGroundColor = Color.Red,
+                    ForeGroundColor = Color.White,
                     HightMultiplier = 1.5f
                 };
 
@@ -84,7 +84,7 @@ namespace _3DMusicVis2.RenderFrame
                             var height = 2;
 
                             sprite.Draw(Game1.FamouseOnePixel, new Rectangle(x, y, width, height),
-                                _renderer.ForeGroundColor.Negate());
+                                _renderer.ForeGroundColor);
                         }
                     }
                     else

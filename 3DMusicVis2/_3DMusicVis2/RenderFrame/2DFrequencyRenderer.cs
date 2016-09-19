@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 2DFrequencyRenderer.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.18 - 13:12
+// Date - current: 2016.09.19 - 15:38
 
 #endregion
 
@@ -29,7 +29,6 @@ namespace _3DMusicVis2.RenderFrame
 
         public static void Initialise(GraphicsDevice device)
         {
-            var pp = device.PresentationParameters;
             _renderer =
                 new _2DMusicVisRenderFrame
                 {
@@ -38,7 +37,7 @@ namespace _3DMusicVis2.RenderFrame
                     ClearColor = Color.Transparent,
                     ColorMode = ColorMode.SideEqualsCenter,
                     FadeOutColor = Color.Black,
-                    ForeGroundColor = Color.Red,
+                    ForeGroundColor = Color.White,
                     HightMultiplier = 1.5f
                 };
         }
@@ -52,10 +51,10 @@ namespace _3DMusicVis2.RenderFrame
         {
             if (Frequencies == null) return Game1.FamouseOnePixel;
 
-            var MyRenderTarget = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
+            var myRenderTarget = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
                 Game1.VIRTUAL_RESOLUTION.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
-            device.SetRenderTarget(MyRenderTarget);
+            device.SetRenderTarget(myRenderTarget);
             device.Clear(_renderer.ClearColor);
             using (var sprite = new SpriteBatch(device))
             {
@@ -74,8 +73,8 @@ namespace _3DMusicVis2.RenderFrame
                                  Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
                         var width = 1;
                         var height = 2;
-                        sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
-                            _renderer.ForeGroundColor.Negate());
+                        //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
+                        //    _renderer.ForeGroundColor.Negate());
                         sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, y, width*2, height),
                             _renderer.ForeGroundColor);
                     }
@@ -91,8 +90,8 @@ namespace _3DMusicVis2.RenderFrame
                                  Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
                         var width = 1;
                         var height = (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
-                        sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
-                            _renderer.ForeGroundColor.Negate());
+                        //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
+                        //    _renderer.ForeGroundColor.Negate());
                         sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, y, width*2, height),
                             _renderer.ForeGroundColor);
                     }
@@ -103,7 +102,7 @@ namespace _3DMusicVis2.RenderFrame
 
             device.SetRenderTarget(null);
 
-            return MyRenderTarget;
+            return myRenderTarget;
             //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, _renderer.ClearColor, 1.0f, 0);
             //using (SpriteBatch sprite = new SpriteBatch(device))
             //{

@@ -6,12 +6,13 @@
 // Project: _3DMusicVis2
 // Filename: MyMath.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.09.18 - 13:12
+// Date - current: 2016.09.19 - 15:38
 
 #endregion
 
 #region Usings
 
+using System;
 using Microsoft.Xna.Framework;
 
 #endregion
@@ -45,6 +46,29 @@ namespace _3DMusicVis2
         public static Color DarkenColor(this Color color, byte amount)
         {
             return new Color(color.R - amount, color.B - amount, color.B - amount, color.A);
+        }
+
+        public static Color Rainbow(float progress)
+        {
+            var div = Math.Abs(progress%1)*6;
+            var ascending = (int) (div%1*255);
+            var descending = 255 - ascending;
+
+            switch ((int) div)
+            {
+                case 0:
+                    return Color.FromNonPremultiplied(255, 255, ascending, 0);
+                case 1:
+                    return Color.FromNonPremultiplied(255, descending, 255, 0);
+                case 2:
+                    return Color.FromNonPremultiplied(255, 0, 255, ascending);
+                case 3:
+                    return Color.FromNonPremultiplied(255, 0, descending, 255);
+                case 4:
+                    return Color.FromNonPremultiplied(255, ascending, 0, 255);
+                default: // case 5:
+                    return Color.FromNonPremultiplied(255, 255, 0, descending);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RenderForm.cs
 // Date - created:2016.09.18 - 11:20
-// Date - current: 2016.09.18 - 13:12
+// Date - current: 2016.09.19 - 15:38
 
 #endregion
 
@@ -31,6 +31,8 @@ namespace _3DMusicVis2.Screen
         private readonly Camera _cam;
         private readonly PauseMenu _menu;
         private readonly Setting.Setting _mySetting;
+        private float _gradiant;
+        private float _gradiantMultiplier = 1;
 
         public RenderForm(GraphicsDeviceManager gdm, Setting.Setting currentSetting) : base(gdm, "RenderForm")
         {
@@ -44,6 +46,12 @@ namespace _3DMusicVis2.Screen
             base.LoadedUp();
             RealTimeRecording.StartRecording();
             Game1.FreeBeer.IsMouseVisible = false;
+        }
+
+        public override void Unloade()
+        {
+            base.Unloade();
+            RealTimeRecording.StopRecording();
         }
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
@@ -80,6 +88,18 @@ namespace _3DMusicVis2.Screen
 
             for (var i = 0; i < _mySetting.Bundles.Count; i++)
             {
+                var toDraw = _mySetting.Bundles[i].Color.Color;
+
+                switch (_mySetting.Bundles[i].Color.Mode)
+                {
+                    case Setting.ColorMode.Static:
+                        break;
+
+                    case Setting.ColorMode.Rainbow:
+                        toDraw = MyMath.Rainbow(_gradiant);
+                        break;
+                }
+
                 switch (_mySetting.Bundles[i].Type)
                 {
                     case TypeOfRenderer.Frequency:
@@ -89,7 +109,7 @@ namespace _3DMusicVis2.Screen
                             new Rectangle((int) (pos.X + Game1.VIRTUAL_RESOLUTION.Width/2f),
                                 (int) (pos.Y + Game1.VIRTUAL_RESOLUTION.Height/2f),
                                 (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
-                                (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, Color.White,
+                                (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, toDraw,
                             _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
                             SpriteEffects.None, 0);
                         break;
@@ -101,7 +121,7 @@ namespace _3DMusicVis2.Screen
                             new Rectangle((int) (pos2.X + Game1.VIRTUAL_RESOLUTION.Width/2f),
                                 (int) (pos2.Y + Game1.VIRTUAL_RESOLUTION.Height/2f),
                                 (int) (Game1.VIRTUAL_RESOLUTION.Width*scale2.X),
-                                (int) (Game1.VIRTUAL_RESOLUTION.Height*scale2.Y)), null, Color.White,
+                                (int) (Game1.VIRTUAL_RESOLUTION.Height*scale2.Y)), null, toDraw,
                             _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
                             SpriteEffects.None, 0);
                         break;
@@ -138,6 +158,18 @@ namespace _3DMusicVis2.Screen
             {
                 _menu.IsVisible = !_menu.IsVisible;
                 Game1.FreeBeer.IsMouseVisible = _menu.IsVisible;
+            }
+
+            _gradiant += (float) gameTime.ElapsedGameTime.TotalMilliseconds*.00001f*_gradiantMultiplier;
+            if (_gradiant > .8)
+            {
+                _gradiant = .8f;
+                _gradiantMultiplier = -1;
+            }
+            else if (_gradiant < .5f)
+            {
+                _gradiant = .5f;
+                _gradiantMultiplier = 1;
             }
 
             if (!_menu.IsVisible) return;

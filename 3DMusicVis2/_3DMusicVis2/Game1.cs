@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Game1.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.09.18 - 13:12
+// Date - current: 2016.09.19 - 15:38
 
 #endregion
 
@@ -79,7 +79,6 @@ namespace _3DMusicVis2
         {
             ScreenManager.UnloadAll();
             RealTimeRecording.UnloadMe();
-            RealTimeRecording.UnloadMe();
         }
 
         /// <summary>
@@ -151,38 +150,43 @@ namespace _3DMusicVis2
 
             //Setting.Setting test = new Setting.Setting
             //{
-            //    SettingName = "SamplesOnly",
+            //    SettingName = "Test101",
             //    Bundles = new List<SettingsBundle>
             //    {
             //        new SettingsBundle()
             //        {
-            //            Type = TypeOfRenderer.Sample,
-            //            Trans = new Transformation() {Position = new Vector2(0, -400), Scale = Vector2.One},
-            //            Dashed = true
+            //            Type = TypeOfRenderer.Frequency,
+            //            Trans = new Transformation() {Position = new Vector2(0, 0), Scale = Vector2.One, Rotation = (float)Math.PI},
+            //            Dashed = true,
+            //            Color = new ColorSetting() { Color = Color.Blue }
             //        },
             //        new SettingsBundle()
             //        {
-            //            Type = TypeOfRenderer.Sample,
-            //            Trans = new Transformation() {Position = new Vector2(0, -200), Scale = Vector2.One},
-            //            Dashed = true
+            //            Type = TypeOfRenderer.Frequency,
+            //            Trans = new Transformation() {Position = new Vector2(0, 0), Scale = Vector2.One},
+            //            Dashed = false,
+            //            Color = new ColorSetting() { Color = Color.Green, Mode = Setting.ColorMode.Rainbow}
             //        },
             //        new SettingsBundle()
             //        {
             //            Type = TypeOfRenderer.Sample,
             //            Trans = new Transformation() {Scale = Vector2.One},
-            //            Dashed = true
+            //            Dashed = false,
+            //            Color = new ColorSetting() { Color = Color.Red }
             //        },
             //        new SettingsBundle()
             //        {
             //            Type = TypeOfRenderer.Sample,
             //            Trans = new Transformation() {Position = new Vector2(0, 200), Scale = Vector2.One},
-            //            Dashed = true
+            //            Dashed = true,
+            //            Color = new ColorSetting() { Color = Color.Violet }
             //        },
             //        new SettingsBundle()
             //        {
             //            Type = TypeOfRenderer.Sample,
-            //            Trans = new Transformation() {Position = new Vector2(0, 400), Scale = Vector2.One},
-            //            Dashed = true
+            //            Trans = new Transformation() {Position = new Vector2(0, -200), Scale = Vector2.One},
+            //            Dashed = true,
+            //            Color = new ColorSetting() { Color = Color.Brown }
             //        }
             //    }
             //};
@@ -270,10 +274,8 @@ namespace _3DMusicVis2
                     window.FormBorderStyle = FormBorderStyle.None;
                     window.Location =
                         new System.Drawing.Point(
-                            Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation,
-                            -16);
-                    window.Size = new Size(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height + 16);
-                    // I have to add 16, because of the titlebar
+                            Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation, 0);
+                    window.Size = new Size(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
                 }
                 else
                 {
