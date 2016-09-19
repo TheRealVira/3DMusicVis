@@ -93,10 +93,7 @@ namespace _3DMusicVis2.RenderFrame
                         {
                             var x = Game1.VIRTUAL_RESOLUTION.Width*s/_samples.Count;
                             var width = 8;
-                            var y =
-                                (int)
-                                    (Game1.VIRTUAL_RESOLUTION.Height/2f -
-                                     _samples[s]*(Game1.VIRTUAL_RESOLUTION.Height/4f));
+                            var y = (int)(_samples[s]>0? (Game1.VIRTUAL_RESOLUTION.Height/2f - _samples[s]*(Game1.VIRTUAL_RESOLUTION.Height/4f)): ( Game1.VIRTUAL_RESOLUTION.Height / 2f-1));
                             var height = (int)
                                 (Math.Abs(_samples[s])*
                                  Game1.VIRTUAL_RESOLUTION.Height/4f);
