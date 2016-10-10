@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: SettingsManager.cs
 // Date - created:2016.09.18 - 10:23
-// Date - current: 2016.09.19 - 16:56
+// Date - current: 2016.10.10 - 19:36
 
 #endregion
 
@@ -67,6 +67,13 @@ namespace _3DMusicVis2.Setting
                 file.Close();
                 file.Dispose();
             }
+        }
+
+        public static void DeleteSetting(string name)
+        {
+            if (!File.Exists(SETTINGS_DIR + "\\" + name + SETTINGS_EXT)) return;
+
+            File.Delete(SETTINGS_DIR + "\\" + name + SETTINGS_EXT);
         }
     }
 }

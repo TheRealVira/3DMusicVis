@@ -4,18 +4,16 @@
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
-// Filename: ColorMode.cs
-// Date - created:2016.07.02 - 17:04
+// Filename: IPrompt.cs
+// Date - created:2016.10.10 - 19:22
 // Date - current: 2016.10.10 - 19:36
 
 #endregion
 
-namespace _3DMusicVis2
+namespace _3DMusicVis2.Screen.Prompt
 {
-    public enum ColorMode
+    internal interface IPrompt
     {
-        OnlyCenter,
-        SideEqualsCenter,
-        DynamicSideColorShiat
+        void SetPrompt(string text);
     }
 }

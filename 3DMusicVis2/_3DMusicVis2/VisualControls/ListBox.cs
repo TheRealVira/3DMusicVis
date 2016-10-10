@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ListBox.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.19 - 16:56
+// Date - current: 2016.10.10 - 19:36
 
 #endregion
 
@@ -26,12 +26,17 @@ namespace _3DMusicVis2.VisualControls
     {
         private const int SCROLL_SPEED = 10;
 
+        private readonly Texture2D _induvBack;
+        private readonly SpriteFont _myFont;
+
         public List<Label> Items;
 
         public ListBox(Rectangle bounding, Texture2D texture, List<string> textList, Texture2D induvidualBackground,
             SpriteFont font) : base(bounding, texture, DefaultDrawColor, Color.White, Color.White)
         {
             Items = BakeLabels(textList, induvidualBackground, font);
+            _induvBack = induvidualBackground;
+            _myFont = font;
 
             ScrolledUp += ListBox_ScrolledUp;
             ScrolledDown += ListBox_ScrolledDown;
@@ -179,6 +184,17 @@ namespace _3DMusicVis2.VisualControls
         public bool AllItemsAreOutSideTheBounding()
         {
             return Items.All(label => !Bounding.Contains(label.Bounding));
+        }
+
+        public void RemoveItem(Label l)
+        {
+            Items.Remove(l);
+            if (l == SelectedItem)
+            {
+                SelectedItem = null;
+            }
+
+            Items = BakeLabels(Items.Select(x => x.Text).ToList(), _induvBack, _myFont);
         }
     }
 }

@@ -123,8 +123,11 @@
     <Compile Include="Screen\LoadSetting\KindOfLoadingSettingScreen.cs" />
     <Compile Include="Screen\LoadSetting\LoadFromSetting.cs" />
     <Compile Include="Screen\MainMenu.cs" />
+    <Compile Include="Screen\Prompt\OkPrompt.cs" />
     <Compile Include="Screen\OldScreen.cs" />
     <Compile Include="Screen\PauseMenu.cs" />
+    <Compile Include="Screen\Prompt\IPrompt.cs" />
+    <Compile Include="Screen\Prompt\YesNoPrompt.cs" />
     <Compile Include="Screen\RenderForm.cs" />
     <Compile Include="Screen\TestForm.cs" />
     <Compile Include="Setting\ColorMode.cs" />

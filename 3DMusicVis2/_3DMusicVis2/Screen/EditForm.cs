@@ -6,13 +6,14 @@
 // Project: _3DMusicVis2
 // Filename: EditForm.cs
 // Date - created:2016.09.19 - 14:54
-// Date - current: 2016.09.19 - 16:56
+// Date - current: 2016.10.10 - 19:36
 
 #endregion
 
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -20,6 +21,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
+using _3DMusicVis2.Screen.Prompt;
 using _3DMusicVis2.Setting;
 using _3DMusicVis2.VisualControls;
 using Console = System.Console;
@@ -35,11 +37,18 @@ namespace _3DMusicVis2.Screen
         private ListBox _currentItems;
         private PauseMenu _menu;
 
+        private OkPrompt _prompt;
+
         private Button _save;
+        private bool somePromptIsOpen;
 
         public EditForm(GraphicsDeviceManager gdm) : base(gdm, "Editform")
         {
-            _loaded = new Setting.Setting();
+            _loaded = new Setting.Setting
+            {
+                Bundles = new List<SettingsBundle>(),
+                SettingName = "Temp"
+            };
 
             Initialize(gdm);
         }
@@ -54,6 +63,9 @@ namespace _3DMusicVis2.Screen
         private void Initialize(GraphicsDeviceManager gdm)
         {
             _menu = new PauseMenu(gdm);
+            _prompt = new OkPrompt(_loaded.SettingName + " is saved!", gdm);
+            _prompt.Okay.MousePressed += Okay_MousePressed;
+
             _cam = new Camera(gdm.GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
 
             _currentItems = new ListBox(new Rectangle(20, 20, 200, Game1.VIRTUAL_RESOLUTION.Height - 40),
@@ -67,9 +79,17 @@ namespace _3DMusicVis2.Screen
             _save.MousePressed += _save_MousePressed;
         }
 
+        private void Okay_MousePressed(object sender, EventArgs e)
+        {
+            _prompt.IsVisible = false;
+            somePromptIsOpen = false;
+        }
+
         private void _save_MousePressed(object sender, EventArgs e)
         {
             SettingsManager.SaveSetting(_loaded);
+            _prompt.IsVisible = true;
+            somePromptIsOpen = true;
         }
 
         public override void LoadedUp()
@@ -160,14 +180,20 @@ namespace _3DMusicVis2.Screen
             {
                 _menu.Draw(sB, gameTime);
             }
+
+            if (_prompt.IsVisible)
+            {
+                _prompt.Draw(sB, gameTime);
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
             if (Keys.Escape.KeyWasClicked())
             {
-                _menu.IsVisible = !_menu.IsVisible;
+                _menu.IsVisible = !_menu.IsVisible && !somePromptIsOpen;
                 Game1.FreeBeer.IsMouseVisible = _menu.IsVisible;
+                somePromptIsOpen = _menu.IsVisible;
             }
 
             _currentItems.Update(gameTime);
@@ -176,6 +202,11 @@ namespace _3DMusicVis2.Screen
             if (_menu.IsVisible)
             {
                 _menu.Update(gameTime);
+            }
+
+            if (_prompt.IsVisible)
+            {
+                _prompt.Update(gameTime);
             }
         }
     }

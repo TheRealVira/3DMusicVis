@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 3DMusicVisRenderFrame.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.09.19 - 16:56
+// Date - current: 2016.10.10 - 19:36
 
 #endregion
 
