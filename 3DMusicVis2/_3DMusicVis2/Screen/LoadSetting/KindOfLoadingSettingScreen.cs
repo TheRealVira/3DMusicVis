@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: KindOfLoadingSettingScreen.cs
 // Date - created:2016.09.19 - 15:04
-// Date - current: 2016.10.10 - 19:36
+// Date - current: 2016.10.13 - 20:10
 
 #endregion
 

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RenderForm.cs
 // Date - created:2016.09.18 - 11:20
-// Date - current: 2016.10.10 - 19:36
+// Date - current: 2016.10.13 - 20:11
 
 #endregion
 
@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Setting;
+using _3DMusicVis2.Shader;
 
 #endregion
 
@@ -28,17 +29,30 @@ namespace _3DMusicVis2.Screen
 {
     internal class RenderForm : Screen
     {
+        private readonly RenderTarget2D _alphaDeletionRendertarget;
         private readonly Camera _cam;
         private readonly PauseMenu _menu;
         private readonly Setting.Setting _mySetting;
+
+        private readonly RenderTarget2D _wavesRendertarget;
+        private RenderTarget2D _gausianBlurRendertarget;
         private float _gradiant;
         private float _gradiantMultiplier = 1;
+        private RenderTarget2D _scanLineRendertarget;
 
         public RenderForm(GraphicsDeviceManager gdm, Setting.Setting currentSetting) : base(gdm, "RenderForm")
         {
             _mySetting = currentSetting;
             _cam = new Camera(gdm.GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
             _menu = new PauseMenu(GDM);
+            _wavesRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
+                Game1.VIRTUAL_RESOLUTION.Height);
+            _gausianBlurRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
+                Game1.VIRTUAL_RESOLUTION.Height);
+            _scanLineRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
+                Game1.VIRTUAL_RESOLUTION.Height);
+            _alphaDeletionRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
+                Game1.VIRTUAL_RESOLUTION.Height);
         }
 
         public override void LoadedUp()
@@ -56,8 +70,6 @@ namespace _3DMusicVis2.Screen
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
-            sB.Begin();
-
             Texture2D dashedFrequ = null;
             if (_mySetting.Bundles.Any(x => x.Type == TypeOfRenderer.Frequency && x.Dashed))
             {
@@ -85,6 +97,9 @@ namespace _3DMusicVis2.Screen
                 _2DSampleRenderer.Dashed = false;
                 samp = _2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
             }
+
+            GDM.GraphicsDevice.SetRenderTarget(_wavesRendertarget);
+            sB.Begin();
 
             for (var i = 0; i < _mySetting.Bundles.Count; i++)
             {
@@ -132,6 +147,35 @@ namespace _3DMusicVis2.Screen
             }
 
             GDM.GraphicsDevice.Clear(Color.Black);
+            sB.End();
+
+            GDM.GraphicsDevice.SetRenderTarget(null);
+
+            BloomManager.Bloom.BeginDraw();
+            // Applying shader
+            sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null /*, Game1.ScanlinEffect*/);
+            sB.Draw(_wavesRendertarget, Vector2.Zero, Color.White);
+            sB.End();
+            BloomManager.Bloom.EndDraw();
+
+            _gausianBlurRendertarget =
+                (RenderTarget2D) GaussianBlurManager.Compute(BloomManager.Bloom.FinalRenderTarget, sB);
+            GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
+            sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null, Game1.DeleteAlphaEffect);
+            Game1.DeleteAlphaEffect.Parameters["width"].SetValue(.5f);
+            sB.Draw(BloomManager.Bloom.FinalRenderTarget, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.End();
+            GDM.GraphicsDevice.SetRenderTarget(null);
+
+            BloomManager.Bloom.BeginDraw();
+            sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null, Game1.ScanlinEffect);
+            Game1.ScanlinEffect.Parameters["ImageHeight"].SetValue(Game1.VIRTUAL_RESOLUTION.Height);
+            sB.Draw(_alphaDeletionRendertarget, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.End();
+            BloomManager.Bloom.EndDraw();
+
+            sB.Begin();
+            sB.Draw(BloomManager.Bloom.FinalRenderTarget, Game1.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
 
             if (_menu.IsVisible)

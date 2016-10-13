@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Game1.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.10.10 - 19:36
+// Date - current: 2016.10.13 - 20:11
 
 #endregion
 
@@ -23,6 +23,7 @@ using _3DMusicVis2.Manager;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Screen;
+using _3DMusicVis2.Shader;
 using Color = Microsoft.Xna.Framework.Color;
 using Console = _3DMusicVis2.VisualControls.Console;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
@@ -64,6 +65,8 @@ namespace _3DMusicVis2
         public static Texture2D ViraLogo;
         public static Texture2D FamouseOnePixel;
         public static Texture2D GhostPixel;
+        public static Effect ScanlinEffect;
+        public static Effect DeleteAlphaEffect;
 
         private Texture2D _3DMusicVisLogo;
 
@@ -106,6 +109,8 @@ namespace _3DMusicVis2
             GhostPixel.SetData(new[] {Color.Transparent});
             InformationFont = Content.Load<SpriteFont>("Fonts/InformationFont");
             ConsoleFont = Content.Load<SpriteFont>("Fonts/Console");
+            ScanlinEffect = Content.Load<Effect>("Shader/Random");
+            DeleteAlphaEffect = Content.Load<Effect>("Shader/DeleteAlpha");
 
             MyConsole = new Console(Console.ConsoleBoundings, FamouseOnePixel);
 
@@ -131,18 +136,22 @@ namespace _3DMusicVis2
             };
 
             MediaPlayerManager.Initialise();
-            System.Console.WriteLine("Initialised the MediaPlayerManager...");
+            System.Console.WriteLine("Initialized the MediaPlayerManager...");
 
             _3DCirclularWaveRenderer.Initialise(GraphicsDevice);
-            System.Console.WriteLine("Initialised the _3DCirclularWaveRenderer...");
+            System.Console.WriteLine("Initialized the _3DCirclularWaveRenderer...");
             _3DLinearWaveRenderer.Initialise(GraphicsDevice);
-            System.Console.WriteLine("Initialised the _3DLinearWaveRenderer...");
+            System.Console.WriteLine("Initialized the _3DLinearWaveRenderer...");
             _2DSampleRenderer.Initialise(GraphicsDevice);
-            System.Console.WriteLine("Initialised the _2DSampleRenderer...");
+            System.Console.WriteLine("Initialized the _2DSampleRenderer...");
             _2DFrequencyRenderer.Initialise(GraphicsDevice);
-            System.Console.WriteLine("Initialised the _2DFrequencyRenderer...");
+            System.Console.WriteLine("Initialized the _2DFrequencyRenderer...");
             RealTimeRecording.Initialize();
-            System.Console.WriteLine("Initialised the RealTimeRecorder...");
+            System.Console.WriteLine("Initialized the RealTimeRecorder...");
+            GaussianBlurManager.Initialize(GraphicsDevice, this);
+            System.Console.WriteLine("Initialized the gaussianblur...");
+            BloomManager.Initialize(this);
+            System.Console.WriteLine("Initialized the bloom...");
 
             base.Initialize();
             System.Console.WriteLine("Finished initialising 3DMusicVis2!");

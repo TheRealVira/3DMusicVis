@@ -137,6 +137,11 @@
     <Compile Include="Setting\SettingsManager.cs" />
     <Compile Include="Setting\Transformation.cs" />
     <Compile Include="Setting\TypeOfRenderer.cs" />
+    <Compile Include="Shader\BloomComponent.cs" />
+    <Compile Include="Shader\BloomManager.cs" />
+    <Compile Include="Shader\BloomSettings.cs" />
+    <Compile Include="Shader\GaussianBlur.cs" />
+    <Compile Include="Shader\GaussianBlurManager.cs" />
     <Compile Include="SpecialSong.cs" />
     <Compile Include="TileHelper\Tile.cs" />
     <Compile Include="TileHelper\TileField.cs" />
