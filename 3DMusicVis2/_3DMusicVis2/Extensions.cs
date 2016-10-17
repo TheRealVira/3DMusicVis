@@ -6,13 +6,14 @@
 // Project: _3DMusicVis2
 // Filename: Extensions.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.10.13 - 20:11
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 
 #region Usings
 
 using System;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -82,6 +83,25 @@ namespace _3DMusicVis2
             }
 
             return clone;
+        }
+
+        public static string GetDescription<T>(this T enumerationValue)
+            where T : struct
+        {
+            var type = enumerationValue.GetType();
+            if (!type.IsEnum)
+            {
+                throw new ArgumentException("EnumerationValue must be of Enum type", nameof(enumerationValue));
+            }
+
+            //Tries to find a DescriptionAttribute for a potential friendly name
+            //for the enum
+            var memberInfo = type.GetMember(enumerationValue.ToString());
+            if (memberInfo.Length <= 0) return enumerationValue.ToString();
+            var attrs = memberInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            return attrs.Length > 0 ? ((DescriptionAttribute) attrs[0]).Description : enumerationValue.ToString();
+            //If we have no description attribute, just return the ToString of the enum
         }
     }
 }

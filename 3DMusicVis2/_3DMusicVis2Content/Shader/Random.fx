@@ -17,8 +17,8 @@ int ImageHeight;
 float4 ScanLine(VertexShaderOutput input) : COLOR0
 {
 	float4 c = tex2D(TextureSampler, input.TextureCordinate);
-	int a = saturate((input.Position.y * ImageHeight) % 4);
-	int b = saturate((input.Position.y * ImageHeight + 1) % 4);
+	int a = saturate((input.Position.y * ImageHeight) % 5);
+	int b = saturate((input.Position.y * ImageHeight + 1) % 5);
 	float m = min(a,b);
 
 	c.rgb *= m;

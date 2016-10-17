@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ScreenManager.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.13 - 20:10
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 
@@ -27,6 +27,10 @@ namespace _3DMusicVis2.Manager
         public static void Initialise(List<Screen.Screen> screens)
         {
             Screens = screens;
+
+            if (screens == null || screens.Count < 1 || screens[0] == null) return;
+
+            screens[0].LoadedUp();
         }
 
         /// <summary>

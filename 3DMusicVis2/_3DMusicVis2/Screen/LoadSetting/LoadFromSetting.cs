@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: LoadFromSetting.cs
 // Date - created:2016.09.19 - 15:03
-// Date - current: 2016.10.13 - 20:10
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 

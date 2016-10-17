@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Game1.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.10.13 - 20:11
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 
@@ -22,7 +22,6 @@ using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.Manager;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
-using _3DMusicVis2.Screen;
 using _3DMusicVis2.Shader;
 using Color = Microsoft.Xna.Framework.Color;
 using Console = _3DMusicVis2.VisualControls.Console;
@@ -67,6 +66,7 @@ namespace _3DMusicVis2
         public static Texture2D GhostPixel;
         public static Effect ScanlinEffect;
         public static Effect DeleteAlphaEffect;
+        public static RenderTarget2D DEFAULT_RENDERTARGET;
 
         private Texture2D _3DMusicVisLogo;
 
@@ -125,6 +125,9 @@ namespace _3DMusicVis2
             Graphics.IsFullScreen = false;
             Graphics.ApplyChanges();
 
+            //var form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(this.Window.Handle);
+            //form.Location = new System.Drawing.Point(10, 10);
+
             System.Console.WriteLine("Initialised the Resolution...");
 
             AudioAnalysis = new AudioAnalysisXNAClass();
@@ -152,6 +155,12 @@ namespace _3DMusicVis2
             System.Console.WriteLine("Initialized the gaussianblur...");
             BloomManager.Initialize(this);
             System.Console.WriteLine("Initialized the bloom...");
+            _3DLinearFrequencyRenderer.Initialise(GraphicsDevice);
+            System.Console.WriteLine("Initialized the _3DLinearFrecuencyRenderer...");
+            DEFAULT_RENDERTARGET = new RenderTarget2D(GraphicsDevice, VIRTUAL_RESOLUTION.Width,
+                VIRTUAL_RESOLUTION.Height, true,
+                GraphicsDevice.DisplayMode.Format, DepthFormat.Depth24);
+            System.Console.WriteLine("Initialized the default rendertarget...");
 
             base.Initialize();
             System.Console.WriteLine("Finished initialising 3DMusicVis2!");
@@ -164,44 +173,50 @@ namespace _3DMusicVis2
             //    {
             //        new SettingsBundle()
             //        {
-            //            Type = TypeOfRenderer.Frequency,
+            //            IsDashed = true,
+            //            IsFrequency = true,
             //            Trans = new Transformation() {Position = new Vector2(0, 0), Scale = Vector2.One, Rotation = (float)Math.PI},
-            //            Dashed = true,
             //            Color = new ColorSetting() { Color = Color.Blue }
             //        },
             //        new SettingsBundle()
             //        {
-            //            Type = TypeOfRenderer.Frequency,
+            //            IsFrequency = true,
             //            Trans = new Transformation() {Position = new Vector2(0, 0), Scale = Vector2.One},
-            //            Dashed = false,
-            //            Color = new ColorSetting() { Color = Color.Green, Mode = Setting.ColorMode.Rainbow}
+            //            Color = new ColorSetting() { Color = Color.Green, Mode = Setting.ColorMode.Rainbow},
             //        },
             //        new SettingsBundle()
             //        {
-            //            Type = TypeOfRenderer.Sample,
             //            Trans = new Transformation() {Scale = Vector2.One},
-            //            Dashed = false,
             //            Color = new ColorSetting() { Color = Color.Red }
             //        },
             //        new SettingsBundle()
             //        {
-            //            Type = TypeOfRenderer.Sample,
+            //            IsDashed = true,
             //            Trans = new Transformation() {Position = new Vector2(0, 200), Scale = Vector2.One},
-            //            Dashed = true,
             //            Color = new ColorSetting() { Color = Color.Violet }
             //        },
             //        new SettingsBundle()
             //        {
-            //            Type = TypeOfRenderer.Sample,
+            //            IsDashed = true,
             //            Trans = new Transformation() {Position = new Vector2(0, -200), Scale = Vector2.One},
-            //            Dashed = true,
             //            Color = new ColorSetting() { Color = Color.Brown }
             //        }
             //    }
             //};
 
             //SettingsManager.SaveSetting(test);
-            //var test=SettingsManager.LoadSettings();
+            //var test = SettingsManager.LoadSettings();
+            //for (int i = 0; i < test[0].Bundles.Count; i++)
+            //{
+            //    test[0].Bundles[i]=new SettingsBundle()
+            //    {
+            //        Color=test[0].Bundles[i].Color,
+            //        Trans = test[0].Bundles[i].Trans,
+            //        Is3D = test[0].Bundles[i].Is3D,
+            //        IsDashed = true
+            //    };
+            //}
+            //SettingsManager.SaveSetting(test[0]);
         }
 
         /// <summary>
@@ -218,8 +233,8 @@ namespace _3DMusicVis2
 
             ScreenManager.Initialise(new List<Screen.Screen>
             {
-                new SplashScreen(Graphics, ViraLogo),
-                new SplashScreen(Graphics, _3DMusicVisLogo),
+                //new SplashScreen(Graphics, ViraLogo),
+                //new SplashScreen(Graphics, _3DMusicVisLogo),
                 //new Credits(Graphics),
                 //new TestForm(Graphics)
                 new MainMenu(Graphics)
@@ -312,14 +327,24 @@ namespace _3DMusicVis2
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
             //SpriteBatch.Begin(0, null, null, null, null, null, Resolution.getTransformationMatrix());
 
             //Resolution.BeginDraw();
+
+            Graphics.GraphicsDevice.SetRenderTarget(DEFAULT_RENDERTARGET);
+            SpriteBatch.GraphicsDevice.Clear(Color.Black);
             ScreenManager.Draw(SpriteBatch, gameTime);
             //MyConsole.Draw(gameTime, SpriteBatch, 2);
 
             //SpriteBatch.End();
+
+            Graphics.GraphicsDevice.SetRenderTarget(null);
+
+            SpriteBatch.Begin();
+
+            SpriteBatch.Draw(DEFAULT_RENDERTARGET, GraphicsDevice.Viewport.Bounds, Color.White);
+
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }

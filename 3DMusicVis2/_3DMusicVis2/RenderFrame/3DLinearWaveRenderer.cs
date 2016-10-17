@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 3DLinearWaveRenderer.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.13 - 20:10
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 
@@ -143,7 +143,7 @@ namespace _3DMusicVis2.RenderFrame
                 sprite.End();
             }
 
-            device.SetRenderTarget(null);
+            device.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
 
             return MyRenderTarget;
             //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, _renderer.ClearColor, 1.0f, 0);

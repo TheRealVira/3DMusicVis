@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: SampleAggregator.cs
 // Date - created:2016.09.11 - 15:46
-// Date - current: 2016.10.13 - 20:11
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 

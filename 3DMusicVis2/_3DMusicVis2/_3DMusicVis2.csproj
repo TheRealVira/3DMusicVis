@@ -101,6 +101,7 @@
     <Compile Include="AudioAnalysisXNAClass.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="ColorMode.cs" />
+    <Compile Include="EnumExtensions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Manager\MediaPlayerManager.cs" />
     <Compile Include="Manager\ScreenManager.cs" />
@@ -112,10 +113,11 @@
     <Compile Include="Game1.cs" />
     <Compile Include="RecordingType\RealTimeRecording.cs" />
     <Compile Include="RenderFrame\2DFrequencyRenderer.cs" />
-    <Compile Include="RenderFrame\2DMsuciVisRenderFrame.cs" />
+    <Compile Include="RenderFrame\2DMusicVisRenderFrame.cs" />
     <Compile Include="RenderFrame\2DSampleRenderer.cs" />
     <Compile Include="RenderFrame\3DCirclularWaveRenderer.cs" />
     <Compile Include="RenderFrame\3DLinearWaveRenderer.cs" />
+    <Compile Include="RenderFrame\3DLinearFrequencyRenderer.cs" />
     <Compile Include="RenderFrame\3DMusicVisRenderFrame.cs" />
     <Compile Include="SampleAggregator.cs" />
     <Compile Include="Screen\Credits.cs" />
@@ -136,7 +138,6 @@
     <Compile Include="Setting\SettingsBundle.cs" />
     <Compile Include="Setting\SettingsManager.cs" />
     <Compile Include="Setting\Transformation.cs" />
-    <Compile Include="Setting\TypeOfRenderer.cs" />
     <Compile Include="Shader\BloomComponent.cs" />
     <Compile Include="Shader\BloomManager.cs" />
     <Compile Include="Shader\BloomSettings.cs" />

@@ -4,9 +4,9 @@
 // All rights reserved.
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
-// Filename: 2DMsuciVisRenderFrame.cs
+// Filename: 2DMusicVisRenderFrame.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.13 - 20:10
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 

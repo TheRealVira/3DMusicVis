@@ -6,13 +6,12 @@
 // Project: _3DMusicVis2
 // Filename: RenderForm.cs
 // Date - created:2016.09.18 - 11:20
-// Date - current: 2016.10.13 - 20:11
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 
 #region Usings
 
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -20,7 +19,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
-using _3DMusicVis2.Setting;
 using _3DMusicVis2.Shader;
 
 #endregion
@@ -71,28 +69,28 @@ namespace _3DMusicVis2.Screen
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
             Texture2D dashedFrequ = null;
-            if (_mySetting.Bundles.Any(x => x.Type == TypeOfRenderer.Frequency && x.Dashed))
+            if (_mySetting.Bundles.Any(x => x.IsFrequency && x.IsDashed))
             {
                 _2DFrequencyRenderer.Dashed = true;
                 dashedFrequ = _2DFrequencyRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
             }
 
             Texture2D frequ = null;
-            if (_mySetting.Bundles.Any(x => x.Type == TypeOfRenderer.Frequency && !x.Dashed))
+            if (_mySetting.Bundles.Any(x => x.IsFrequency && !x.IsDashed))
             {
                 _2DFrequencyRenderer.Dashed = false;
                 frequ = _2DFrequencyRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
             }
 
             Texture2D dashedSamp = null;
-            if (_mySetting.Bundles.Any(x => x.Type == TypeOfRenderer.Sample && x.Dashed))
+            if (_mySetting.Bundles.Any(x => !x.IsFrequency && x.IsDashed))
             {
                 _2DSampleRenderer.Dashed = true;
                 dashedSamp = _2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
             }
 
             Texture2D samp = null;
-            if (_mySetting.Bundles.Any(x => x.Type == TypeOfRenderer.Sample && !x.Dashed))
+            if (_mySetting.Bundles.Any(x => !x.IsFrequency && !x.IsDashed))
             {
                 _2DSampleRenderer.Dashed = false;
                 samp = _2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
@@ -100,6 +98,7 @@ namespace _3DMusicVis2.Screen
 
             GDM.GraphicsDevice.SetRenderTarget(_wavesRendertarget);
             sB.Begin();
+            sB.GraphicsDevice.Clear(Color.Black);
 
             for (var i = 0; i < _mySetting.Bundles.Count; i++)
             {
@@ -107,7 +106,7 @@ namespace _3DMusicVis2.Screen
 
                 switch (_mySetting.Bundles[i].Color.Mode)
                 {
-                    case Setting.ColorMode.Static:
+                    case Setting.ColorMode.Static: // The color was set before (this is for some null errors)
                         break;
 
                     case Setting.ColorMode.Rainbow:
@@ -115,58 +114,52 @@ namespace _3DMusicVis2.Screen
                         break;
                 }
 
-                switch (_mySetting.Bundles[i].Type)
+                if (_mySetting.Bundles[i].IsFrequency)
                 {
-                    case TypeOfRenderer.Frequency:
-                        var pos = _mySetting.Bundles[i].Trans.Position;
-                        var scale = _mySetting.Bundles[i].Trans.Scale;
-                        sB.Draw(_mySetting.Bundles[i].Dashed ? dashedFrequ : frequ,
-                            new Rectangle((int) (pos.X + Game1.VIRTUAL_RESOLUTION.Width/2f),
-                                (int) (pos.Y + Game1.VIRTUAL_RESOLUTION.Height/2f),
-                                (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
-                                (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, toDraw,
-                            _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
-                            SpriteEffects.None, 0);
-                        break;
-
-                    case TypeOfRenderer.Sample:
-                        var pos2 = _mySetting.Bundles[i].Trans.Position;
-                        var scale2 = _mySetting.Bundles[i].Trans.Scale;
-                        sB.Draw(_mySetting.Bundles[i].Dashed ? dashedSamp : samp,
-                            new Rectangle((int) (pos2.X + Game1.VIRTUAL_RESOLUTION.Width/2f),
-                                (int) (pos2.Y + Game1.VIRTUAL_RESOLUTION.Height/2f),
-                                (int) (Game1.VIRTUAL_RESOLUTION.Width*scale2.X),
-                                (int) (Game1.VIRTUAL_RESOLUTION.Height*scale2.Y)), null, toDraw,
-                            _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
-                            SpriteEffects.None, 0);
-                        break;
-                    default:
-                        Console.WriteLine("Something happened here...");
-                        break;
+                    var pos = _mySetting.Bundles[i].Trans.Position;
+                    var scale = _mySetting.Bundles[i].Trans.Scale;
+                    sB.Draw(_mySetting.Bundles[i].IsDashed ? dashedFrequ : frequ,
+                        new Rectangle((int) (pos.X + Game1.VIRTUAL_RESOLUTION.Width/2f),
+                            (int) (pos.Y + Game1.VIRTUAL_RESOLUTION.Height/2f),
+                            (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
+                            (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, toDraw,
+                        _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
+                        SpriteEffects.None, 0);
+                    continue;
                 }
+
+                var pos2 = _mySetting.Bundles[i].Trans.Position;
+                var scale2 = _mySetting.Bundles[i].Trans.Scale;
+                sB.Draw(_mySetting.Bundles[i].IsDashed ? dashedSamp : samp,
+                    new Rectangle((int) (pos2.X + Game1.VIRTUAL_RESOLUTION.Width/2f),
+                        (int) (pos2.Y + Game1.VIRTUAL_RESOLUTION.Height/2f),
+                        (int) (Game1.VIRTUAL_RESOLUTION.Width*scale2.X),
+                        (int) (Game1.VIRTUAL_RESOLUTION.Height*scale2.Y)), null, toDraw,
+                    _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
+                    SpriteEffects.None, 0);
             }
 
-            GDM.GraphicsDevice.Clear(Color.Black);
             sB.End();
 
-            GDM.GraphicsDevice.SetRenderTarget(null);
-
+            // Apply bloom
             BloomManager.Bloom.BeginDraw();
             // Applying shader
-            sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null /*, Game1.ScanlinEffect*/);
-            sB.Draw(_wavesRendertarget, Vector2.Zero, Color.White);
+            sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend);
+            sB.Draw(_wavesRendertarget, Game1.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
             BloomManager.Bloom.EndDraw();
 
+            // Blur the bloom
             _gausianBlurRendertarget =
                 (RenderTarget2D) GaussianBlurManager.Compute(BloomManager.Bloom.FinalRenderTarget, sB);
+
             GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
             sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null, Game1.DeleteAlphaEffect);
             Game1.DeleteAlphaEffect.Parameters["width"].SetValue(.5f);
             sB.Draw(BloomManager.Bloom.FinalRenderTarget, Game1.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
-            GDM.GraphicsDevice.SetRenderTarget(null);
 
+            //GDM.GraphicsDevice.SetRenderTarget(_gausianBlurRendertarget);
             BloomManager.Bloom.BeginDraw();
             sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null, Game1.ScanlinEffect);
             Game1.ScanlinEffect.Parameters["ImageHeight"].SetValue(Game1.VIRTUAL_RESOLUTION.Height);
@@ -174,6 +167,8 @@ namespace _3DMusicVis2.Screen
             sB.End();
             BloomManager.Bloom.EndDraw();
 
+            GDM.GraphicsDevice.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
+            sB.GraphicsDevice.Clear(Color.Black);
             sB.Begin();
             sB.Draw(BloomManager.Bloom.FinalRenderTarget, Game1.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
@@ -188,12 +183,12 @@ namespace _3DMusicVis2.Screen
         {
             if (!RealTimeRecording.IsRecording) return;
 
-            if (_mySetting.Bundles.Any(x => x.Type == TypeOfRenderer.Frequency))
+            if (_mySetting.Bundles.Any(x => x.IsFrequency))
             {
                 _2DFrequencyRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
             }
 
-            if (_mySetting.Bundles.Any(x => x.Type == TypeOfRenderer.Sample))
+            if (_mySetting.Bundles.Any(x => !x.IsFrequency))
             {
                 _2DSampleRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.CurrentSamples));
             }

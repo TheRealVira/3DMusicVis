@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 3DMusicVisRenderFrame.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.13 - 20:10
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 
@@ -29,6 +29,7 @@ namespace _3DMusicVis2.RenderFrame
         public Color ForeGroundColor;
         public Color FadeOutColor;
         public ColorMode ColorMode;
+        public RenderTarget2D FinalRenderTarget;
         public bool UpdateOnlyTheCenterOfATile;
         public float HightMultiplier;
     }

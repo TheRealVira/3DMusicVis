@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Setting.cs
 // Date - created:2016.09.18 - 10:13
-// Date - current: 2016.10.13 - 20:11
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 
@@ -24,6 +24,8 @@ namespace _3DMusicVis2.Setting
     {
         public string SettingName;
         public List<SettingsBundle> Bundles;
+
+        public byte HasRenders { get; private set; }
 
         public override string ToString()
         {

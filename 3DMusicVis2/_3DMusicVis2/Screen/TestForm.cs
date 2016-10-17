@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TestForm.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.13 - 20:11
+// Date - current: 2016.10.17 - 20:43
 
 #endregion
 
@@ -80,30 +80,35 @@ namespace _3DMusicVis2.Screen
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
-            //sB.Draw(_3DCirclularWaveRenderer.Target(GDM.GraphicsDevice, gameTime, _cam), Game1.VIRTUAL_RESOLUTION, new Color(100, 100, 100, 100));
-            //sB.Draw(temp, new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2,0, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height), new Color(0,0,255,100));
-            _2DFrequencyRenderer.Dashed = false;
-            var temp = _2DFrequencyRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
-            _2DFrequencyRenderer.Dashed = true;
-            sB.Draw(temp, Vector2.Zero, Color.White);
-            //sB.Draw(temp,Game1.VIRTUAL_RESOLUTION,temp.Bounds,Color.White,0f,Vector2.Zero, SpriteEffects.FlipVertically, 0f);
-            //var sampleTexture = ((RenderTarget2D)_2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam));
-            //sB.Draw(sampleTexture, new Rectangle(0,(int)-((1/3f-1/2f) * Game1.VIRTUAL_RESOLUTION.Height), Game1.VIRTUAL_RESOLUTION.Width,Game1.VIRTUAL_RESOLUTION.Height), Color.White);
-            //sB.Draw(sampleTexture, new Rectangle(0, (int)+((1 / 3f - 1 / 2f)*Game1.VIRTUAL_RESOLUTION.Height), Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height), Color.White);
-            _2DSampleRenderer.Dashed = true;
-            var sampleTexturePun = _2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
-            sB.Draw(sampleTexturePun, Vector2.Zero, Color.White);
-            sB.Draw(sampleTexturePun, new Vector2(0, -200), Color.White);
-            sB.Draw(sampleTexturePun, new Vector2(0, 200), Color.White);
+            ////sB.Draw(_3DCirclularWaveRenderer.Target(GDM.GraphicsDevice, gameTime, _cam), Game1.VIRTUAL_RESOLUTION, new Color(100, 100, 100, 100));
+            ////sB.Draw(temp, new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2,0, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height), new Color(0,0,255,100));
+            //_2DFrequencyRenderer.Dashed = false;
+            //var temp = _2DFrequencyRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
+            //_2DFrequencyRenderer.Dashed = true;
+            //sB.Draw(temp, Vector2.Zero, Color.White);
+            ////sB.Draw(temp,Game1.VIRTUAL_RESOLUTION,temp.Bounds,Color.White,0f,Vector2.Zero, SpriteEffects.FlipVertically, 0f);
+            ////var sampleTexture = ((RenderTarget2D)_2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam));
+            ////sB.Draw(sampleTexture, new Rectangle(0,(int)-((1/3f-1/2f) * Game1.VIRTUAL_RESOLUTION.Height), Game1.VIRTUAL_RESOLUTION.Width,Game1.VIRTUAL_RESOLUTION.Height), Color.White);
+            ////sB.Draw(sampleTexture, new Rectangle(0, (int)+((1 / 3f - 1 / 2f)*Game1.VIRTUAL_RESOLUTION.Height), Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height), Color.White);
+            //_2DSampleRenderer.Dashed = true;
+            //var sampleTexturePun = _2DSampleRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
+            //sB.Draw(sampleTexturePun, Vector2.Zero, Color.White);
+            //sB.Draw(sampleTexturePun, new Vector2(0, -200), Color.White);
+            //sB.Draw(sampleTexturePun, new Vector2(0, 200), Color.White);
 
-            if (DrawVisualControls)
-            {
-                MyButton.Draw(gameTime, sB, 2);
-                MyLabel.Draw(gameTime, sB);
-                MyListBox.Draw(gameTime, sB, 2);
-            }
+            //if (DrawVisualControls)
+            //{
+            //    MyButton.Draw(gameTime, sB, 2);
+            //    MyLabel.Draw(gameTime, sB);
+            //    MyListBox.Draw(gameTime, sB, 2);
+            //}
 
-            GDM.GraphicsDevice.Clear(Color.Black);
+            //GDM.GraphicsDevice.Clear(Color.Black);
+
+            var dashedFrequ = _3DLinearFrequencyRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
+            sB.Begin();
+            sB.Draw(dashedFrequ, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.End();
         }
 
         public override void Update(GameTime gameTime)

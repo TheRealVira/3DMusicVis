@@ -24,6 +24,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2;
 
 namespace Dhpoware
 {
@@ -290,7 +291,7 @@ namespace Dhpoware
 
             // Return the Gaussian blurred texture.
 
-            game.GraphicsDevice.SetRenderTarget(null);
+            game.GraphicsDevice.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
             outputTexture = (Texture2D)renderTarget2;
 
             return outputTexture;
