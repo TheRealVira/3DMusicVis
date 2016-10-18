@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TestForm.cs
 // Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.17 - 20:43
+// Date - current: 2016.10.18 - 18:21
 
 #endregion
 
@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
+using _3DMusicVis2.Shader;
 using _3DMusicVis2.VisualControls;
 using Console = System.Console;
 
@@ -105,9 +106,34 @@ namespace _3DMusicVis2.Screen
 
             //GDM.GraphicsDevice.Clear(Color.Black);
 
-            var dashedFrequ = _3DLinearFrequencyRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
+            //var dashedFrequ = _3DLinearFrequencyRenderer.Target(GDM.GraphicsDevice, gameTime, _cam);
+            //sB.Begin();
+            //sB.Draw(dashedFrequ, Game1.VIRTUAL_RESOLUTION, Color.White);
+            //sB.End();
+
+            BloomManager.Bloom.BeginDraw();
+            sB.GraphicsDevice.Clear(Color.Transparent);
+            // Applying shader
+            sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            sB.Draw(Game1.ViraLogo, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.End();
+            BloomManager.Bloom.EndDraw();
+
+            var temp = GaussianBlurManager.Compute(BloomManager.Bloom.FinalRenderTarget, sB);
+            var _alphaDeletionRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
+                Game1.VIRTUAL_RESOLUTION.Height);
+
+            GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
+            sB.GraphicsDevice.Clear(Color.Transparent);
+            sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, Game1.LiquifyEffect);
+            Game1.LiquifyEffect.Parameters["width"].SetValue(.5f);
+            sB.Draw(temp, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.End();
+
+            sB.GraphicsDevice.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
+            sB.GraphicsDevice.Clear(Color.White);
             sB.Begin();
-            sB.Draw(dashedFrequ, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.Draw(_alphaDeletionRendertarget, Game1.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
         }
 

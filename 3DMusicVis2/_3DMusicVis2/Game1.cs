@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Game1.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.10.17 - 20:43
+// Date - current: 2016.10.18 - 18:20
 
 #endregion
 
@@ -65,7 +65,7 @@ namespace _3DMusicVis2
         public static Texture2D FamouseOnePixel;
         public static Texture2D GhostPixel;
         public static Effect ScanlinEffect;
-        public static Effect DeleteAlphaEffect;
+        public static Effect LiquifyEffect;
         public static RenderTarget2D DEFAULT_RENDERTARGET;
 
         private Texture2D _3DMusicVisLogo;
@@ -110,7 +110,7 @@ namespace _3DMusicVis2
             InformationFont = Content.Load<SpriteFont>("Fonts/InformationFont");
             ConsoleFont = Content.Load<SpriteFont>("Fonts/Console");
             ScanlinEffect = Content.Load<Effect>("Shader/Random");
-            DeleteAlphaEffect = Content.Load<Effect>("Shader/DeleteAlpha");
+            LiquifyEffect = Content.Load<Effect>("Shader/Liquify");
 
             MyConsole = new Console(Console.ConsoleBoundings, FamouseOnePixel);
 
@@ -166,9 +166,10 @@ namespace _3DMusicVis2
             System.Console.WriteLine("Finished initialising 3DMusicVis2!");
 
 
-            //Setting.Setting test = new Setting.Setting
+            //Setting.Visualizer.Setting test = new Setting.Visualizer.Setting
             //{
             //    SettingName = "Test101",
+            //    Shaders = (ShaderMode.Bloom | ShaderMode.Blur | ShaderMode.Liquify | ShaderMode.ScanLine),
             //    Bundles = new List<SettingsBundle>
             //    {
             //        new SettingsBundle()
@@ -182,7 +183,7 @@ namespace _3DMusicVis2
             //        {
             //            IsFrequency = true,
             //            Trans = new Transformation() {Position = new Vector2(0, 0), Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Green, Mode = Setting.ColorMode.Rainbow},
+            //            Color = new ColorSetting() { Color = Color.Green, Mode = Setting.Visualizer.ColorMode.Rainbow},
             //        },
             //        new SettingsBundle()
             //        {
@@ -192,20 +193,58 @@ namespace _3DMusicVis2
             //        new SettingsBundle()
             //        {
             //            IsDashed = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, 200), Scale = Vector2.One},
+            //            Trans = new Transformation() {Position = new Vector2(0, .2f), Scale = Vector2.One},
             //            Color = new ColorSetting() { Color = Color.Violet }
             //        },
             //        new SettingsBundle()
             //        {
             //            IsDashed = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, -200), Scale = Vector2.One},
+            //            Trans = new Transformation() {Position = new Vector2(0, -.2f), Scale = Vector2.One},
             //            Color = new ColorSetting() { Color = Color.Brown }
             //        }
             //    }
             //};
 
-            //SettingsManager.SaveSetting(test);
-            //var test = SettingsManager.LoadSettings();
+            //Setting.Visualizer.Setting test = new Setting.Visualizer.Setting
+            //{
+            //    SettingName = "SamplesOnly",
+            //    Shaders = (ShaderMode.Bloom | ShaderMode.ScanLine),
+            //    Bundles = new List<SettingsBundle>
+            //    {
+            //        new SettingsBundle()
+            //        {
+            //            IsDashed = true,
+            //            Trans = new Transformation() {Position = new Vector2(0, -.4f), Scale = Vector2.One},
+            //            Color = new ColorSetting() { Color = Color.Blue, Mode = Setting.Visualizer.ColorMode.Breath }
+            //        },
+            //        new SettingsBundle()
+            //        {
+            //            IsDashed = true,
+            //            Trans = new Transformation() {Position = new Vector2(0, -.2f), Scale = Vector2.One},
+            //            Color = new ColorSetting() { Color = Color.Red }
+            //        },
+            //        new SettingsBundle()
+            //        {
+            //            Trans = new Transformation() {Position = new Vector2(0, 0), Scale = Vector2.One},
+            //            Color = new ColorSetting() { Color = Color.Yellow, Mode = Setting.Visualizer.ColorMode.Rainbow}
+            //        },
+            //        new SettingsBundle()
+            //        {
+            //            IsDashed = true,
+            //            Trans = new Transformation() {Position = new Vector2(0, .2f), Scale = Vector2.One},
+            //            Color = new ColorSetting() { Color = Color.Red }
+            //        },
+            //        new SettingsBundle()
+            //        {
+            //            IsDashed = true,
+            //            Trans = new Transformation() {Position = new Vector2(0, .4f), Scale = Vector2.One},
+            //            Color = new ColorSetting() { Color = Color.Blue, Mode = Setting.Visualizer.ColorMode.Breath }
+            //        },
+            //    }
+            //};
+
+            //SettingsManager.Save(test, SettingsManager.SETTINGS_DIR, test.SettingName, SettingsManager.SETTINGS_EXT);
+            //var test = SettingsManager.Load();
             //for (int i = 0; i < test[0].Bundles.Count; i++)
             //{
             //    test[0].Bundles[i]=new SettingsBundle()
@@ -216,7 +255,7 @@ namespace _3DMusicVis2
             //        IsDashed = true
             //    };
             //}
-            //SettingsManager.SaveSetting(test[0]);
+            //SettingsManager.Save(test[0]);
         }
 
         /// <summary>

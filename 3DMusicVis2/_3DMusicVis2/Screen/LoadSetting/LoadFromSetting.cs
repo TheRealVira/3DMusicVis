@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: LoadFromSetting.cs
 // Date - created:2016.09.19 - 15:03
-// Date - current: 2016.10.17 - 20:43
+// Date - current: 2016.10.18 - 18:21
 
 #endregion
 
@@ -18,14 +18,12 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using _3DMusicVis2.Manager;
-using _3DMusicVis2.Screen.LoadSetting;
 using _3DMusicVis2.Screen.Prompt;
-using _3DMusicVis2.Setting;
 using _3DMusicVis2.VisualControls;
 
 #endregion
 
-namespace _3DMusicVis2.Screen
+namespace _3DMusicVis2.Screen.LoadSetting
 {
     internal class LoadFromSetting : Screen
     {
@@ -36,14 +34,15 @@ namespace _3DMusicVis2.Screen
         private readonly YesNoPrompt _deletePrompt;
         private readonly KindOfLoadingSettingScreen _myKind;
         private readonly Button _new;
-        private readonly List<Setting.Setting> _settings;
+        private readonly List<Setting.Visualizer.Setting> _settings;
         private readonly ListBox _settingsBox;
         private readonly Button _use;
 
         public LoadFromSetting(GraphicsDeviceManager gdm, KindOfLoadingSettingScreen kind)
             : base(gdm, "Load from Setting")
         {
-            _settings = SettingsManager.LoadSettings();
+            _settings = SettingsManager.Load<Setting.Visualizer.Setting>(SettingsManager.SETTINGS_DIR,
+                SettingsManager.SETTINGS_EXT);
             _myKind = kind;
 
             _delete = new Button(new Rectangle(100, Game1.VIRTUAL_RESOLUTION.Height - 300, 200, 50),
@@ -97,7 +96,8 @@ namespace _3DMusicVis2.Screen
         {
             _deletePrompt.IsVisible = false;
             var temp = _settingsBox.SelectedItem.Text;
-            SettingsManager.DeleteSetting(_settingsBox.SelectedItem.Text);
+            SettingsManager.Delete(SettingsManager.SETTINGS_DIR, _settingsBox.SelectedItem.Text,
+                SettingsManager.SETTINGS_EXT);
             _settingsBox.RemoveItem(_settingsBox.SelectedItem);
 
             _deletedPrompt.SetPrompt("Deleted:  " + temp);
@@ -123,7 +123,7 @@ namespace _3DMusicVis2.Screen
             {
                 case KindOfLoadingSettingScreen.OnlyLoad:
                     ScreenManager.TempLoadScreen(new RenderForm(Game1.Graphics,
-                        _settings.First(x => x.SettingName == _settingsBox.SelectedItem.Text)));
+                        _settings.First(x => x.SettingName == _settingsBox.SelectedItem.Text), Color.Black));
                     break;
 
                 case KindOfLoadingSettingScreen.LoadOrCreate:

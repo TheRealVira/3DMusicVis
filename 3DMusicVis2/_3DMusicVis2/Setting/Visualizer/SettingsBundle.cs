@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: SettingsBundle.cs
-// Date - created:2016.09.18 - 10:19
-// Date - current: 2016.10.17 - 20:43
+// Date - created:2016.10.18 - 17:49
+// Date - current: 2016.10.18 - 18:21
 
 #endregion
 
@@ -16,7 +16,7 @@ using System;
 
 #endregion
 
-namespace _3DMusicVis2.Setting
+namespace _3DMusicVis2.Setting.Visualizer
 {
     [Serializable]
     internal struct SettingsBundle
@@ -42,8 +42,7 @@ namespace _3DMusicVis2.Setting
 
         public override string ToString()
         {
-            return (Is3D ? "[3D] " : "[2D] ") + (IsDashed ? "" : "None") + " Dashed " +
-                   (IsFrequency ? "Frequency" : "Sample") + " visualizer";
+            return (Is3D ? "[3D] " : "[2D] ") + (IsFrequency ? "Frequency" : "Sample");
         }
     }
 }

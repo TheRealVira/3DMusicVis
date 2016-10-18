@@ -96,8 +96,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shader\DeleteAlpha.fx">
-      <Name>DeleteAlpha</Name>
+    <Compile Include="Shader\Liquify.fx">
+      <Name>Liquify</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>

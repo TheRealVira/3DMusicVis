@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: EditForm.cs
 // Date - created:2016.09.19 - 14:54
-// Date - current: 2016.10.17 - 20:43
+// Date - current: 2016.10.18 - 18:21
 
 #endregion
 
@@ -22,7 +22,7 @@ using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Screen.Prompt;
-using _3DMusicVis2.Setting;
+using _3DMusicVis2.Setting.Visualizer;
 using _3DMusicVis2.VisualControls;
 
 #endregion
@@ -31,7 +31,7 @@ namespace _3DMusicVis2.Screen
 {
     internal class EditForm : Screen
     {
-        private readonly Setting.Setting _loaded;
+        private readonly Setting.Visualizer.Setting _loaded;
         private Camera _cam;
         private ListBox _currentItems;
         private PauseMenu _menu;
@@ -43,7 +43,7 @@ namespace _3DMusicVis2.Screen
 
         public EditForm(GraphicsDeviceManager gdm) : base(gdm, "Editform")
         {
-            _loaded = new Setting.Setting
+            _loaded = new Setting.Visualizer.Setting
             {
                 Bundles = new List<SettingsBundle>(),
                 SettingName = "Temp"
@@ -52,7 +52,7 @@ namespace _3DMusicVis2.Screen
             Initialize(gdm);
         }
 
-        public EditForm(GraphicsDeviceManager gdm, Setting.Setting loaded) : base(gdm, "Editform")
+        public EditForm(GraphicsDeviceManager gdm, Setting.Visualizer.Setting loaded) : base(gdm, "Editform")
         {
             _loaded = loaded;
 
@@ -86,7 +86,8 @@ namespace _3DMusicVis2.Screen
 
         private void _save_MousePressed(object sender, EventArgs e)
         {
-            SettingsManager.SaveSetting(_loaded);
+            SettingsManager.Save(_loaded, SettingsManager.SETTINGS_DIR, _loaded.SettingName,
+                SettingsManager.SETTINGS_EXT);
             _prompt.IsVisible = true;
             somePromptIsOpen = true;
         }

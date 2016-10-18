@@ -132,12 +132,13 @@
     <Compile Include="Screen\Prompt\YesNoPrompt.cs" />
     <Compile Include="Screen\RenderForm.cs" />
     <Compile Include="Screen\TestForm.cs" />
-    <Compile Include="Setting\ColorMode.cs" />
-    <Compile Include="Setting\ColorSetting.cs" />
-    <Compile Include="Setting\Setting.cs" />
-    <Compile Include="Setting\SettingsBundle.cs" />
-    <Compile Include="Setting\SettingsManager.cs" />
-    <Compile Include="Setting\Transformation.cs" />
+    <Compile Include="Setting\Visualizer\ColorMode.cs" />
+    <Compile Include="Setting\Visualizer\ColorSetting.cs" />
+    <Compile Include="Setting\Visualizer\Setting.cs" />
+    <Compile Include="Setting\Visualizer\SettingsBundle.cs" />
+    <Compile Include="Serializer.cs" />
+    <Compile Include="Setting\Visualizer\ShaderMode.cs" />
+    <Compile Include="Setting\Visualizer\Transformation.cs" />
     <Compile Include="Shader\BloomComponent.cs" />
     <Compile Include="Shader\BloomManager.cs" />
     <Compile Include="Shader\BloomSettings.cs" />
@@ -186,6 +187,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Setting\Option\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
