@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: EnumExtensions.cs
 // Date - created:2016.10.17 - 19:59
-// Date - current: 2016.10.18 - 18:20
+// Date - current: 2016.10.19 - 19:59
 
 #endregion
 

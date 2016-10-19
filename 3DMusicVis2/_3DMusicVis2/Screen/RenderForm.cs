@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RenderForm.cs
 // Date - created:2016.09.18 - 11:20
-// Date - current: 2016.10.18 - 18:21
+// Date - current: 2016.10.19 - 19:59
 
 #endregion
 
@@ -32,6 +32,7 @@ namespace _3DMusicVis2.Screen
         private readonly Camera _cam;
         private readonly PauseMenu _menu;
         private readonly Setting.Visualizer.Setting _mySetting;
+        private readonly RenderTarget2D _scanLineRendertarget;
 
         private readonly RenderTarget2D _wavesRendertarget;
 
@@ -41,7 +42,7 @@ namespace _3DMusicVis2.Screen
 
         private float _rainbowGradiant;
         private float _rainbowgradiantMultiplier = 1;
-        private readonly RenderTarget2D _scanLineRendertarget;
+
 
         public Color BackgroundColor;
 
@@ -185,7 +186,7 @@ namespace _3DMusicVis2.Screen
                 GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
                 sB.GraphicsDevice.Clear(Color.Transparent);
                 sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null, Game1.LiquifyEffect);
-                Game1.LiquifyEffect.Parameters["width"].SetValue( /*.5f*/0.1f);
+                Game1.LiquifyEffect.Parameters["width"].SetValue( /*.5f*/0.2f);
                 Game1.LiquifyEffect.Parameters["toBe"].SetValue(BackgroundColor.Negate().ToVector4());
                 sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
                 sB.End();

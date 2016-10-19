@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Game1.cs
 // Date - created:2016.07.02 - 17:04
-// Date - current: 2016.10.18 - 18:20
+// Date - current: 2016.10.19 - 19:59
 
 #endregion
 
@@ -169,7 +169,7 @@ namespace _3DMusicVis2
             //Setting.Visualizer.Setting test = new Setting.Visualizer.Setting
             //{
             //    SettingName = "Test101",
-            //    Shaders = (ShaderMode.Bloom | ShaderMode.Blur | ShaderMode.Liquify | ShaderMode.ScanLine),
+            //    Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
             //    Bundles = new List<SettingsBundle>
             //    {
             //        new SettingsBundle()
@@ -208,7 +208,7 @@ namespace _3DMusicVis2
             //Setting.Visualizer.Setting test = new Setting.Visualizer.Setting
             //{
             //    SettingName = "SamplesOnly",
-            //    Shaders = (ShaderMode.Bloom | ShaderMode.ScanLine),
+            //    Shaders = (/*ShaderMode.Bloom | */ShaderMode.ScanLine),
             //    Bundles = new List<SettingsBundle>
             //    {
             //        new SettingsBundle()

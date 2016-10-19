@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: GaussianBlurManager.cs
 // Date - created:2016.10.11 - 18:42
-// Date - current: 2016.10.18 - 18:21
+// Date - current: 2016.10.19 - 19:59
 
 #endregion
 

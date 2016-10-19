@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: EditForm.cs
 // Date - created:2016.09.19 - 14:54
-// Date - current: 2016.10.18 - 18:21
+// Date - current: 2016.10.19 - 19:59
 
 #endregion
 
