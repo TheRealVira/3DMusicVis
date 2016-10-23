@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: OldScreen.cs
-// Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 
@@ -1050,8 +1050,8 @@ namespace _3DMusicVis2.Screen
                             }
 
                             //Cam.Position = Vector3.Transform(Cam.Position, Matrix.CreateRotationY(Game1.AudioAnalysis.getFloat_2StepLowFrq(orbitSpeed, .1f, 0.45f)));
-                            //Cam.Target = new Vector3(10, 0, 10);
-                            //Cam.View = Matrix.CreateLookAt(Cam.Position, Cam.Target, Vector3.Up);
+                            //Cam.Draw = new Vector3(10, 0, 10);
+                            //Cam.View = Matrix.CreateLookAt(Cam.Position, Cam.Draw, Vector3.Up);
                         }
                     }
                 }

@@ -5,16 +5,18 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: 2DFrequencyRenderer.cs
-// Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:24
 
 #endregion
 
 #region Usings
 
 using System.Collections.ObjectModel;
+using C3.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Setting.Visualizer;
 
 #endregion
 
@@ -26,14 +28,12 @@ namespace _3DMusicVis2.RenderFrame
         private static _2DMusicVisRenderFrame _renderer;
         private static ReadOnlyCollection<float> Frequencies;
 
-        public static bool Dashed;
-
         public static void Initialise(GraphicsDevice device)
         {
             _renderer =
                 new _2DMusicVisRenderFrame
                 {
-                    Render = Target,
+                    Render = Draw,
                     UpdateRenderer = UpdateRenderer,
                     ClearColor = Color.Transparent,
                     ColorMode = ColorMode.SideEqualsCenter,
@@ -48,9 +48,9 @@ namespace _3DMusicVis2.RenderFrame
             Frequencies = frequencies;
         }
 
-        public static Texture2D Target(GraphicsDevice device, GameTime gameTime, Camera cam)
+        public static Texture2D Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings)
         {
-            if (Frequencies == null) return Game1.FamouseOnePixel;
+            if (Frequencies == null || Frequencies.Count < 2) return Game1.FamouseOnePixel;
 
             var toRet = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
                 Game1.VIRTUAL_RESOLUTION.Height, true,
@@ -60,38 +60,54 @@ namespace _3DMusicVis2.RenderFrame
 
             Game1.SpriteBatch.Begin();
 
-            if (Dashed)
+            switch (settings)
             {
-                for (var f = 0; f < Frequencies.Count; f++)
-                {
-                    var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
-                    var y =
-                        (int)
-                            (Game1.VIRTUAL_RESOLUTION.Height -
-                             Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                case DrawMode.Blocked:
+                    for (var f = 0; f < Frequencies.Count; f++)
+                    {
+                        var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
+                        var y =
+                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                        //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
 
-                    //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
-                    //    _renderer.ForeGroundColor.Negate());
-                    Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, y, WIDTH*2, HEIGHT),
-                        _renderer.ForeGroundColor);
-                }
-            }
-            else
-            {
-                for (var f = 0; f < Frequencies.Count; f++)
-                {
-                    var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
-                    var y =
-                        (int)
-                            (Game1.VIRTUAL_RESOLUTION.Height -
-                             Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                        //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
+                        //    _renderer.ForeGroundColor.Negate());
+                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, 0, WIDTH*2, y),
+                            _renderer.ForeGroundColor);
+                    }
+                    break;
+                case DrawMode.Dashed:
+                    for (var f = 0; f < Frequencies.Count; f++)
+                    {
+                        var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
+                        var y =
+                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                        //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
 
-                    var height = (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
-                    //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
-                    //    _renderer.ForeGroundColor.Negate());
-                    Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, y, WIDTH*2, height),
-                        _renderer.ForeGroundColor);
-                }
+                        //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
+                        //    _renderer.ForeGroundColor.Negate());
+                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, y, WIDTH, HEIGHT),
+                            _renderer.ForeGroundColor);
+                    }
+                    break;
+                case DrawMode.Connected:
+                    var last = new Vector2(0, Frequencies[0]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                    for (var f = 1; f < Frequencies.Count; f++)
+                    {
+                        var y =
+                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                        //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
+                        var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count, y);
+
+                        //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
+                        //    _renderer.ForeGroundColor.Negate());
+
+                        Primitives2D.DrawLine(Game1.SpriteBatch, last, c, _renderer.ForeGroundColor);
+                        last = c;
+                    }
+                    break;
+                default:
+                    break;
             }
 
             Game1.SpriteBatch.End();
@@ -99,7 +115,7 @@ namespace _3DMusicVis2.RenderFrame
             device.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
 
             return toRet;
-            //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, _renderer.ClearColor, 1.0f, 0);
+            //device.Clear(ClearOptions.Draw | ClearOptions.DepthBuffer, _renderer.ClearColor, 1.0f, 0);
             //using (SpriteBatch sprite = new SpriteBatch(device))
             //{
             //    sprite.Begin();

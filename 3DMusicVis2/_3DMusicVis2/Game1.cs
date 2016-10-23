@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Game1.cs
-// Date - created:2016.07.02 - 17:04
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 
@@ -97,10 +97,10 @@ namespace _3DMusicVis2
             //Graphics.IsFullScreen = false;
             //Graphics.PreferredBackBufferHeight = Graphics.GraphicsDevice.Viewport.Bounds.Height;
             //Graphics.PreferredBackBufferWidth = Graphics.GraphicsDevice.Viewport.Bounds.Width;
-            InactiveSleepTime = new TimeSpan(0);
+            //InactiveSleepTime = new TimeSpan(0);
             //this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 60);
             //graphics.SynchronizeWithVerticalRetrace = false;
-            Graphics.ApplyChanges();
+            //Graphics.ApplyChanges();
 
             Rand = new Random(DateTime.Now.Millisecond);
             FamouseOnePixel = new Texture2D(Graphics.GraphicsDevice, 1, 1);
@@ -165,85 +165,10 @@ namespace _3DMusicVis2
             base.Initialize();
             System.Console.WriteLine("Finished initialising 3DMusicVis2!");
 
+            (Control.FromHandle(FreeBeer.Window.Handle) as Form).MinimizeBox = false;
 
-            //Setting.Visualizer.Setting test = new Setting.Visualizer.Setting
-            //{
-            //    SettingName = "Test101",
-            //    Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
-            //    Bundles = new List<SettingsBundle>
-            //    {
-            //        new SettingsBundle()
-            //        {
-            //            IsDashed = true,
-            //            IsFrequency = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, 0), Scale = Vector2.One, Rotation = (float)Math.PI},
-            //            Color = new ColorSetting() { Color = Color.Blue }
-            //        },
-            //        new SettingsBundle()
-            //        {
-            //            IsFrequency = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, 0), Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Green, Mode = Setting.Visualizer.ColorMode.Rainbow},
-            //        },
-            //        new SettingsBundle()
-            //        {
-            //            Trans = new Transformation() {Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Red }
-            //        },
-            //        new SettingsBundle()
-            //        {
-            //            IsDashed = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, .2f), Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Violet }
-            //        },
-            //        new SettingsBundle()
-            //        {
-            //            IsDashed = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, -.2f), Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Brown }
-            //        }
-            //    }
-            //};
+            TemplateManager.SaveDefaultTemplates();
 
-            //Setting.Visualizer.Setting test = new Setting.Visualizer.Setting
-            //{
-            //    SettingName = "SamplesOnly",
-            //    Shaders = (/*ShaderMode.Bloom | */ShaderMode.ScanLine),
-            //    Bundles = new List<SettingsBundle>
-            //    {
-            //        new SettingsBundle()
-            //        {
-            //            IsDashed = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, -.4f), Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Blue, Mode = Setting.Visualizer.ColorMode.Breath }
-            //        },
-            //        new SettingsBundle()
-            //        {
-            //            IsDashed = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, -.2f), Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Red }
-            //        },
-            //        new SettingsBundle()
-            //        {
-            //            Trans = new Transformation() {Position = new Vector2(0, 0), Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Yellow, Mode = Setting.Visualizer.ColorMode.Rainbow}
-            //        },
-            //        new SettingsBundle()
-            //        {
-            //            IsDashed = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, .2f), Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Red }
-            //        },
-            //        new SettingsBundle()
-            //        {
-            //            IsDashed = true,
-            //            Trans = new Transformation() {Position = new Vector2(0, .4f), Scale = Vector2.One},
-            //            Color = new ColorSetting() { Color = Color.Blue, Mode = Setting.Visualizer.ColorMode.Breath }
-            //        },
-            //    }
-            //};
-
-            //SettingsManager.Save(test, SettingsManager.SETTINGS_DIR, test.SettingName, SettingsManager.SETTINGS_EXT);
             //var test = SettingsManager.Load();
             //for (int i = 0; i < test[0].Bundles.Count; i++)
             //{

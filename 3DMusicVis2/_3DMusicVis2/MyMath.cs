@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: MyMath.cs
-// Date - created:2016.07.02 - 17:04
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 

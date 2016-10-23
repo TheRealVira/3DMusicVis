@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: 3DMusicVisRenderFrame.cs
-// Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 
@@ -15,6 +15,7 @@
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Setting.Visualizer;
 
 #endregion
 
@@ -34,7 +35,7 @@ namespace _3DMusicVis2.RenderFrame
         public float HightMultiplier;
     }
 
-    public delegate Texture2D RenderToTexture(GraphicsDevice device, GameTime gameTime, Camera cam);
+    internal delegate Texture2D RenderToTexture(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings);
 
     public delegate void Update(ReadOnlyCollection<float> samples);
 }

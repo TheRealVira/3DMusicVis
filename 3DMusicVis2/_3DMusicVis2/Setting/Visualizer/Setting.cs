@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: Setting.cs
-// Date - created:2016.10.18 - 17:49
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 
@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 #endregion
 
@@ -27,6 +28,8 @@ namespace _3DMusicVis2.Setting.Visualizer
         public List<SettingsBundle> Bundles;
 
         public byte HasRenders { get; private set; }
+
+        public Color BackgroundColor;
 
         public override string ToString()
         {

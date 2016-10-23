@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: SettingsBundle.cs
-// Date - created:2016.10.18 - 17:49
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 
@@ -19,7 +19,7 @@ using System;
 namespace _3DMusicVis2.Setting.Visualizer
 {
     [Serializable]
-    internal struct SettingsBundle
+    public struct SettingsBundle
     {
         public Transformation Trans;
 
@@ -31,7 +31,7 @@ namespace _3DMusicVis2.Setting.Visualizer
         /// <summary>
         ///     False: It is a non dashed visualizer; True: It is a dashed visualizer;
         /// </summary>
-        public bool IsDashed;
+        public DrawMode HowIDraw;
 
         /// <summary>
         ///     False: It is a sample visualizer; True: It is a frequency visualizer;

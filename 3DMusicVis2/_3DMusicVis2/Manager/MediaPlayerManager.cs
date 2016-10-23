@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: MediaPlayerManager.cs
-// Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:24
 
 #endregion
 
@@ -56,6 +56,8 @@ namespace _3DMusicVis2.Manager
             MediaPlayer.Stop();
             SongPointerProb = 1;
             var temp = new List<SpecialSong>();
+
+            if (!Directory.Exists(directory)) return;
 
             temp.AddRange(from item in Directory.GetFiles(directory, "*.wma")
                 let songName = item.Substring(18, item.Length - 22)

@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: LoadFromSetting.cs
-// Date - created:2016.09.19 - 15:03
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 
@@ -123,7 +123,7 @@ namespace _3DMusicVis2.Screen.LoadSetting
             {
                 case KindOfLoadingSettingScreen.OnlyLoad:
                     ScreenManager.TempLoadScreen(new RenderForm(Game1.Graphics,
-                        _settings.First(x => x.SettingName == _settingsBox.SelectedItem.Text), Color.Black));
+                        _settings.First(x => x.SettingName == _settingsBox.SelectedItem.Text)));
                     break;
 
                 case KindOfLoadingSettingScreen.LoadOrCreate:

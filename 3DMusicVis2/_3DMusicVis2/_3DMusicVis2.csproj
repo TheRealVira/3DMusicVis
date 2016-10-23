@@ -73,6 +73,9 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C3.XNA.Primitives2D">
+      <HintPath>C:\Users\Vira\Downloads\C3.XNA.Primitives2D.r12\Primitives2D\bin\Release\C3.XNA.Primitives2D.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
@@ -105,6 +108,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Manager\MediaPlayerManager.cs" />
     <Compile Include="Manager\ScreenManager.cs" />
+    <Compile Include="Manager\TemplateManager.cs" />
     <Compile Include="MyMath.cs" />
     <Compile Include="OutPutConsole\OutputManagerEventHandeling.cs" />
     <Compile Include="OutPutConsole\OutputManagerEventArgs.cs" />
@@ -134,6 +138,7 @@
     <Compile Include="Screen\TestForm.cs" />
     <Compile Include="Setting\Visualizer\ColorMode.cs" />
     <Compile Include="Setting\Visualizer\ColorSetting.cs" />
+    <Compile Include="Setting\Visualizer\DrawMode.cs" />
     <Compile Include="Setting\Visualizer\Setting.cs" />
     <Compile Include="Setting\Visualizer\SettingsBundle.cs" />
     <Compile Include="Serializer.cs" />

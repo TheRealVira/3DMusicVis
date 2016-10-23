@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: 3DLinearWaveRenderer.cs
-// Date - created:2016.07.02 - 17:05
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 
@@ -16,6 +16,7 @@ using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Setting.Visualizer;
 using _3DMusicVis2.TileHelper;
 
 #endregion
@@ -121,7 +122,7 @@ namespace _3DMusicVis2.RenderFrame
                 _renderer.UpdateOnlyTheCenterOfATile, _renderer.HightMultiplier);
         }
 
-        public static Texture2D Target(GraphicsDevice device, GameTime gameTime, Camera cam)
+        public static Texture2D Target(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode setting)
         {
             var pp = device.PresentationParameters;
             var MyRenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true,
@@ -146,7 +147,7 @@ namespace _3DMusicVis2.RenderFrame
             device.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
 
             return MyRenderTarget;
-            //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, _renderer.ClearColor, 1.0f, 0);
+            //device.Clear(ClearOptions.Draw | ClearOptions.DepthBuffer, _renderer.ClearColor, 1.0f, 0);
             //using (SpriteBatch sprite = new SpriteBatch(device))
             //{
             //    sprite.Begin();

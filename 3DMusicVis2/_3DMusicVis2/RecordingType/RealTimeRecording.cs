@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: RealTimeRecording.cs
-// Date - created:2016.09.11 - 12:04
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:24
 
 #endregion
 
@@ -72,6 +72,11 @@ namespace _3DMusicVis2.RecordingType
             for (var i = 0; i < e.Result.Length; i++)
             {
                 FrequencySpectrum[i] = (float) Math.Sqrt((Math.Abs(e.Result[i].Y) + Math.Abs(e.Result[i].X))*10);
+
+                if (FrequencySpectrum[i] > 1)
+                {
+                    FrequencySpectrum[i] = 1;
+                }
             }
         }
 

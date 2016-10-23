@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: ColorSetting.cs
-// Date - created:2016.10.18 - 17:49
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 
@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework;
 namespace _3DMusicVis2.Setting.Visualizer
 {
     [Serializable]
-    internal struct ColorSetting
+    public struct ColorSetting
     {
         public Color Color;
         public ColorMode Mode;

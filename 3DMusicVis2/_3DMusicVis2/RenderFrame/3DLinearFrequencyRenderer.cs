@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis2
 // Project: _3DMusicVis2
 // Filename: 3DLinearFrequencyRenderer.cs
-// Date - created:2016.10.14 - 18:07
-// Date - current: 2016.10.19 - 19:59
+// Date - created:2016.10.23 - 14:56
+// Date - current: 2016.10.23 - 18:25
 
 #endregion
 
@@ -15,6 +15,7 @@
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Setting.Visualizer;
 
 #endregion
 
@@ -105,7 +106,7 @@ namespace _3DMusicVis2.RenderFrame
             }
         }
 
-        public static Texture2D Target(GraphicsDevice device, GameTime gametime, Camera cam)
+        public static Texture2D Target(GraphicsDevice device, GameTime gametime, Camera cam, DrawMode setting)
         {
             device.SetRenderTarget(mFrame.FinalRenderTarget);
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
