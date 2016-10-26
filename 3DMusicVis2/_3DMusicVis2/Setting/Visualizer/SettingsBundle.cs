@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: SettingsBundle.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.23 - 18:25
+// Date - current: 2016.10.26 - 18:31
 
 #endregion
 
@@ -43,6 +43,26 @@ namespace _3DMusicVis2.Setting.Visualizer
         public override string ToString()
         {
             return (Is3D ? "[3D] " : "[2D] ") + (IsFrequency ? "Frequency" : "Sample");
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(SettingsBundle)) return false;
+
+            var temp = (SettingsBundle) obj;
+
+            return (Is3D == temp.Is3D) && (HowIDraw == temp.HowIDraw) && (IsFrequency == temp.IsFrequency) &&
+                   (Color == temp.Color);
+        }
+
+        public static bool operator ==(SettingsBundle a, SettingsBundle b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(SettingsBundle a, SettingsBundle b)
+        {
+            return !(a == b);
         }
     }
 }

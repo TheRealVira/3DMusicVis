@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RealTimeRecording.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.23 - 18:24
+// Date - current: 2016.10.26 - 18:31
 
 #endregion
 
@@ -71,9 +71,15 @@ namespace _3DMusicVis2.RecordingType
             FrequencySpectrum = new float[e.Result.Length];
             for (var i = 0; i < e.Result.Length; i++)
             {
+                // Add both numbers together and multiply them by ten (this is because the numbers would be too small).
+                // Then apply the square root, so the differences will get visible.
+
+                // Example:
+                // sqrt(1/16) = 1/4
+                // sqrt(1.5)  = 1.225
                 FrequencySpectrum[i] = (float) Math.Sqrt((Math.Abs(e.Result[i].Y) + Math.Abs(e.Result[i].X))*10);
 
-                if (FrequencySpectrum[i] > 1)
+                if (FrequencySpectrum[i] > 1) // Apply maximum level of one.
                 {
                     FrequencySpectrum[i] = 1;
                 }
@@ -104,24 +110,28 @@ namespace _3DMusicVis2.RecordingType
             var bufferedFrames = waveBuffer.BufferedBytes/BytesPerFrame;
             var samples = waveBuffer.ToSampleProvider();
 
-            if (bufferedFrames < 1) return;
+            if (bufferedFrames < 1) return; // Nothing was buffered -> nothing is recorded -> quick return
 
+            // Gather samples
             var frames = new float[bufferedFrames];
             samples.Read(frames, 0, bufferedFrames);
 
-            var stepper = frames.Length;
-            var toDisp = new float[stepper];
-            for (var i = 0; i < stepper; i++)
-            {
-                toDisp[i] = frames[i];
-            }
+            //var stepper = frames.Length;
+            //var toDisp = new float[stepper];
+            //for (var i = 0; i < stepper; i++)
+            //{
+            //    toDisp[i] = frames[i];
+            //}
 
-            CurrentSamples = toDisp;
+            // Saving data into a static field
+            CurrentSamples = frames;
 
+            // Get parameters
             var buffer = waveInEventArgs.Buffer;
             var bytesRecorded = waveInEventArgs.BytesRecorded;
             var bufferIncrement = _capture.WaveFormat.BlockAlign;
 
+            // Aggregate every bufferblock (till the total bytes recorded boundarie has been reached).
             for (var index = 0; index < bytesRecorded; index += bufferIncrement)
             {
                 var sample32 = BitConverter.ToSingle(buffer, index);

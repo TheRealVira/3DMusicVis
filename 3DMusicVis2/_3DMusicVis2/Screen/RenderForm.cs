@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RenderForm.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.23 - 18:25
+// Date - current: 2016.10.26 - 18:31
 
 #endregion
 
@@ -42,6 +42,13 @@ namespace _3DMusicVis2.Screen
 
         private float _rainbowGradiant;
         private float _rainbowgradiantMultiplier = 1;
+        public Color NotSelectedColor = Color.White;
+
+        public SettingsBundle Selected;
+        public Color SelectedColor = Color.Red;
+        public bool UseColor = true;
+
+        public bool UseShader = true;
 
         public RenderForm(GraphicsDeviceManager gdm, Setting.Visualizer.Setting currentSetting)
             : base(gdm, "RenderForm")
@@ -118,18 +125,35 @@ namespace _3DMusicVis2.Screen
             {
                 var toDraw = _mySetting.Bundles[i].Color.Color;
 
-                switch (_mySetting.Bundles[i].Color.Mode)
+                if (UseColor)
                 {
-                    case Setting.Visualizer.ColorMode.Static: // The color was set before (this is for some null errors)
-                        break;
+                    switch (_mySetting.Bundles[i].Color.Mode)
+                    {
+                        case Setting.Visualizer.ColorMode.Static:
+                            // The color was set before (this is for some null errors)
+                            break;
 
-                    case Setting.Visualizer.ColorMode.Rainbow:
-                        toDraw = MyMath.Rainbow(_rainbowGradiant);
-                        break;
+                        case Setting.Visualizer.ColorMode.Rainbow:
+                            toDraw = MyMath.Rainbow(_rainbowGradiant);
+                            break;
 
-                    case Setting.Visualizer.ColorMode.Breath:
-                        toDraw = Color.Lerp(_mySetting.BackgroundColor, toDraw, _breathingGradiant);
-                        break;
+                        case Setting.Visualizer.ColorMode.Breath:
+                            toDraw = Color.Lerp(_mySetting.BackgroundColor, toDraw, _breathingGradiant);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    if (_mySetting.Bundles[i] == Selected)
+                    {
+                        toDraw = SelectedColor;
+                    }
+                    else
+                    {
+                        toDraw = NotSelectedColor;
+                    }
                 }
 
                 var pos = _mySetting.Bundles[i].Trans.Position;
@@ -181,8 +205,7 @@ namespace _3DMusicVis2.Screen
                             new Rectangle(
                                 (int) (pos.X*Game1.VIRTUAL_RESOLUTION.Width + Game1.VIRTUAL_RESOLUTION.Center.X),
                                 (int) (pos.Y*Game1.VIRTUAL_RESOLUTION.Height + Game1.VIRTUAL_RESOLUTION.Height/2f) +
-                                Game1.VIRTUAL_RESOLUTION.Center.Y,
-                                (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
+                                Game1.VIRTUAL_RESOLUTION.Center.Y, (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
                                 (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, toDraw,
                             _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
                             SpriteEffects.None, 0);
@@ -192,8 +215,7 @@ namespace _3DMusicVis2.Screen
                             new Rectangle(
                                 (int) (pos.X*Game1.VIRTUAL_RESOLUTION.Width + Game1.VIRTUAL_RESOLUTION.Center.X),
                                 (int) (pos.Y*Game1.VIRTUAL_RESOLUTION.Height + Game1.VIRTUAL_RESOLUTION.Height/2f) +
-                                Game1.VIRTUAL_RESOLUTION.Center.Y,
-                                (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
+                                Game1.VIRTUAL_RESOLUTION.Center.Y, (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
                                 (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, toDraw,
                             _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
                             SpriteEffects.None, 0);
@@ -203,8 +225,7 @@ namespace _3DMusicVis2.Screen
                             new Rectangle(
                                 (int) (pos.X*Game1.VIRTUAL_RESOLUTION.Width + Game1.VIRTUAL_RESOLUTION.Center.X),
                                 (int) (pos.Y*Game1.VIRTUAL_RESOLUTION.Height + Game1.VIRTUAL_RESOLUTION.Height/2f) +
-                                Game1.VIRTUAL_RESOLUTION.Center.Y,
-                                (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
+                                Game1.VIRTUAL_RESOLUTION.Center.Y, (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
                                 (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, toDraw,
                             _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
                             SpriteEffects.None, 0);
@@ -218,53 +239,55 @@ namespace _3DMusicVis2.Screen
 
             var toUse = _wavesRendertarget;
 
-            if ((_mySetting.Shaders & ShaderMode.Blur) != 0)
+            if (UseShader)
             {
-                // Blur the bloom
-                _gausianBlurRendertarget =
-                    (RenderTarget2D) GaussianBlurManager.Compute(toUse, sB);
+                if ((_mySetting.Shaders & ShaderMode.Blur) != 0)
+                {
+                    // Blur the bloom
+                    _gausianBlurRendertarget = (RenderTarget2D) GaussianBlurManager.Compute(toUse, sB);
 
-                toUse = _gausianBlurRendertarget;
-            }
+                    toUse = _gausianBlurRendertarget;
+                }
 
-            if ((_mySetting.Shaders & ShaderMode.Bloom) != 0)
-            {
-                // Apply bloom
-                BloomManager.Bloom.BeginDraw();
-                sB.GraphicsDevice.Clear(Color.Transparent);
-                // Applying shader
-                sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
-                sB.End();
-                BloomManager.Bloom.EndDraw();
+                if ((_mySetting.Shaders & ShaderMode.Bloom) != 0)
+                {
+                    // Apply bloom
+                    BloomManager.Bloom.BeginDraw();
+                    sB.GraphicsDevice.Clear(Color.Transparent);
+                    // Applying shader
+                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                    sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
+                    sB.End();
+                    BloomManager.Bloom.EndDraw();
 
-                toUse = BloomManager.Bloom.FinalRenderTarget;
-            }
+                    toUse = BloomManager.Bloom.FinalRenderTarget;
+                }
 
-            if ((_mySetting.Shaders & ShaderMode.Liquify) != 0)
-            {
-                GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
-                sB.GraphicsDevice.Clear(Color.Transparent);
-                sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null, Game1.LiquifyEffect);
-                Game1.LiquifyEffect.Parameters["width"].SetValue( /*.5f*/0.2f);
-                Game1.LiquifyEffect.Parameters["toBe"].SetValue(_mySetting.BackgroundColor.Negate().ToVector4());
-                sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
-                sB.End();
+                if ((_mySetting.Shaders & ShaderMode.Liquify) != 0)
+                {
+                    GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
+                    sB.GraphicsDevice.Clear(Color.Transparent);
+                    sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null, Game1.LiquifyEffect);
+                    Game1.LiquifyEffect.Parameters["width"].SetValue( /*.5f*/0.2f);
+                    Game1.LiquifyEffect.Parameters["toBe"].SetValue(_mySetting.BackgroundColor.Negate().ToVector4());
+                    sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
+                    sB.End();
 
-                toUse = _alphaDeletionRendertarget;
-            }
+                    toUse = _alphaDeletionRendertarget;
+                }
 
-            if ((_mySetting.Shaders & ShaderMode.ScanLine) != 0)
-            {
-                GDM.GraphicsDevice.SetRenderTarget(_scanLineRendertarget);
-                sB.GraphicsDevice.Clear(Color.Transparent);
-                sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, Game1.ScanlinEffect);
-                Game1.ScanlinEffect.Parameters["ImageHeight"].SetValue(Game1.VIRTUAL_RESOLUTION.Height);
-                Game1.ScanlinEffect.Parameters["LineColor"].SetValue(_mySetting.BackgroundColor.ToVector4());
-                sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
-                sB.End();
+                if ((_mySetting.Shaders & ShaderMode.ScanLine) != 0)
+                {
+                    GDM.GraphicsDevice.SetRenderTarget(_scanLineRendertarget);
+                    sB.GraphicsDevice.Clear(Color.Transparent);
+                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, Game1.ScanlinEffect);
+                    Game1.ScanlinEffect.Parameters["ImageHeight"].SetValue(Game1.VIRTUAL_RESOLUTION.Height);
+                    Game1.ScanlinEffect.Parameters["LineColor"].SetValue(_mySetting.BackgroundColor.ToVector4());
+                    sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
+                    sB.End();
 
-                toUse = _scanLineRendertarget;
+                    toUse = _scanLineRendertarget;
+                }
             }
 
             GDM.GraphicsDevice.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
