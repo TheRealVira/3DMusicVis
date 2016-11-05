@@ -13,6 +13,7 @@
 #region Usings
 
 using System;
+using NAudio.CoreAudioApi;
 using NAudio.Dsp;
 using NAudio.Wave;
 
@@ -38,6 +39,8 @@ namespace _3DMusicVis2.RecordingType
         public static float[] TestFrequencyleData;
 
         private static SampleAggregator aggregator;
+
+        private const float MULTIPLACTOR = 10;
 
         public static void Initialize()
         {
@@ -69,6 +72,7 @@ namespace _3DMusicVis2.RecordingType
         private static void Aggregator_FftCalculated(object sender, FftEventArgs e)
         {
             FrequencySpectrum = new float[e.Result.Length];
+
             for (var i = 0; i < e.Result.Length; i++)
             {
                 // Add both numbers together and multiply them by ten (this is because the numbers would be too small).
@@ -77,12 +81,8 @@ namespace _3DMusicVis2.RecordingType
                 // Example:
                 // sqrt(1/16) = 1/4
                 // sqrt(1.5)  = 1.225
-                FrequencySpectrum[i] = (float) Math.Sqrt((Math.Abs(e.Result[i].Y) + Math.Abs(e.Result[i].X))*10);
-
-                if (FrequencySpectrum[i] > 1) // Apply maximum level of one.
-                {
-                    FrequencySpectrum[i] = 1;
-                }
+                var freq = (Math.Abs(e.Result[i].Y) + Math.Abs(e.Result[i].X))* MULTIPLACTOR;
+                FrequencySpectrum[i] = (float) Math.Min(Math.Sqrt(freq), 1); // Apply maximum level of one.
             }
         }
 
@@ -108,9 +108,10 @@ namespace _3DMusicVis2.RecordingType
         {
             waveBuffer.AddSamples(waveInEventArgs.Buffer, 0, waveInEventArgs.BytesRecorded);
             var bufferedFrames = waveBuffer.BufferedBytes/BytesPerFrame;
+            if (bufferedFrames < 1) return; // Nothing was buffered -> nothing is recorded -> quick return
+
             var samples = waveBuffer.ToSampleProvider();
 
-            if (bufferedFrames < 1) return; // Nothing was buffered -> nothing is recorded -> quick return
 
             // Gather samples
             var frames = new float[bufferedFrames];

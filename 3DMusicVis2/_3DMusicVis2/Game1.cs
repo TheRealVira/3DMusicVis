@@ -97,10 +97,10 @@ namespace _3DMusicVis2
             //Graphics.IsFullScreen = false;
             //Graphics.PreferredBackBufferHeight = Graphics.GraphicsDevice.Viewport.Bounds.Height;
             //Graphics.PreferredBackBufferWidth = Graphics.GraphicsDevice.Viewport.Bounds.Width;
-            //InactiveSleepTime = new TimeSpan(0);
+            InactiveSleepTime = new TimeSpan(0);
             //this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 60);
             //graphics.SynchronizeWithVerticalRetrace = false;
-            //Graphics.ApplyChanges();
+            Graphics.ApplyChanges();
 
             Rand = new Random(DateTime.Now.Millisecond);
             FamouseOnePixel = new Texture2D(Graphics.GraphicsDevice, 1, 1);
