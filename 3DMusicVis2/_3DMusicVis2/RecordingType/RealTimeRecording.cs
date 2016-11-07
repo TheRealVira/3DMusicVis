@@ -23,7 +23,7 @@ namespace _3DMusicVis2.RecordingType
 {
     internal static class RealTimeRecording
     {
-        public const int FftLength = 512; // NAudio fft wants powers of two!
+        public const int FftLength = 1024; // NAudio fft wants powers of two!
         private static IWaveIn _capture;
         private static int BitsPerSample;
         private static int Channels;
@@ -40,7 +40,7 @@ namespace _3DMusicVis2.RecordingType
 
         private static SampleAggregator aggregator;
 
-        private const float MULTIPLACTOR = 10;
+        private const float MULTIPLACTOR = 50;
 
         public static void Initialize()
         {
@@ -71,9 +71,10 @@ namespace _3DMusicVis2.RecordingType
 
         private static void Aggregator_FftCalculated(object sender, FftEventArgs e)
         {
-            FrequencySpectrum = new float[e.Result.Length];
+            var half = e.Result.Length/2;
+            FrequencySpectrum = new float[half];
 
-            for (var i = 0; i < e.Result.Length; i++)
+            for (var i = 0; i < half; i++)
             {
                 // Add both numbers together and multiply them by ten (this is because the numbers would be too small).
                 // Then apply the square root, so the differences will get visible.
@@ -81,8 +82,24 @@ namespace _3DMusicVis2.RecordingType
                 // Example:
                 // sqrt(1/16) = 1/4
                 // sqrt(1.5)  = 1.225
-                var freq = (Math.Abs(e.Result[i].Y) + Math.Abs(e.Result[i].X))* MULTIPLACTOR;
-                FrequencySpectrum[i] = (float) Math.Min(Math.Sqrt(freq), 1); // Apply maximum level of one.
+                var val1 = (float)Math.Max(.002f,Math.Min(Math.Sqrt((e.Result[i].X * e.Result[i].X + e.Result[i].Y * e.Result[i].Y)) * MULTIPLACTOR, 1));
+                var val2 = (float)Math.Max(.002f, Math.Min(Math.Sqrt((e.Result[i+ half].X * e.Result[i+ half].X + e.Result[i+ half].Y * e.Result[i+ half].Y)) * MULTIPLACTOR, 1));
+                FrequencySpectrum[i] = Math.Max(val1, val2);
+                //var freq = (Math.Max(e.Result[i].Y,0) + Math.Max(e.Result[i].X,0))* MULTIPLACTOR;
+                // (float) Math.Max(.005f, Math.Min(freq, 1)); // Apply maximum level of one.
+            }
+            
+            for (var i = e.Result.Length / 2; i < e.Result.Length; i++)
+            {
+                // Add both numbers together and multiply them by ten (this is because the numbers would be too small).
+                // Then apply the square root, so the differences will get visible.
+
+                // Example:
+                // sqrt(1/16) = 1/4
+                // sqrt(1.5)  = 1.225
+                FrequencySpectrum[i-e.Result.Length/2] = Math.Max(FrequencySpectrum[i - e.Result.Length / 2],(float)Math.Max(.002f, Math.Min(Math.Sqrt((e.Result[i].X * e.Result[i].X + e.Result[i].Y * e.Result[i].Y)), 1)));
+                //var freq = (Math.Max(e.Result[i].Y,0) + Math.Max(e.Result[i].X,0))* MULTIPLACTOR;
+                // (float) Math.Max(.005f, Math.Min(freq, 1)); // Apply maximum level of one.
             }
         }
 

@@ -14,21 +14,25 @@
 
 using System;
 using System.Diagnostics;
-using NAudio.Dsp;
+using NAudio.Dsp; // The Complex and FFT are here!
 
 #endregion
 
 namespace _3DMusicVis2
 {
-    internal class SampleAggregator
+
+    class SampleAggregator
     {
-        private readonly FftEventArgs fftArgs;
+        // FFT
+        public event EventHandler<FftEventArgs> FftCalculated;
+        public bool PerformFFT { get; set; }
 
         // This Complex is NAudio's own! 
-        private readonly Complex[] fftBuffer;
-        private readonly int fftLength;
-        private readonly int m;
+        private Complex[] fftBuffer;
+        private FftEventArgs fftArgs;
         private int fftPos;
+        private int fftLength;
+        private int m;
 
         public SampleAggregator(int fftLength)
         {
@@ -36,17 +40,13 @@ namespace _3DMusicVis2
             {
                 throw new ArgumentException("FFT Length must be a power of two");
             }
-            m = (int) Math.Log(fftLength, 2.0);
+            this.m = (int)Math.Log(fftLength, 2.0);
             this.fftLength = fftLength;
-            fftBuffer = new Complex[fftLength];
-            fftArgs = new FftEventArgs(fftBuffer);
+            this.fftBuffer = new Complex[fftLength];
+            this.fftArgs = new FftEventArgs(fftBuffer);
         }
 
-        public bool PerformFFT { get; set; }
-        // FFT
-        public event EventHandler<FftEventArgs> FftCalculated;
-
-        private bool IsPowerOfTwo(int x)
+        bool IsPowerOfTwo(int x)
         {
             return (x & (x - 1)) == 0;
         }
@@ -56,7 +56,7 @@ namespace _3DMusicVis2
             if (PerformFFT && FftCalculated != null)
             {
                 // Remember the window function! There are many others as well.
-                fftBuffer[fftPos].X = (float) (value*FastFourierTransform.HammingWindow(fftPos, fftLength));
+                fftBuffer[fftPos].X = (float)(value * FastFourierTransform.HammingWindow(fftPos, fftLength));
                 fftBuffer[fftPos].Y = 0; // This is always zero with audio.
                 fftPos++;
                 if (fftPos >= fftLength)
@@ -74,9 +74,8 @@ namespace _3DMusicVis2
         [DebuggerStepThrough]
         public FftEventArgs(Complex[] result)
         {
-            Result = result;
+            this.Result = result;
         }
-
         public Complex[] Result { get; private set; }
     }
 }
