@@ -89,18 +89,18 @@ namespace _3DMusicVis2.RecordingType
                 // (float) Math.Max(.005f, Math.Min(freq, 1)); // Apply maximum level of one.
             }
             
-            for (var i = e.Result.Length / 2; i < e.Result.Length; i++)
-            {
-                // Add both numbers together and multiply them by ten (this is because the numbers would be too small).
-                // Then apply the square root, so the differences will get visible.
+            //for (var i = e.Result.Length / 2; i < e.Result.Length; i++)
+            //{
+            //    // Add both numbers together and multiply them by ten (this is because the numbers would be too small).
+            //    // Then apply the square root, so the differences will get visible.
 
-                // Example:
-                // sqrt(1/16) = 1/4
-                // sqrt(1.5)  = 1.225
-                FrequencySpectrum[i-e.Result.Length/2] = Math.Max(FrequencySpectrum[i - e.Result.Length / 2],(float)Math.Max(.002f, Math.Min(Math.Sqrt((e.Result[i].X * e.Result[i].X + e.Result[i].Y * e.Result[i].Y)), 1)));
-                //var freq = (Math.Max(e.Result[i].Y,0) + Math.Max(e.Result[i].X,0))* MULTIPLACTOR;
-                // (float) Math.Max(.005f, Math.Min(freq, 1)); // Apply maximum level of one.
-            }
+            //    // Example:
+            //    // sqrt(1/16) = 1/4
+            //    // sqrt(1.5)  = 1.225
+            //    FrequencySpectrum[i-e.Result.Length/2] = Math.Max(FrequencySpectrum[i - e.Result.Length / 2],(float)Math.Max(.002f, Math.Min(Math.Sqrt((e.Result[i].X * e.Result[i].X + e.Result[i].Y * e.Result[i].Y)), 1)));
+            //    //var freq = (Math.Max(e.Result[i].Y,0) + Math.Max(e.Result[i].X,0))* MULTIPLACTOR;
+            //    // (float) Math.Max(.005f, Math.Min(freq, 1)); // Apply maximum level of one.
+            //}
         }
 
         public static void StartRecording()
