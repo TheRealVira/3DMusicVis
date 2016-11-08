@@ -89,6 +89,19 @@ namespace _3DMusicVis2.Manager
                             new Transformation
                             {
                                 Position = new Vector2(0, 0),
+                                Scale = Vector2.One
+                            },
+                        Color = new ColorSetting {Color = Color.Green, Mode = Setting.Visualizer.ColorMode.Rainbow, Negate = true},
+                        VerticalMirror = true
+                    },
+                    new SettingsBundle
+                    {
+                        HowIDraw = DrawMode.Blocked,
+                        IsFrequency = true,
+                        Trans =
+                            new Transformation
+                            {
+                                Position = new Vector2(0, 0),
                                 Scale = Vector2.One,
                                 Rotation = (float) Math.PI
                             },
@@ -210,12 +223,43 @@ namespace _3DMusicVis2.Manager
             };
         }
 
+        public static Setting.Visualizer.Setting GetYingYang()
+        {
+            return new Setting.Visualizer.Setting
+            {
+                SettingName = "YingYang",
+                Shaders = /*(*/ShaderMode.Bloom /*| ShaderMode.Liquify | ShaderMode.ScanLine)*/,
+                BackgroundColor = Color.Black,
+                Bundles = new List<SettingsBundle>
+                {
+                    new SettingsBundle
+                    {
+                        HowIDraw = DrawMode.Blocked,
+                        IsFrequency = true,
+                        Trans = new Transformation {Position = new Vector2(0, .5f), Scale = new Vector2(1f, 1f)},
+                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow},
+                        HorizontalMirror = true
+                    },
+                    new SettingsBundle
+                    {
+                        HowIDraw = DrawMode.Blocked,
+                        IsFrequency = true,
+                        Trans = new Transformation {Position = new Vector2(0, -.5f), Scale = new Vector2(1f, 1)},
+                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow, Negate = true},
+                        VerticalMirror = true,
+                        HorizontalMirror = true
+                    }
+                }
+            };
+        }
+
         public static void SaveDefaultTemplates()
         {
             FastSave(GetSaveOnlySamples());
             FastSave(GetTest101());
             FastSave(GetFrequencyOnly());
             FastSave(GetStriker());
+            FastSave(GetYingYang());
 
 #if (DEBUG)
             FastSave(GetDebug());

@@ -40,6 +40,10 @@ namespace _3DMusicVis2.Setting.Visualizer
 
         public ColorSetting Color;
 
+        public bool VerticalMirror;
+
+        public bool HorizontalMirror;
+
         public override string ToString()
         {
             return (Is3D ? "[3D] " : "[2D] ") + (IsFrequency ? "Frequency" : "Sample");

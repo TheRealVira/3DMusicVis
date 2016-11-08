@@ -23,7 +23,7 @@ namespace _3DMusicVis2.RecordingType
 {
     internal static class RealTimeRecording
     {
-        public const int FftLength = 1024; // NAudio fft wants powers of two!
+        public const int FftLength = 2048; // NAudio fft wants powers of two!
         private static IWaveIn _capture;
         private static int BitsPerSample;
         private static int Channels;
@@ -40,7 +40,7 @@ namespace _3DMusicVis2.RecordingType
 
         private static SampleAggregator aggregator;
 
-        private const float MULTIPLACTOR = 50;
+        private const float MULTIPLACTOR = 200;
 
         public static void Initialize()
         {
@@ -71,7 +71,7 @@ namespace _3DMusicVis2.RecordingType
 
         private static void Aggregator_FftCalculated(object sender, FftEventArgs e)
         {
-            var half = e.Result.Length/2;
+            var half = e.Result.Length/4;
             FrequencySpectrum = new float[half];
 
             for (var i = 0; i < half; i++)
@@ -82,9 +82,11 @@ namespace _3DMusicVis2.RecordingType
                 // Example:
                 // sqrt(1/16) = 1/4
                 // sqrt(1.5)  = 1.225
-                var val1 = (float)Math.Max(.002f,Math.Min(Math.Sqrt((e.Result[i].X * e.Result[i].X + e.Result[i].Y * e.Result[i].Y)) * MULTIPLACTOR, 1));
-                var val2 = (float)Math.Max(.002f, Math.Min(Math.Sqrt((e.Result[i+ half].X * e.Result[i+ half].X + e.Result[i+ half].Y * e.Result[i+ half].Y)) * MULTIPLACTOR, 1));
-                FrequencySpectrum[i] = Math.Max(val1, val2);
+                var val1 = (e.Result[i].X * e.Result[i].X + e.Result[i].Y * e.Result[i].Y);
+                val1 = 0;
+                var val2 = (e.Result[i+ e.Result.Length / 2 + e.Result.Length / 4].X * e.Result[i+ e.Result.Length / 2 + e.Result.Length / 4].X + e.Result[i+ e.Result.Length / 2 + e.Result.Length / 4].Y * e.Result[i+ e.Result.Length / 2 + e.Result.Length / 4].Y);
+
+                FrequencySpectrum[i] = (float)Math.Max(.002f, Math.Min(Math.Sqrt(Math.Sqrt(Math.Max(val1, val2) * MULTIPLACTOR)), 1));
                 //var freq = (Math.Max(e.Result[i].Y,0) + Math.Max(e.Result[i].X,0))* MULTIPLACTOR;
                 // (float) Math.Max(.005f, Math.Min(freq, 1)); // Apply maximum level of one.
             }

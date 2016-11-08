@@ -24,6 +24,7 @@ namespace _3DMusicVis2.Setting.Visualizer
     {
         public Color Color;
         public ColorMode Mode;
+        public bool Negate;
 
         public override bool Equals(object obj)
         {

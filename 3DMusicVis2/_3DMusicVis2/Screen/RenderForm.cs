@@ -143,6 +143,11 @@ namespace _3DMusicVis2.Screen
                         default:
                             break;
                     }
+
+                    if (_mySetting.Bundles[i].Color.Negate)
+                    {
+                        toDraw = toDraw.Negate();
+                    }
                 }
                 else
                 {
@@ -158,6 +163,12 @@ namespace _3DMusicVis2.Screen
 
                 var pos = _mySetting.Bundles[i].Trans.Position;
                 var scale = _mySetting.Bundles[i].Trans.Scale;
+                var effect = (_mySetting.Bundles[i].HorizontalMirror
+                    ? SpriteEffects.FlipHorizontally
+                    : SpriteEffects.None) |
+                             (_mySetting.Bundles[i].VerticalMirror
+                                 ? SpriteEffects.FlipVertically
+                                 : SpriteEffects.None);
 
                 if (_mySetting.Bundles[i].IsFrequency)
                 {
@@ -171,7 +182,7 @@ namespace _3DMusicVis2.Screen
                                     (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
                                     (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, toDraw,
                                 _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
-                                SpriteEffects.None, 0);
+                                effect, 0);
                             continue;
                         case DrawMode.Dashed:
                             sB.Draw(dashedFrequ,
@@ -181,7 +192,7 @@ namespace _3DMusicVis2.Screen
                                     (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
                                     (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, toDraw,
                                 _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
-                                SpriteEffects.None, 0);
+                                effect, 0);
                             continue;
                         case DrawMode.Connected:
                             sB.Draw(connectedFrequ,
@@ -191,7 +202,7 @@ namespace _3DMusicVis2.Screen
                                     (int) (Game1.VIRTUAL_RESOLUTION.Width*scale.X),
                                     (int) (Game1.VIRTUAL_RESOLUTION.Height*scale.Y)), null, toDraw,
                                 _mySetting.Bundles[i].Trans.Rotation, Game1.VIRTUAL_RESOLUTION.Center.ToVector2(),
-                                SpriteEffects.None, 0);
+                                effect, 0);
                             continue;
                         default:
                             continue;
