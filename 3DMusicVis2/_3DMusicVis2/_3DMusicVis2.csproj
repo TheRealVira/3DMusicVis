@@ -106,6 +106,7 @@
     <Compile Include="ColorMode.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Manager\ImageManager.cs" />
     <Compile Include="Manager\MediaPlayerManager.cs" />
     <Compile Include="Manager\ScreenManager.cs" />
     <Compile Include="Manager\TemplateManager.cs" />

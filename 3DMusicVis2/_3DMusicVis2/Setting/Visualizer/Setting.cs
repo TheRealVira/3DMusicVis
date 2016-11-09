@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
@@ -27,9 +28,11 @@ namespace _3DMusicVis2.Setting.Visualizer
         public ShaderMode Shaders;
         public List<SettingsBundle> Bundles;
 
-        public byte HasRenders { get; private set; }
+        public byte HasRenders { get; set; }
 
         public Color BackgroundColor;
+        
+        public string BackgroundImage;
 
         public override string ToString()
         {

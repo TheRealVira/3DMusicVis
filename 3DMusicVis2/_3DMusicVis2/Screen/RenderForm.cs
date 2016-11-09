@@ -18,6 +18,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Manager;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Setting.Visualizer;
@@ -256,6 +257,14 @@ namespace _3DMusicVis2.Screen
             GDM.GraphicsDevice.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
             sB.GraphicsDevice.Clear(_mySetting.BackgroundColor);
             sB.Begin();
+            if (!string.IsNullOrEmpty(_mySetting.BackgroundImage)&& ImageManager.Images.ContainsKey(_mySetting.BackgroundImage))
+            {
+                var image = ImageManager.Images[_mySetting.BackgroundImage];
+                var height = MathHelper.Min(image.Height, Game1.VIRTUAL_RESOLUTION.Height);
+                var width = MathHelper.Min(image.Width, Game1.VIRTUAL_RESOLUTION.Width);
+
+                sB.Draw(image, new Rectangle(0,0,(int)width, (int)height), Color.White);
+            }
             sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
 

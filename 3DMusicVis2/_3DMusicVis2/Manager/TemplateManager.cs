@@ -230,6 +230,7 @@ namespace _3DMusicVis2.Manager
                 SettingName = "YingYang",
                 Shaders = /*(*/ShaderMode.Bloom /*| ShaderMode.Liquify | ShaderMode.ScanLine)*/,
                 BackgroundColor = Color.Black,
+                BackgroundImage = "YingYang.jpg",
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle

@@ -141,6 +141,9 @@ namespace _3DMusicVis2
             MediaPlayerManager.Initialise();
             System.Console.WriteLine("Initialized the MediaPlayerManager...");
 
+            ImageManager.Initialise();
+            System.Console.WriteLine("Initialized the ImageManager...");
+
             _3DCirclularWaveRenderer.Initialise(GraphicsDevice);
             System.Console.WriteLine("Initialized the _3DCirclularWaveRenderer...");
             _3DLinearWaveRenderer.Initialise(GraphicsDevice);

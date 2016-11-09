@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -43,6 +44,7 @@ namespace _3DMusicVis2.Screen.LoadSetting
         {
             _settings = SettingsManager.Load<Setting.Visualizer.Setting>(SettingsManager.SETTINGS_DIR,
                 SettingsManager.SETTINGS_EXT);
+
             _myKind = kind;
 
             _delete = new Button(new Rectangle(100, Game1.VIRTUAL_RESOLUTION.Height - 300, 200, 50),
