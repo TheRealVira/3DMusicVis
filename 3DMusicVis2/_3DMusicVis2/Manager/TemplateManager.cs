@@ -35,30 +35,30 @@ namespace _3DMusicVis2.Manager
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Connected,
-                        Trans = new Transformation {Position = new Vector2(0, -.15f), Scale = Vector2.One},
+                        Trans = new Transformation {Position = new Vector2(0, -.3f), Scale = Vector2.One},
                         Color = new ColorSetting {Color = Color.Blue, Mode = Setting.Visualizer.ColorMode.Breath}
                     },
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Connected,
-                        Trans = new Transformation {Position = new Vector2(0, -.3f), Scale = Vector2.One},
+                        Trans = new Transformation {Position = new Vector2(0, -.15f), Scale = Vector2.One},
                         Color = new ColorSetting {Color = Color.Red}
                     },
                     new SettingsBundle
                     {
-                        Trans = new Transformation {Position = new Vector2(0, -.5f), Scale = Vector2.One},
+                        Trans = new Transformation {Position = new Vector2(0, 0), Scale = Vector2.One},
                         Color = new ColorSetting {Color = Color.Yellow, Mode = Setting.Visualizer.ColorMode.Rainbow}
                     },
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Connected,
-                        Trans = new Transformation {Position = new Vector2(0, -.65f), Scale = Vector2.One},
+                        Trans = new Transformation {Position = new Vector2(0, .15f), Scale = Vector2.One},
                         Color = new ColorSetting {Color = Color.Red}
                     },
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Connected,
-                        Trans = new Transformation {Position = new Vector2(0, -.8f), Scale = Vector2.One},
+                        Trans = new Transformation {Position = new Vector2(0, .3f), Scale = Vector2.One},
                         Color = new ColorSetting {Color = Color.Blue, Mode = Setting.Visualizer.ColorMode.Breath}
                     }
                 }
@@ -110,19 +110,19 @@ namespace _3DMusicVis2.Manager
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Blocked,
-                        Trans = new Transformation {Scale = Vector2.One, Position = new Vector2(0, -.5f)},
+                        Trans = new Transformation {Scale = Vector2.One, Position = new Vector2(0, 0)},
                         Color = new ColorSetting {Color = Color.Red}
                     },
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Connected,
-                        Trans = new Transformation {Position = new Vector2(0, -.6f), Scale = Vector2.One},
+                        Trans = new Transformation {Position = new Vector2(0, .1f), Scale = Vector2.One},
                         Color = new ColorSetting {Color = Color.Violet}
                     },
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Dashed,
-                        Trans = new Transformation {Position = new Vector2(0, -.4f), Scale = Vector2.One},
+                        Trans = new Transformation {Position = new Vector2(0, -.1f), Scale = Vector2.One},
                         Color = new ColorSetting {Color = Color.Brown}
                     }
                 }
@@ -145,7 +145,7 @@ namespace _3DMusicVis2.Manager
                         Trans =
                             new Transformation
                             {
-                                Position = new Vector2(0, -.05f),
+                                Position = new Vector2(0, .01f),
                                 Scale = new Vector2(.9f, 1),
                                 Rotation = (float) Math.PI
                             },
@@ -155,7 +155,7 @@ namespace _3DMusicVis2.Manager
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(0, .05f), Scale = new Vector2(.9f, 1)},
+                        Trans = new Transformation {Position = new Vector2(0f, .01f), Scale = new Vector2(.9f, 1)},
                         Color =
                             new ColorSetting {Color = Color.DarkGray /*, Mode = Setting.Visualizer.ColorMode.Rainbow*/}
                     }
@@ -179,7 +179,7 @@ namespace _3DMusicVis2.Manager
                         Trans =
                             new Transformation
                             {
-                                Position = new Vector2(0, -.05f),
+                                Position = new Vector2(.05f, 0f),
                                 Scale = new Vector2(.9f, 1),
                                 Rotation = (float) Math.PI
                             },
@@ -189,14 +189,14 @@ namespace _3DMusicVis2.Manager
                     {
                         HowIDraw = DrawMode.Connected,
                         IsFrequency = false,
-                        Trans = new Transformation {Position = new Vector2(0, -.5f), Scale = new Vector2(1, 1)},
+                        Trans = new Transformation {Position = new Vector2(0, 0f), Scale = new Vector2(1, 1)},
                         Color = new ColorSetting {Color = Color.White}
                     },
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(0, .05f), Scale = new Vector2(.9f, 1)},
+                        Trans = new Transformation {Position = new Vector2(.05f, 0f), Scale = new Vector2(.9f, 1)},
                         Color = new ColorSetting {Color = Color.DarkGray, Mode = Setting.Visualizer.ColorMode.Rainbow}
                     }
                 }
@@ -216,7 +216,7 @@ namespace _3DMusicVis2.Manager
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(0, 0f), Scale = new Vector2(1f, 1f)},
+                        Trans = new Transformation {Position = new Vector2(0, .5f), Scale = new Vector2(1f, 1f), Rotation = (float)Math.PI/4},
                         Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow}
                     }
                 }
@@ -236,7 +236,7 @@ namespace _3DMusicVis2.Manager
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(0, .5f), Scale = new Vector2(1f, 1f)},
+                        Trans = new Transformation {Position = new Vector2(0, .75f), Scale = new Vector2(1f, .5f)},
                         Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow},
                         HorizontalMirror = true
                     },
@@ -244,7 +244,7 @@ namespace _3DMusicVis2.Manager
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(0, -.5f), Scale = new Vector2(1f, 1)},
+                        Trans = new Transformation {Position = new Vector2(0, -.25f), Scale = new Vector2(1f, 1f)},
                         Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow, Negate = true},
                         VerticalMirror = true,
                         HorizontalMirror = true

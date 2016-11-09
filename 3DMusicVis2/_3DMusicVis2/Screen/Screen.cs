@@ -35,12 +35,15 @@ namespace _3DMusicVis2.Screen
         public float Alpha { get; }
 
         public bool ShouldBeDeleted { get; protected set; }
+        public bool IsInitialised { protected set;  get; }
+
         public abstract void Draw(SpriteBatch sB, GameTime gameTime);
 
         public abstract void Update(GameTime gameTime);
 
         public virtual void LoadedUp()
         {
+            IsInitialised = true;
         }
 
         public virtual void Unloade()

@@ -114,7 +114,7 @@ namespace _3DMusicVis2
 
             MyConsole = new Console(Console.ConsoleBoundings, FamouseOnePixel);
 
-            System.Console.WriteLine("Initialised the OutputManager...");
+            System.Console.WriteLine("IsInitialised the OutputManager...");
 
             //Resolution.Init(ref Graphics);
             //Resolution.SetVirtualResolution(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
@@ -128,7 +128,7 @@ namespace _3DMusicVis2
             //var form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(this.Window.Handle);
             //form.Location = new System.Drawing.Point(10, 10);
 
-            System.Console.WriteLine("Initialised the Resolution...");
+            System.Console.WriteLine("IsInitialised the Resolution...");
 
             AudioAnalysis = new AudioAnalysisXNAClass();
             BasicEffect = new BasicEffect(GraphicsDevice)
