@@ -48,16 +48,13 @@ namespace _3DMusicVis2.RenderFrame
             Frequencies = frequencies;
         }
 
-        public static Texture2D Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings)
+        public static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,
+            ref RenderTarget2D tex)
         {
-            if (Frequencies == null || Frequencies.Count < 2) return Game1.FamouseOnePixel;
+            if (Frequencies == null || Frequencies.Count < 2 || tex == null) return;
 
-            var toRet = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height, true,
-                device.DisplayMode.Format, DepthFormat.Depth24);
-            device.SetRenderTarget(toRet);
+            device.SetRenderTarget(tex);
             device.Clear(_renderer.ClearColor);
-
             Game1.SpriteBatch.Begin();
 
             switch (settings)
@@ -65,39 +62,39 @@ namespace _3DMusicVis2.RenderFrame
                 case DrawMode.Blocked:
                     for (var f = 0; f < Frequencies.Count; f++)
                     {
-                        var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
+                        var x = Game1.VIRTUAL_RESOLUTION.Width * f / (float)Frequencies.Count;
                         var y =
-                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                            (int)(Frequencies[f] * Game1.VIRTUAL_RESOLUTION.Height / 2);
                         //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
 
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
                         //    _renderer.ForeGroundColor.Negate());
-                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, 0, WIDTH*2, y),
+                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int)x, 0, WIDTH * 2, y),
                             _renderer.ForeGroundColor);
                     }
                     break;
                 case DrawMode.Dashed:
                     for (var f = 0; f < Frequencies.Count; f++)
                     {
-                        var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
+                        var x = Game1.VIRTUAL_RESOLUTION.Width * f / (float)Frequencies.Count;
                         var y =
-                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                            (int)(Frequencies[f] * Game1.VIRTUAL_RESOLUTION.Height / 2);
                         //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
 
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
                         //    _renderer.ForeGroundColor.Negate());
-                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, y, WIDTH, HEIGHT),
+                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int)x, y, WIDTH, HEIGHT),
                             _renderer.ForeGroundColor);
                     }
                     break;
                 case DrawMode.Connected:
-                    var last = new Vector2(0, Frequencies[0]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                    var last = new Vector2(0, Frequencies[0] * Game1.VIRTUAL_RESOLUTION.Height / 2);
                     for (var f = 1; f < Frequencies.Count; f++)
                     {
                         var y =
-                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                            (int)(Frequencies[f] * Game1.VIRTUAL_RESOLUTION.Height / 2);
                         //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
-                        var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count, y);
+                        var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width * f / (float)Frequencies.Count, y);
 
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
                         //    _renderer.ForeGroundColor.Negate());
@@ -113,6 +110,15 @@ namespace _3DMusicVis2.RenderFrame
             Game1.SpriteBatch.End();
 
             device.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
+        }
+
+        public static Texture2D Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings)
+        {
+            var toRet = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
+                Game1.VIRTUAL_RESOLUTION.Height, true,
+                device.DisplayMode.Format, DepthFormat.Depth24);
+
+            Draw(device, gameTime, cam, settings, ref toRet);
 
             return toRet;
             //device.Clear(ClearOptions.Draw | ClearOptions.DepthBuffer, _renderer.ClearColor, 1.0f, 0);

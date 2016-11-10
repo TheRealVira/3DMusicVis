@@ -36,11 +36,11 @@ namespace _3DMusicVis2.Screen
         {
             GDM.GraphicsDevice.Clear(Color.Black);
             var screenCenter = new Vector2(
-                GDM.GraphicsDevice.Viewport.Bounds.Width/2,
-                GDM.GraphicsDevice.Viewport.Bounds.Height/2);
+                GDM.GraphicsDevice.Viewport.Bounds.Width/2f,
+                GDM.GraphicsDevice.Viewport.Bounds.Height/2f);
             var textureCenter = new Vector2(
-                Texture.Width/2,
-                Texture.Height/2);
+                Texture.Width/2f,
+                Texture.Height/2f);
 
             sB.Begin();
             sB.Draw(Texture, screenCenter, null, Color.White, 0f, textureCenter, 1f, SpriteEffects.None, 1f);

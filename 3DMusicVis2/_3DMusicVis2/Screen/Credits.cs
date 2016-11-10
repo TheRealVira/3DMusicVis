@@ -55,9 +55,11 @@ namespace _3DMusicVis2.Screen
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
             GDM.GraphicsDevice.Clear(Color.Black);
-            _namingList.Draw(gameTime, sB);
 
+            sB.Begin(SpriteSortMode.Deferred, null, SamplerState.AnisotropicClamp, null, null);
+            _namingList.Draw(gameTime, sB);
             _back.Draw(gameTime, sB);
+            sB.End();
         }
 
         public override void Update(GameTime gameTime)

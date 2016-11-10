@@ -145,7 +145,7 @@ namespace _3DMusicVis2.Manager
                         Trans =
                             new Transformation
                             {
-                                Position = new Vector2(0, .01f),
+                                Position = new Vector2(.05f, -.05f),
                                 Scale = new Vector2(.9f, 1),
                                 Rotation = (float) Math.PI
                             },
@@ -155,7 +155,7 @@ namespace _3DMusicVis2.Manager
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(0f, .01f), Scale = new Vector2(.9f, 1)},
+                        Trans = new Transformation {Position = new Vector2(.05f, .05f), Scale = new Vector2(.9f, 1)},
                         Color =
                             new ColorSetting {Color = Color.DarkGray /*, Mode = Setting.Visualizer.ColorMode.Rainbow*/}
                     }
@@ -231,6 +231,7 @@ namespace _3DMusicVis2.Manager
                 Shaders = /*(*/ShaderMode.Bloom /*| ShaderMode.Liquify | ShaderMode.ScanLine)*/,
                 BackgroundColor = Color.Black,
                 BackgroundImage = "YingYang.jpg",
+                ForegroundImage = "skeletron.png",
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle

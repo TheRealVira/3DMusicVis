@@ -152,12 +152,15 @@ namespace _3DMusicVis2.Screen.LoadSetting
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
+            sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, null);
             _delete.Draw(gameTime, sB);
             _use.Draw(gameTime, sB);
             _back.Draw(gameTime, sB);
             _settingsBox.Draw(gameTime, sB, 3);
 
             _new?.Draw(gameTime, sB);
+
+            sB.End();
 
             if (_deletedPrompt.IsVisible)
             {

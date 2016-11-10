@@ -33,6 +33,7 @@ namespace _3DMusicVis2.Setting.Visualizer
         public Color BackgroundColor;
         
         public string BackgroundImage;
+        public string ForegroundImage;
 
         public override string ToString()
         {

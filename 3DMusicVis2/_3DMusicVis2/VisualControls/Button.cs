@@ -40,12 +40,10 @@ namespace _3DMusicVis2.VisualControls
             if (!IsVisible) return;
 
             base.Draw(gameTime, spriteBatch);
-
-            spriteBatch.Begin();
+            
             spriteBatch.DrawString(_font, Text,
                 new Vector2(Bounding.Center.X - _font.MeasureString(Text).X/2,
                     Bounding.Center.Y - _font.MeasureString(Text).Y/2), FontColor);
-            spriteBatch.End();
         }
 
         public void Button_MouseExits(object sender, EventArgs e)

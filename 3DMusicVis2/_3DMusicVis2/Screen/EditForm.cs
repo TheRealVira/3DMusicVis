@@ -111,10 +111,14 @@ namespace _3DMusicVis2.Screen
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
             backRenderer.Selected = _loaded.Bundles[_currentItems.SelectedIndex];
+
             backRenderer.Draw(sB, gameTime);
 
+            sB.Begin(SpriteSortMode.Deferred, null, SamplerState.AnisotropicClamp, null, null);
             _currentItems.Draw(gameTime, sB, 3);
             _save.Draw(gameTime, sB);
+
+            sB.End();
 
             if (_menu.IsVisible)
             {

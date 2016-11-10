@@ -79,17 +79,18 @@ namespace _3DMusicVis2.Screen
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
-            sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, null);
             sB.Draw(Game1.FamouseOnePixel, Game1.VIRTUAL_RESOLUTION, new Color(50, 50, 50, 1));
             sB.Draw(Game1.FamouseOnePixel,
                 new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 150, Game1.VIRTUAL_RESOLUTION.Height/2 - 300, 300, 600),
                 new Color(10, 10, 10));
-            sB.End();
 
             _hadder.Draw(gameTime, sB);
             _menu.Draw(gameTime, sB);
             _resume.Draw(gameTime, sB);
             _exit.Draw(gameTime, sB);
+
+            sB.End();
         }
 
         public override void Update(GameTime gameTime)

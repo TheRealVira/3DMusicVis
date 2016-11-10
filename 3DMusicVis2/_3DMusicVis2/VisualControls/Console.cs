@@ -104,8 +104,10 @@ namespace _3DMusicVis2.VisualControls
             //    y += (int)(Game1.ConsoleFont.MeasureString(text.Text).Y + Spacing);
             //}
 
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.AnisotropicClamp, null, null);
             _lines.Draw(gameTime, spriteBatch, 2);
             ConsoleSignLabel.Draw(gameTime, spriteBatch, 2);
+            spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)

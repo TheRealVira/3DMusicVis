@@ -56,8 +56,8 @@ namespace _3DMusicVis2.RecordingType
             waveBuffer = new BufferedWaveProvider(_capture.WaveFormat);
 
             FrequencySpectrum = new float[waveBuffer.BufferLength/999];
-            TestFrequencyleData = new float[FrequencySpectrum.Length];
-            TestSampleData = new float[FrequencySpectrum.Length];
+            TestFrequencyleData = new float[FrequencySpectrum.Length/2];
+            TestSampleData = new float[FrequencySpectrum.Length / 2];
 
             for (var i = 0; i < TestFrequencyleData.Length; i++)
             {

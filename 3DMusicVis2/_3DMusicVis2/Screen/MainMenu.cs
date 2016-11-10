@@ -74,10 +74,12 @@ namespace _3DMusicVis2.Screen
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
+            sB.Begin(SpriteSortMode.Deferred, null, SamplerState.AnisotropicClamp, null, null);
             _load.Draw(gameTime, sB);
             _edit.Draw(gameTime, sB);
             _credits.Draw(gameTime, sB);
             _exit.Draw(gameTime, sB);
+            sB.End();
         }
 
         public override void Update(GameTime gameTime)

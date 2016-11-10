@@ -57,10 +57,11 @@ namespace _3DMusicVis2.Screen.Prompt
             sB.Draw(Game1.FamouseOnePixel,
                 new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 300, Game1.VIRTUAL_RESOLUTION.Height/2 - 150, 600, 300),
                 new Color(10, 10, 10));
-            sB.End();
 
             _myText.Draw(gameTime, sB);
             Okay.Draw(gameTime, sB);
+
+            sB.End();
         }
 
         public override void Update(GameTime gameTime)

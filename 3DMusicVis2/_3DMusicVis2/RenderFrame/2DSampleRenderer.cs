@@ -54,87 +54,87 @@ namespace _3DMusicVis2.RenderFrame
             }
         }
 
+        public static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,
+            ref RenderTarget2D tex)
+        {
+            if (_samples == null || _samples.Count < 2 || tex == null) return;
+
+            device.SetRenderTarget(tex);
+            device.Clear(_renderer.ClearColor);
+
+            Game1.SpriteBatch.Begin();
+
+            switch (settings)
+            {
+                case DrawMode.Blocked:
+                    for (var s = 0; s < _samples.Count; s++)
+                    {
+                        var x = Game1.VIRTUAL_RESOLUTION.Width * s / _samples.Count;
+                        var width = 8;
+                        var y =
+                            (int)
+                                (_samples[s] > 0
+                                    ? Game1.VIRTUAL_RESOLUTION.Height / 2f -
+                                      _samples[s] * (Game1.VIRTUAL_RESOLUTION.Height / 4f)
+                                    : Game1.VIRTUAL_RESOLUTION.Height / 2f - 1);
+                        var height = (int)(Math.Abs(_samples[s]) * Game1.VIRTUAL_RESOLUTION.Height / 4f);
+
+                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle(x, y, width, height),
+                            _renderer.ForeGroundColor);
+                    }
+                    break;
+                case DrawMode.Dashed:
+                    for (var s = 0; s < _samples.Count; s++)
+                    {
+                        var x = Game1.VIRTUAL_RESOLUTION.Width * s / _samples.Count;
+                        var width = 1;
+                        var y =
+                            (int)
+                                (Game1.VIRTUAL_RESOLUTION.Height / 2f -
+                                 _samples[s] * (Game1.VIRTUAL_RESOLUTION.Height / 4f));
+                        var height = 2;
+
+                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle(x, y, width, height),
+                            _renderer.ForeGroundColor);
+                    }
+                    break;
+                case DrawMode.Connected:
+                    var last = new Vector2(0,
+                        Game1.VIRTUAL_RESOLUTION.Height / 2f - _samples[0] * (Game1.VIRTUAL_RESOLUTION.Height / 4f));
+
+                    for (var s = 1; s < _samples.Count - 1; s++)
+                    {
+                        var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width * s / (float)_samples.Count,
+                            Game1.VIRTUAL_RESOLUTION.Height / 2f -
+                            _samples[s] * (Game1.VIRTUAL_RESOLUTION.Height / 4f));
+
+                        Primitives2D.DrawLine(Game1.SpriteBatch, last, c, _renderer.ForeGroundColor);
+                        last = c;
+                    }
+
+                    Primitives2D.DrawLine(Game1.SpriteBatch, last,
+                        new Vector2(Game1.VIRTUAL_RESOLUTION.Width * _samples.Count / (float)_samples.Count,
+                            _samples[0] > 0
+                                ? Game1.VIRTUAL_RESOLUTION.Height / 2f -
+                                  _samples[0] * (Game1.VIRTUAL_RESOLUTION.Height / 4f)
+                                : Game1.VIRTUAL_RESOLUTION.Height / 2f - 1), _renderer.ForeGroundColor);
+                    break;
+                default:
+                    break;
+            }
+
+            Game1.SpriteBatch.End();
+
+            device.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
+        }
+
         public static Texture2D Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode setting)
         {
-            if (_samples == null || _samples.Count < 2) return Game1.FamouseOnePixel;
-
             var toRet = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
                 Game1.VIRTUAL_RESOLUTION.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
-            device.SetRenderTarget(toRet);
-            device.Clear(_renderer.ClearColor);
-            using (var sprite = new SpriteBatch(device))
-            {
-                sprite.Begin();
-                Game1.BasicEffect.Projection = cam.Projektion;
-                Game1.BasicEffect.View = cam.View;
 
-                lock (_samples)
-                {
-                    switch (setting)
-                    {
-                        case DrawMode.Blocked:
-                            for (var s = 0; s < _samples.Count; s++)
-                            {
-                                var x = Game1.VIRTUAL_RESOLUTION.Width*s/_samples.Count;
-                                var width = 8;
-                                var y =
-                                    (int)
-                                        (_samples[s] > 0
-                                            ? Game1.VIRTUAL_RESOLUTION.Height/2f -
-                                              _samples[s]*(Game1.VIRTUAL_RESOLUTION.Height/4f)
-                                            : Game1.VIRTUAL_RESOLUTION.Height/2f - 1);
-                                var height = (int) (Math.Abs(_samples[s])*Game1.VIRTUAL_RESOLUTION.Height/4f);
-
-                                sprite.Draw(Game1.FamouseOnePixel, new Rectangle(x, y, width, height),
-                                    _renderer.ForeGroundColor);
-                            }
-                            break;
-                        case DrawMode.Dashed:
-                            for (var s = 0; s < _samples.Count; s++)
-                            {
-                                var x = Game1.VIRTUAL_RESOLUTION.Width*s/_samples.Count;
-                                var width = 1;
-                                var y =
-                                    (int)
-                                        (Game1.VIRTUAL_RESOLUTION.Height/2f -
-                                         _samples[s]*(Game1.VIRTUAL_RESOLUTION.Height/4f));
-                                var height = 2;
-
-                                sprite.Draw(Game1.FamouseOnePixel, new Rectangle(x, y, width, height),
-                                    _renderer.ForeGroundColor);
-                            }
-                            break;
-                        case DrawMode.Connected:
-                            var last = new Vector2(0,
-                                Game1.VIRTUAL_RESOLUTION.Height/2f - _samples[0]*(Game1.VIRTUAL_RESOLUTION.Height/4f));
-
-                            for (var s = 1; s < _samples.Count - 1; s++)
-                            {
-                                var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width*s/(float) _samples.Count,
-                                    Game1.VIRTUAL_RESOLUTION.Height/2f -
-                                    _samples[s]*(Game1.VIRTUAL_RESOLUTION.Height/4f));
-
-                                Primitives2D.DrawLine(sprite, last, c, _renderer.ForeGroundColor);
-                                last = c;
-                            }
-
-                            Primitives2D.DrawLine(sprite, last,
-                                new Vector2(Game1.VIRTUAL_RESOLUTION.Width*_samples.Count/(float) _samples.Count,
-                                    _samples[0] > 0
-                                        ? Game1.VIRTUAL_RESOLUTION.Height/2f -
-                                          _samples[0]*(Game1.VIRTUAL_RESOLUTION.Height/4f)
-                                        : Game1.VIRTUAL_RESOLUTION.Height/2f - 1), _renderer.ForeGroundColor);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                sprite.End();
-            }
-
-            device.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
+            Draw(device, gameTime, cam, setting, ref toRet);
 
             return toRet;
         }

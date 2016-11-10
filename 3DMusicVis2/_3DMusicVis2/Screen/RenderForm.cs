@@ -54,7 +54,7 @@ namespace _3DMusicVis2.Screen
 
         public bool UseShader = true;
 
-        private Dictionary<string, Texture2D> BufferedDrawer;
+        private Dictionary<string, RenderTarget2D> BufferedDrawer;
 
         private List<string> DicKeys;
 
@@ -74,12 +74,12 @@ namespace _3DMusicVis2.Screen
                 Game1.VIRTUAL_RESOLUTION.Height);
 
             DicKeys = new List<string>();
-            BufferedDrawer = new Dictionary<string, Texture2D>();
+            BufferedDrawer = new Dictionary<string, RenderTarget2D>();
             currentSetting.Bundles.ForEach(x =>
             {
                 if (BufferedDrawer.ContainsKey(x.ToString())) return;
 
-                BufferedDrawer.Add(x.ToString(), new Texture2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height));
+                BufferedDrawer.Add(x.ToString(), new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height));
                 DicKeys.Add(x.ToString());
             });
         }
@@ -95,13 +95,16 @@ namespace _3DMusicVis2.Screen
         {
             base.Unloade();
             RealTimeRecording.StopRecording();
+            DisposeBuffered();
+            BufferedDrawer.Clear();
+        }
 
+        private void DisposeBuffered()
+        {
             foreach (var renderTarget2D in BufferedDrawer)
             {
                 renderTarget2D.Value.Dispose();
             }
-
-            BufferedDrawer.Clear();
         }
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
@@ -111,22 +114,28 @@ namespace _3DMusicVis2.Screen
                 switch (key)
                 {
                     case "2FDashed":
-                        BufferedDrawer["2FDashed"] = _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Dashed);
+                        RenderTarget2D temp1 = BufferedDrawer["2FDashed"];
+                        _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Dashed, ref temp1);
                         continue;
                     case "2FBlocked":
-                        BufferedDrawer["2FBlocked"] = _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked);
-                        continue;
-                    case "2SDashed":
-                        BufferedDrawer["2SDashed"] = _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Dashed);
-                        continue;
-                    case "2SBlocked":
-                        BufferedDrawer["2SBlocked"] = _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked);
+                        RenderTarget2D temp2 = BufferedDrawer["2FBlocked"];
+                        _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked, ref temp2);
                         continue;
                     case "2FConnected":
-                        BufferedDrawer["2FConnected"] = _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Connected);
+                        var temp3 = BufferedDrawer["2FConnected"];
+                        _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Connected, ref temp3);
+                        continue;
+                    case "2SDashed":
+                        var temp4 = BufferedDrawer["2SDashed"];
+                        _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Dashed, ref temp4);
+                        continue;
+                    case "2SBlocked":
+                        var temp5 = BufferedDrawer["2SBlocked"];
+                        _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked, ref temp5);
                         continue;
                     case "2SConnected":
-                        BufferedDrawer["2SConnected"] = _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Connected);
+                        var temp6 = BufferedDrawer["2SConnected"];
+                        _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Connected, ref temp6);
                         continue;
                     default:
                         continue;
@@ -256,16 +265,28 @@ namespace _3DMusicVis2.Screen
 
             GDM.GraphicsDevice.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
             sB.GraphicsDevice.Clear(_mySetting.BackgroundColor);
-            sB.Begin();
-            if (!string.IsNullOrEmpty(_mySetting.BackgroundImage)&& ImageManager.Images.ContainsKey(_mySetting.BackgroundImage))
-            {
-                var image = ImageManager.Images[_mySetting.BackgroundImage];
-                var height = MathHelper.Min(image.Height, Game1.VIRTUAL_RESOLUTION.Height);
-                var width = MathHelper.Min(image.Width, Game1.VIRTUAL_RESOLUTION.Width);
+            sB.Begin(SpriteSortMode.Deferred, null, SamplerState.AnisotropicClamp, null, null, null);
 
-                sB.Draw(image, new Rectangle(0,0,(int)width, (int)height), Color.White);
+            Texture2D backTryImage;
+            if (ImageManager.Images.TryGetValue(_mySetting.BackgroundImage ?? "", out backTryImage))
+            {
+                var height = MathHelper.Min(backTryImage.Height, Game1.VIRTUAL_RESOLUTION.Height);
+                var width = MathHelper.Min(backTryImage.Width, Game1.VIRTUAL_RESOLUTION.Width);
+
+                sB.Draw(backTryImage, new Rectangle(0, 0, (int)width, (int)height), Color.White);
             }
+
             sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
+
+            Texture2D foreTryImage;
+            if (ImageManager.Images.TryGetValue(_mySetting.ForegroundImage ?? "", out foreTryImage))
+            {
+                var height = MathHelper.Min(foreTryImage.Height, Game1.VIRTUAL_RESOLUTION.Height);
+                var width = MathHelper.Min(foreTryImage.Width, Game1.VIRTUAL_RESOLUTION.Width);
+
+                sB.Draw(foreTryImage, new Rectangle(0,0,(int)width, (int)height), Color.White);
+            }
+
             sB.End();
 
             if (_menu.IsVisible)
