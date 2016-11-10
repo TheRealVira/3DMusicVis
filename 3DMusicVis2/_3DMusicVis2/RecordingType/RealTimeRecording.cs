@@ -13,6 +13,7 @@
 #region Usings
 
 using System;
+using System.Linq;
 using NAudio.CoreAudioApi;
 using NAudio.Dsp;
 using NAudio.Wave;
@@ -34,6 +35,11 @@ namespace _3DMusicVis2.RecordingType
 
         public static float[] CurrentSamples = new float[0];
         public static float[] FrequencySpectrum;
+
+        public static float PrevMaxFreq { get; private set; }
+        public static float PrevMinFreq { get; private set; }
+        public static float MaxFreq { get; private set; }
+        public static float MinFreq { get; private set; }
 
         public static float[] TestSampleData;
         public static float[] TestFrequencyleData;
@@ -73,6 +79,8 @@ namespace _3DMusicVis2.RecordingType
         {
             var half = e.Result.Length/4;
             FrequencySpectrum = new float[half];
+            PrevMaxFreq = MaxFreq;
+            PrevMinFreq = MinFreq;
 
             for (var i = 0; i < half; i++)
             {
@@ -90,7 +98,10 @@ namespace _3DMusicVis2.RecordingType
                 //var freq = (Math.Max(e.Result[i].Y,0) + Math.Max(e.Result[i].X,0))* MULTIPLACTOR;
                 // (float) Math.Max(.005f, Math.Min(freq, 1)); // Apply maximum level of one.
             }
-            
+
+            MinFreq = FrequencySpectrum.Min();
+            MaxFreq = FrequencySpectrum.Max();
+
             //for (var i = e.Result.Length / 2; i < e.Result.Length; i++)
             //{
             //    // Add both numbers together and multiply them by ten (this is because the numbers would be too small).

@@ -140,6 +140,8 @@
     <Compile Include="Setting\Visualizer\ColorMode.cs" />
     <Compile Include="Setting\Visualizer\ColorSetting.cs" />
     <Compile Include="Setting\Visualizer\DrawMode.cs" />
+    <Compile Include="Setting\Visualizer\ImageMode.cs" />
+    <Compile Include="Setting\Visualizer\ImageSetting.cs" />
     <Compile Include="Setting\Visualizer\Setting.cs" />
     <Compile Include="Setting\Visualizer\SettingsBundle.cs" />
     <Compile Include="Serializer.cs" />

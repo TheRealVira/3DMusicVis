@@ -22,6 +22,7 @@ namespace _3DMusicVis2.Setting.Visualizer
     [Flags]
     internal enum ShaderMode
     {
+        None = 0,
         Bloom = 1,
         Blur = 2,
         Liquify = 4,

@@ -12,6 +12,7 @@
 
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -54,9 +55,9 @@ namespace _3DMusicVis2.Screen
 
         public bool UseShader = true;
 
-        private Dictionary<string, RenderTarget2D> BufferedDrawer;
+        private readonly Dictionary<string, RenderTarget2D> _bufferedDrawer;
 
-        private List<string> DicKeys;
+        private readonly List<string> _dicKeys;
 
         public RenderForm(GraphicsDeviceManager gdm, Setting.Visualizer.Setting currentSetting)
             : base(gdm, "RenderForm")
@@ -73,14 +74,14 @@ namespace _3DMusicVis2.Screen
             _alphaDeletionRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
                 Game1.VIRTUAL_RESOLUTION.Height);
 
-            DicKeys = new List<string>();
-            BufferedDrawer = new Dictionary<string, RenderTarget2D>();
+            _dicKeys = new List<string>();
+            _bufferedDrawer = new Dictionary<string, RenderTarget2D>();
             currentSetting.Bundles.ForEach(x =>
             {
-                if (BufferedDrawer.ContainsKey(x.ToString())) return;
+                if (_bufferedDrawer.ContainsKey(x.ToString())) return;
 
-                BufferedDrawer.Add(x.ToString(), new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height));
-                DicKeys.Add(x.ToString());
+                _bufferedDrawer.Add(x.ToString(), new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height));
+                _dicKeys.Add(x.ToString());
             });
         }
 
@@ -96,12 +97,12 @@ namespace _3DMusicVis2.Screen
             base.Unloade();
             RealTimeRecording.StopRecording();
             DisposeBuffered();
-            BufferedDrawer.Clear();
+            _bufferedDrawer.Clear();
         }
 
         private void DisposeBuffered()
         {
-            foreach (var renderTarget2D in BufferedDrawer)
+            foreach (var renderTarget2D in _bufferedDrawer)
             {
                 renderTarget2D.Value.Dispose();
             }
@@ -109,32 +110,32 @@ namespace _3DMusicVis2.Screen
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
-            foreach (var key in DicKeys)
+            foreach (var key in _dicKeys)
             {
                 switch (key)
                 {
                     case "2FDashed":
-                        RenderTarget2D temp1 = BufferedDrawer["2FDashed"];
+                        RenderTarget2D temp1 = _bufferedDrawer["2FDashed"];
                         _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Dashed, ref temp1);
                         continue;
                     case "2FBlocked":
-                        RenderTarget2D temp2 = BufferedDrawer["2FBlocked"];
+                        RenderTarget2D temp2 = _bufferedDrawer["2FBlocked"];
                         _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked, ref temp2);
                         continue;
                     case "2FConnected":
-                        var temp3 = BufferedDrawer["2FConnected"];
+                        var temp3 = _bufferedDrawer["2FConnected"];
                         _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Connected, ref temp3);
                         continue;
                     case "2SDashed":
-                        var temp4 = BufferedDrawer["2SDashed"];
+                        var temp4 = _bufferedDrawer["2SDashed"];
                         _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Dashed, ref temp4);
                         continue;
                     case "2SBlocked":
-                        var temp5 = BufferedDrawer["2SBlocked"];
+                        var temp5 = _bufferedDrawer["2SBlocked"];
                         _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked, ref temp5);
                         continue;
                     case "2SConnected":
-                        var temp6 = BufferedDrawer["2SConnected"];
+                        var temp6 = _bufferedDrawer["2SConnected"];
                         _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Connected, ref temp6);
                         continue;
                     default:
@@ -198,7 +199,7 @@ namespace _3DMusicVis2.Screen
                     height: (int) (scale.Y*Game1.VIRTUAL_RESOLUTION.Height));
 
                 sB.Draw(
-                    BufferedDrawer[_mySetting.Bundles[i].ToString()],
+                    _bufferedDrawer[_mySetting.Bundles[i].ToString()],
                     myRec,
                     null,
                     toDraw,
@@ -267,24 +268,16 @@ namespace _3DMusicVis2.Screen
             sB.GraphicsDevice.Clear(_mySetting.BackgroundColor);
             sB.Begin(SpriteSortMode.Deferred, null, SamplerState.AnisotropicClamp, null, null, null);
 
-            Texture2D backTryImage;
-            if (ImageManager.Images.TryGetValue(_mySetting.BackgroundImage ?? "", out backTryImage))
+            if (_mySetting.BackgroundImage != null)
             {
-                var height = MathHelper.Min(backTryImage.Height, Game1.VIRTUAL_RESOLUTION.Height);
-                var width = MathHelper.Min(backTryImage.Width, Game1.VIRTUAL_RESOLUTION.Width);
-
-                sB.Draw(backTryImage, new Rectangle(0, 0, (int)width, (int)height), Color.White);
+                DrawImageFromSetting(_mySetting.BackgroundImage, ref _mySetting.BackgroundImage.Rotation, sB, gameTime);
             }
 
             sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
 
-            Texture2D foreTryImage;
-            if (ImageManager.Images.TryGetValue(_mySetting.ForegroundImage ?? "", out foreTryImage))
+            if (_mySetting.ForegroundImage != null)
             {
-                var height = MathHelper.Min(foreTryImage.Height, Game1.VIRTUAL_RESOLUTION.Height);
-                var width = MathHelper.Min(foreTryImage.Width, Game1.VIRTUAL_RESOLUTION.Width);
-
-                sB.Draw(foreTryImage, new Rectangle(0,0,(int)width, (int)height), Color.White);
+                DrawImageFromSetting(_mySetting.ForegroundImage, ref _mySetting.ForegroundImage.Rotation, sB, gameTime);
             }
 
             sB.End();
@@ -293,6 +286,46 @@ namespace _3DMusicVis2.Screen
             {
                 _menu.Draw(sB, gameTime);
             }
+        }
+
+        private void DrawImageFromSetting(ImageSetting set, ref float rot, SpriteBatch sB, GameTime gt)
+        {
+            Texture2D tryImage;
+            if (!ImageManager.Images.TryGetValue(set.ImageFileName ?? "", out tryImage)) return;
+
+            var mid = 1 +
+                      ((set.Mode & ImageMode.Vibrate) != 0
+                          ? Math.Min(MathHelper.Lerp(RealTimeRecording.PrevMaxFreq, RealTimeRecording.MaxFreq, .2f), 1f)*
+                            .1f
+                          : 0);
+
+            if ((set.Mode & ImageMode.ReverseOnBeat) != 0 && RealTimeRecording.MaxFreq > set.RotationNotice)
+            {
+                set.ReverseRotation = !set.ReverseRotation;
+            }
+
+            var height = MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height)*mid;
+            var width = MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width)*mid;
+
+            if (Math.Abs(rot) == 360)
+            {
+                rot = 0;
+            }
+            else
+            {
+                rot += (float) gt.ElapsedGameTime.TotalMilliseconds*.0002f*(set.ReverseRotation ? -1 : 1)*
+                       set.RotationSpeedMutliplier;
+            }
+
+            if (rot > 360)
+            {
+                rot = 360;
+            }
+
+            sB.Draw(tryImage,
+                new Rectangle(Game1.VIRTUAL_RESOLUTION.Center.X, Game1.VIRTUAL_RESOLUTION.Center.Y, (int) width,
+                    (int) height), null, Color.White, ((set.Mode & ImageMode.Rotate) != 0 ? rot : 0f),
+                tryImage.Bounds.Center.ToVector2(), SpriteEffects.None, 0f);
         }
 
         public override void Update(GameTime gameTime)

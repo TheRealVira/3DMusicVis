@@ -134,30 +134,38 @@ namespace _3DMusicVis2.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "FrequencyOnly",
-                //Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
-                BackgroundColor = Color.White,
+                Shaders = /*(*/ShaderMode.Bloom /*| ShaderMode.Liquify | ShaderMode.ScanLine)*/,
+                BackgroundColor = Color.Black,
+                BackgroundImage = new ImageSetting()
+                {
+                    ImageFileName = "undertale.jpg",
+                    Tint = Color.White,
+                    Mode = ImageMode.Vibrate
+                },
+                ForegroundImage = new ImageSetting()
+                {
+                    ImageFileName = "skeletron.png",
+                    Tint = Color.White,
+                    Mode = ImageMode.None
+                },
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans =
-                            new Transformation
-                            {
-                                Position = new Vector2(.05f, -.05f),
-                                Scale = new Vector2(.9f, 1),
-                                Rotation = (float) Math.PI
-                            },
-                        Color = new ColorSetting {Color = Color.Black /*, Mode = Setting.Visualizer.ColorMode.Rainbow*/}
+                        Trans = new Transformation {Position = new Vector2(0, .75f), Scale = new Vector2(1f, .5f)},
+                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow},
+                        HorizontalMirror = true
                     },
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(.05f, .05f), Scale = new Vector2(.9f, 1)},
-                        Color =
-                            new ColorSetting {Color = Color.DarkGray /*, Mode = Setting.Visualizer.ColorMode.Rainbow*/}
+                        Trans = new Transformation {Position = new Vector2(0, -.25f), Scale = new Vector2(1f, 1f)},
+                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow, Negate = true},
+                        VerticalMirror = true,
+                        HorizontalMirror = true
                     }
                 }
             };
@@ -228,28 +236,39 @@ namespace _3DMusicVis2.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "YingYang",
-                Shaders = /*(*/ShaderMode.Bloom /*| ShaderMode.Liquify | ShaderMode.ScanLine)*/,
-                BackgroundColor = Color.Black,
-                BackgroundImage = "YingYang.jpg",
-                ForegroundImage = "skeletron.png",
+                //Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
+                BackgroundColor = Color.White,
+                ForegroundImage = new ImageSetting()
+                {
+                    ImageFileName = "yingyang.png",
+                    Tint = Color.White,
+                    Mode = ImageMode.Rotate | ImageMode.Vibrate | ImageMode.ReverseOnBeat,
+                    ReverseRotation = true,
+                    RotationSpeedMutliplier = 20f,
+                    RotationNotice = .7f
+                },
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(0, .75f), Scale = new Vector2(1f, .5f)},
-                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow},
-                        HorizontalMirror = true
+                        Trans =
+                            new Transformation
+                            {
+                                Position = new Vector2(.05f, -.05f),
+                                Scale = new Vector2(.9f, 1),
+                                Rotation = (float) Math.PI
+                            },
+                        Color = new ColorSetting {Color = Color.Black /*, Mode = Setting.Visualizer.ColorMode.Rainbow*/}
                     },
                     new SettingsBundle
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(0, -.25f), Scale = new Vector2(1f, 1f)},
-                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow, Negate = true},
-                        VerticalMirror = true,
-                        HorizontalMirror = true
+                        Trans = new Transformation {Position = new Vector2(.05f, .05f), Scale = new Vector2(.9f, 1)},
+                        Color =
+                            new ColorSetting {Color = Color.DarkGray /*, Mode = Setting.Visualizer.ColorMode.Rainbow*/}
                     }
                 }
             };
