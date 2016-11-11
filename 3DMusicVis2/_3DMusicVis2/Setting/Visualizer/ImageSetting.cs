@@ -11,6 +11,7 @@ namespace _3DMusicVis2.Setting.Visualizer
         public Color Tint;
         public float RotationSpeedMutliplier = 1f;
         public float RotationNotice = .8f;
+        public Vector2 Offset;
 
         public bool ReverseRotation;
         public float Rotation;

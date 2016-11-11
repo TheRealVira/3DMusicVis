@@ -266,7 +266,7 @@ namespace _3DMusicVis2.Screen
 
             GDM.GraphicsDevice.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
             sB.GraphicsDevice.Clear(_mySetting.BackgroundColor);
-            sB.Begin(SpriteSortMode.Deferred, null, SamplerState.AnisotropicClamp, null, null, null);
+            sB.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null);
 
             if (_mySetting.BackgroundImage != null)
             {
@@ -323,7 +323,7 @@ namespace _3DMusicVis2.Screen
             }
 
             sB.Draw(tryImage,
-                new Rectangle(Game1.VIRTUAL_RESOLUTION.Center.X, Game1.VIRTUAL_RESOLUTION.Center.Y, (int) width,
+                new Rectangle(Game1.VIRTUAL_RESOLUTION.Center.X+(int)(set.Offset.X*Game1.VIRTUAL_RESOLUTION.Width), Game1.VIRTUAL_RESOLUTION.Center.Y + (int)(set.Offset.Y * Game1.VIRTUAL_RESOLUTION.Height), (int) width,
                     (int) height), null, Color.White, ((set.Mode & ImageMode.Rotate) != 0 ? rot : 0f),
                 tryImage.Bounds.Center.ToVector2(), SpriteEffects.None, 0f);
         }

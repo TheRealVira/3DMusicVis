@@ -138,15 +138,17 @@ namespace _3DMusicVis2.Manager
                 BackgroundColor = Color.Black,
                 BackgroundImage = new ImageSetting()
                 {
-                    ImageFileName = "undertale.jpg",
+                    ImageFileName = "heart.png",
                     Tint = Color.White,
-                    Mode = ImageMode.Vibrate
+                    Mode = ImageMode.Vibrate,
+                    Offset = new Vector2(0, -.1f)
                 },
                 ForegroundImage = new ImageSetting()
                 {
-                    ImageFileName = "skeletron.png",
+                    ImageFileName = "determination.png",
                     Tint = Color.White,
-                    Mode = ImageMode.None
+                    Mode = ImageMode.None,
+                    Offset = new Vector2(0, .4f)
                 },
                 Bundles = new List<SettingsBundle>
                 {
