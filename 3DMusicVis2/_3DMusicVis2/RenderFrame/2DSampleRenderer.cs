@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using C3.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using _3DMusicVis2.Setting.Visualizer;
@@ -108,11 +107,11 @@ namespace _3DMusicVis2.RenderFrame
                             Game1.VIRTUAL_RESOLUTION.Height / 2f -
                             _samples[s] * (Game1.VIRTUAL_RESOLUTION.Height / 4f));
 
-                        Primitives2D.DrawLine(Game1.SpriteBatch, last, c, _renderer.ForeGroundColor);
+                        Game1.SpriteBatch.DrawLine(last, c, _renderer.ForeGroundColor);
                         last = c;
                     }
 
-                    Primitives2D.DrawLine(Game1.SpriteBatch, last,
+                    Game1.SpriteBatch.DrawLine(last,
                         new Vector2(Game1.VIRTUAL_RESOLUTION.Width * _samples.Count / (float)_samples.Count,
                             _samples[0] > 0
                                 ? Game1.VIRTUAL_RESOLUTION.Height / 2f -

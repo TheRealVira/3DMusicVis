@@ -13,7 +13,6 @@
 #region Usings
 
 using System.Collections.ObjectModel;
-using C3.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using _3DMusicVis2.Setting.Visualizer;
@@ -99,7 +98,7 @@ namespace _3DMusicVis2.RenderFrame
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
                         //    _renderer.ForeGroundColor.Negate());
 
-                        Primitives2D.DrawLine(Game1.SpriteBatch, last, c, _renderer.ForeGroundColor);
+                        Game1.SpriteBatch.DrawLine(last, c, _renderer.ForeGroundColor);
                         last = c;
                     }
                     break;
