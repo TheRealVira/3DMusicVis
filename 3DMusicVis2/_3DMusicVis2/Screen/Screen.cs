@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Screen.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:51
 
 #endregion
 
@@ -35,7 +35,7 @@ namespace _3DMusicVis2.Screen
         public float Alpha { get; }
 
         public bool ShouldBeDeleted { get; protected set; }
-        public bool IsInitialised { protected set;  get; }
+        public bool IsInitialised { protected set; get; }
 
         public abstract void Draw(SpriteBatch sB, GameTime gameTime);
 

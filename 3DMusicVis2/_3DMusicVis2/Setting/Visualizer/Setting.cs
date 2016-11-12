@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Setting.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:51
 
 #endregion
 
@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
@@ -31,7 +30,7 @@ namespace _3DMusicVis2.Setting.Visualizer
         public byte HasRenders { get; set; }
 
         public Color BackgroundColor;
-        
+
         public ImageSetting BackgroundImage;
         public ImageSetting ForegroundImage;
 

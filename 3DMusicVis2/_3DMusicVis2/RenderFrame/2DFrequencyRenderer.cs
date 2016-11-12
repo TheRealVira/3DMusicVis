@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 2DFrequencyRenderer.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:50
 
 #endregion
 
@@ -61,39 +61,39 @@ namespace _3DMusicVis2.RenderFrame
                 case DrawMode.Blocked:
                     for (var f = 0; f < Frequencies.Count; f++)
                     {
-                        var x = Game1.VIRTUAL_RESOLUTION.Width * f / (float)Frequencies.Count;
+                        var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
                         var y =
-                            (int)(Frequencies[f] * Game1.VIRTUAL_RESOLUTION.Height / 2);
+                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
                         //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
 
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
                         //    _renderer.ForeGroundColor.Negate());
-                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int)x, 0, WIDTH * 2, y),
+                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, 0, WIDTH*2, y),
                             _renderer.ForeGroundColor);
                     }
                     break;
                 case DrawMode.Dashed:
                     for (var f = 0; f < Frequencies.Count; f++)
                     {
-                        var x = Game1.VIRTUAL_RESOLUTION.Width * f / (float)Frequencies.Count;
+                        var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
                         var y =
-                            (int)(Frequencies[f] * Game1.VIRTUAL_RESOLUTION.Height / 2);
+                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
                         //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
 
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
                         //    _renderer.ForeGroundColor.Negate());
-                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int)x, y, WIDTH, HEIGHT),
+                        Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle((int) x, y, WIDTH, HEIGHT),
                             _renderer.ForeGroundColor);
                     }
                     break;
                 case DrawMode.Connected:
-                    var last = new Vector2(0, Frequencies[0] * Game1.VIRTUAL_RESOLUTION.Height / 2);
+                    var last = new Vector2(0, Frequencies[0]*Game1.VIRTUAL_RESOLUTION.Height/2);
                     for (var f = 1; f < Frequencies.Count; f++)
                     {
                         var y =
-                            (int)(Frequencies[f] * Game1.VIRTUAL_RESOLUTION.Height / 2);
+                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
                         //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
-                        var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width * f / (float)Frequencies.Count, y);
+                        var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count, y);
 
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
                         //    _renderer.ForeGroundColor.Negate());

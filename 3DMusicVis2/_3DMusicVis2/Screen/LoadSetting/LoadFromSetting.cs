@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: LoadFromSetting.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:51
 
 #endregion
 
@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

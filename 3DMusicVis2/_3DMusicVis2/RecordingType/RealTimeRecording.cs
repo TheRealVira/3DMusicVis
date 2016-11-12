@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RealTimeRecording.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:50
 
 #endregion
 
@@ -14,7 +14,6 @@
 
 using System;
 using System.Linq;
-using NAudio.CoreAudioApi;
 using NAudio.Dsp;
 using NAudio.Wave;
 
@@ -25,6 +24,8 @@ namespace _3DMusicVis2.RecordingType
     internal static class RealTimeRecording
     {
         public const int FftLength = 2048; // NAudio fft wants powers of two!
+
+        private const float MULTIPLACTOR = 200;
         private static IWaveIn _capture;
         private static int BitsPerSample;
         private static int Channels;
@@ -36,17 +37,15 @@ namespace _3DMusicVis2.RecordingType
         public static float[] CurrentSamples = new float[0];
         public static float[] FrequencySpectrum;
 
-        public static float PrevMaxFreq { get; private set; }
-        public static float PrevMinFreq { get; private set; }
-        public static float MaxFreq { get; private set; }
-        public static float MinFreq { get; private set; }
-
         public static float[] TestSampleData;
         public static float[] TestFrequencyleData;
 
         private static SampleAggregator aggregator;
 
-        private const float MULTIPLACTOR = 200;
+        public static float PrevMaxFreq { get; private set; }
+        public static float PrevMinFreq { get; private set; }
+        public static float MaxFreq { get; private set; }
+        public static float MinFreq { get; private set; }
 
         public static void Initialize()
         {
@@ -63,7 +62,7 @@ namespace _3DMusicVis2.RecordingType
 
             FrequencySpectrum = new float[waveBuffer.BufferLength/999];
             TestFrequencyleData = new float[FrequencySpectrum.Length/2];
-            TestSampleData = new float[FrequencySpectrum.Length / 2];
+            TestSampleData = new float[FrequencySpectrum.Length/2];
 
             for (var i = 0; i < TestFrequencyleData.Length; i++)
             {
@@ -90,11 +89,15 @@ namespace _3DMusicVis2.RecordingType
                 // Example:
                 // sqrt(1/16) = 1/4
                 // sqrt(1.5)  = 1.225
-                var val1 = (e.Result[i].X * e.Result[i].X + e.Result[i].Y * e.Result[i].Y);
+                var val1 = e.Result[i].X*e.Result[i].X + e.Result[i].Y*e.Result[i].Y;
                 val1 = 0;
-                var val2 = (e.Result[i+ e.Result.Length / 2 + e.Result.Length / 4].X * e.Result[i+ e.Result.Length / 2 + e.Result.Length / 4].X + e.Result[i+ e.Result.Length / 2 + e.Result.Length / 4].Y * e.Result[i+ e.Result.Length / 2 + e.Result.Length / 4].Y);
+                var val2 = e.Result[i + e.Result.Length/2 + e.Result.Length/4].X*
+                           e.Result[i + e.Result.Length/2 + e.Result.Length/4].X +
+                           e.Result[i + e.Result.Length/2 + e.Result.Length/4].Y*
+                           e.Result[i + e.Result.Length/2 + e.Result.Length/4].Y;
 
-                FrequencySpectrum[i] = (float)Math.Max(.002f, Math.Min(Math.Sqrt(Math.Sqrt(Math.Max(val1, val2) * MULTIPLACTOR)), 1));
+                FrequencySpectrum[i] =
+                    (float) Math.Max(.002f, Math.Min(Math.Sqrt(Math.Sqrt(Math.Max(val1, val2)*MULTIPLACTOR)), 1));
                 //var freq = (Math.Max(e.Result[i].Y,0) + Math.Max(e.Result[i].X,0))* MULTIPLACTOR;
                 // (float) Math.Max(.005f, Math.Min(freq, 1)); // Apply maximum level of one.
             }

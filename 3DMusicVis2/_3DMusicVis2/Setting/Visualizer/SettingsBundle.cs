@@ -6,14 +6,13 @@
 // Project: _3DMusicVis2
 // Filename: SettingsBundle.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:51
 
 #endregion
 
 #region Usings
 
 using System;
-using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
@@ -60,12 +59,12 @@ namespace _3DMusicVis2.Setting.Visualizer
                    (Color == temp.Color);
         }
 
-        public static bool operator == (SettingsBundle a, SettingsBundle b)
+        public static bool operator ==(SettingsBundle a, SettingsBundle b)
         {
             return a.Equals(b);
         }
 
-        public static bool operator != (SettingsBundle a, SettingsBundle b)
+        public static bool operator !=(SettingsBundle a, SettingsBundle b)
         {
             return !(a == b);
         }

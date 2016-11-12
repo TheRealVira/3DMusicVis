@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: VisualControl.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:51
 
 #endregion
 
@@ -139,7 +139,7 @@ namespace _3DMusicVis2.VisualControls
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, int borderWidth)
         {
             Draw(gameTime, spriteBatch);
-            
+
             spriteBatch.Draw(Game1.FamouseOnePixel,
                 new Rectangle(Bounding.Left, Bounding.Top, borderWidth, Bounding.Height), BorderColor); // Left
             spriteBatch.Draw(Game1.FamouseOnePixel,

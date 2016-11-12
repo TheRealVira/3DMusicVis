@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 2DSampleRenderer.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:50
 
 #endregion
 
@@ -68,15 +68,15 @@ namespace _3DMusicVis2.RenderFrame
                 case DrawMode.Blocked:
                     for (var s = 0; s < _samples.Count; s++)
                     {
-                        var x = Game1.VIRTUAL_RESOLUTION.Width * s / _samples.Count;
-                        var width = 8;
+                        var x = Game1.VIRTUAL_RESOLUTION.Width*s/_samples.Count;
+                        const int width = 8;
                         var y =
                             (int)
                                 (_samples[s] > 0
-                                    ? Game1.VIRTUAL_RESOLUTION.Height / 2f -
-                                      _samples[s] * (Game1.VIRTUAL_RESOLUTION.Height / 4f)
-                                    : Game1.VIRTUAL_RESOLUTION.Height / 2f - 1);
-                        var height = (int)(Math.Abs(_samples[s]) * Game1.VIRTUAL_RESOLUTION.Height / 4f);
+                                    ? Game1.VIRTUAL_RESOLUTION.Height/2f -
+                                      _samples[s]*(Game1.VIRTUAL_RESOLUTION.Height/4f)
+                                    : Game1.VIRTUAL_RESOLUTION.Height/2f - 1);
+                        var height = (int) (Math.Abs(_samples[s])*Game1.VIRTUAL_RESOLUTION.Height/4f);
 
                         Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle(x, y, width, height),
                             _renderer.ForeGroundColor);
@@ -85,12 +85,12 @@ namespace _3DMusicVis2.RenderFrame
                 case DrawMode.Dashed:
                     for (var s = 0; s < _samples.Count; s++)
                     {
-                        var x = Game1.VIRTUAL_RESOLUTION.Width * s / _samples.Count;
-                        var width = 1;
+                        var x = Game1.VIRTUAL_RESOLUTION.Width*s/_samples.Count;
+                        const int width = 1;
                         var y =
                             (int)
-                                (Game1.VIRTUAL_RESOLUTION.Height / 2f -
-                                 _samples[s] * (Game1.VIRTUAL_RESOLUTION.Height / 4f));
+                                (Game1.VIRTUAL_RESOLUTION.Height/2f -
+                                 _samples[s]*(Game1.VIRTUAL_RESOLUTION.Height/4f));
                         var height = 2;
 
                         Game1.SpriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle(x, y, width, height),
@@ -99,24 +99,24 @@ namespace _3DMusicVis2.RenderFrame
                     break;
                 case DrawMode.Connected:
                     var last = new Vector2(0,
-                        Game1.VIRTUAL_RESOLUTION.Height / 2f - _samples[0] * (Game1.VIRTUAL_RESOLUTION.Height / 4f));
+                        Game1.VIRTUAL_RESOLUTION.Height/2f - _samples[0]*(Game1.VIRTUAL_RESOLUTION.Height/4f));
 
                     for (var s = 1; s < _samples.Count - 1; s++)
                     {
-                        var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width * s / (float)_samples.Count,
-                            Game1.VIRTUAL_RESOLUTION.Height / 2f -
-                            _samples[s] * (Game1.VIRTUAL_RESOLUTION.Height / 4f));
+                        var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width*s/(float) _samples.Count,
+                            Game1.VIRTUAL_RESOLUTION.Height/2f -
+                            _samples[s]*(Game1.VIRTUAL_RESOLUTION.Height/4f));
 
                         Game1.SpriteBatch.DrawLine(last, c, _renderer.ForeGroundColor);
                         last = c;
                     }
 
                     Game1.SpriteBatch.DrawLine(last,
-                        new Vector2(Game1.VIRTUAL_RESOLUTION.Width * _samples.Count / (float)_samples.Count,
+                        new Vector2(Game1.VIRTUAL_RESOLUTION.Width*_samples.Count/(float) _samples.Count,
                             _samples[0] > 0
-                                ? Game1.VIRTUAL_RESOLUTION.Height / 2f -
-                                  _samples[0] * (Game1.VIRTUAL_RESOLUTION.Height / 4f)
-                                : Game1.VIRTUAL_RESOLUTION.Height / 2f - 1), _renderer.ForeGroundColor);
+                                ? Game1.VIRTUAL_RESOLUTION.Height/2f -
+                                  _samples[0]*(Game1.VIRTUAL_RESOLUTION.Height/4f)
+                                : Game1.VIRTUAL_RESOLUTION.Height/2f - 1), _renderer.ForeGroundColor);
                     break;
                 default:
                     break;

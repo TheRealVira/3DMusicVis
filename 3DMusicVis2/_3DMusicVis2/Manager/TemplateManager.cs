@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TemplateManager.cs
 // Date - created:2016.10.23 - 16:24
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:50
 
 #endregion
 
@@ -91,7 +91,13 @@ namespace _3DMusicVis2.Manager
                                 Position = new Vector2(0, 0),
                                 Scale = Vector2.One
                             },
-                        Color = new ColorSetting {Color = Color.Green, Mode = Setting.Visualizer.ColorMode.Rainbow, Negate = true},
+                        Color =
+                            new ColorSetting
+                            {
+                                Color = Color.Green,
+                                Mode = Setting.Visualizer.ColorMode.Rainbow,
+                                Negate = true
+                            },
                         VerticalMirror = true
                     },
                     new SettingsBundle
@@ -134,16 +140,16 @@ namespace _3DMusicVis2.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "FrequencyOnly",
-                Shaders = /*(*/ShaderMode.Bloom /*| ShaderMode.Liquify | ShaderMode.ScanLine)*/,
+                Shaders = /*(*/ ShaderMode.Bloom /*| ShaderMode.Liquify | ShaderMode.ScanLine)*/,
                 BackgroundColor = Color.Black,
-                BackgroundImage = new ImageSetting()
+                BackgroundImage = new ImageSetting
                 {
                     ImageFileName = "heart.png",
                     Tint = Color.White,
                     Mode = ImageMode.Vibrate,
                     Offset = new Vector2(0, -.1f)
                 },
-                ForegroundImage = new ImageSetting()
+                ForegroundImage = new ImageSetting
                 {
                     ImageFileName = "determination.png",
                     Tint = Color.White,
@@ -165,7 +171,13 @@ namespace _3DMusicVis2.Manager
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
                         Trans = new Transformation {Position = new Vector2(0, -.25f), Scale = new Vector2(1f, 1f)},
-                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow, Negate = true},
+                        Color =
+                            new ColorSetting
+                            {
+                                Color = Color.White,
+                                Mode = Setting.Visualizer.ColorMode.Rainbow,
+                                Negate = true
+                            },
                         VerticalMirror = true,
                         HorizontalMirror = true
                     }
@@ -226,7 +238,13 @@ namespace _3DMusicVis2.Manager
                     {
                         HowIDraw = DrawMode.Blocked,
                         IsFrequency = true,
-                        Trans = new Transformation {Position = new Vector2(0, .5f), Scale = new Vector2(1f, 1f), Rotation = (float)Math.PI/4},
+                        Trans =
+                            new Transformation
+                            {
+                                Position = new Vector2(0, .5f),
+                                Scale = new Vector2(1f, 1f),
+                                Rotation = (float) Math.PI/4
+                            },
                         Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow}
                     }
                 }
@@ -240,11 +258,11 @@ namespace _3DMusicVis2.Manager
                 SettingName = "YingYang",
                 //Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
                 BackgroundColor = Color.White,
-                ForegroundImage = new ImageSetting()
+                ForegroundImage = new ImageSetting
                 {
                     ImageFileName = "yingyang.png",
                     Tint = Color.White,
-                    Mode = ImageMode.Rotate | ImageMode.Vibrate | ImageMode.ReverseOnBeat,
+                    Mode = ImageMode.Rotate | ImageMode.Vibrate | ImageMode.ReverseOnBeat | ImageMode.HoverRender,
                     ReverseRotation = true,
                     RotationSpeedMutliplier = 20f,
                     RotationNotice = .7f

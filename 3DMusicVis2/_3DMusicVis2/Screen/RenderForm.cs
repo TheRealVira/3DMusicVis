@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RenderForm.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.10.26 - 18:31
+// Date - current: 2016.11.11 - 09:51
 
 #endregion
 
@@ -16,16 +16,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using _3DMusicVis2.Manager;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Setting.Visualizer;
 using _3DMusicVis2.Shader;
-using DrawMode = _3DMusicVis2.Setting.Visualizer.DrawMode;
-using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 #endregion
 
@@ -34,7 +32,11 @@ namespace _3DMusicVis2.Screen
     internal class RenderForm : Screen
     {
         private readonly RenderTarget2D _alphaDeletionRendertarget;
+
+        private readonly Dictionary<string, RenderTarget2D> _bufferedDrawer;
         private readonly Camera _cam;
+
+        private readonly List<string> _dicKeys;
         private readonly PauseMenu _menu;
         private readonly Setting.Visualizer.Setting _mySetting;
         private readonly RenderTarget2D _scanLineRendertarget;
@@ -54,10 +56,6 @@ namespace _3DMusicVis2.Screen
         public bool UseColor = true;
 
         public bool UseShader = true;
-
-        private readonly Dictionary<string, RenderTarget2D> _bufferedDrawer;
-
-        private readonly List<string> _dicKeys;
 
         public RenderForm(GraphicsDeviceManager gdm, Setting.Visualizer.Setting currentSetting)
             : base(gdm, "RenderForm")
@@ -80,7 +78,9 @@ namespace _3DMusicVis2.Screen
             {
                 if (_bufferedDrawer.ContainsKey(x.ToString())) return;
 
-                _bufferedDrawer.Add(x.ToString(), new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height));
+                _bufferedDrawer.Add(x.ToString(),
+                    new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
+                        Game1.VIRTUAL_RESOLUTION.Height));
                 _dicKeys.Add(x.ToString());
             });
         }
@@ -115,11 +115,11 @@ namespace _3DMusicVis2.Screen
                 switch (key)
                 {
                     case "2FDashed":
-                        RenderTarget2D temp1 = _bufferedDrawer["2FDashed"];
+                        var temp1 = _bufferedDrawer["2FDashed"];
                         _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Dashed, ref temp1);
                         continue;
                     case "2FBlocked":
-                        RenderTarget2D temp2 = _bufferedDrawer["2FBlocked"];
+                        var temp2 = _bufferedDrawer["2FBlocked"];
                         _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked, ref temp2);
                         continue;
                     case "2FConnected":
@@ -191,12 +191,12 @@ namespace _3DMusicVis2.Screen
 
 
                 var origin = Game1.VIRTUAL_RESOLUTION.Center.ToVector2();
-                
+
                 var myRec = new Rectangle(
-                    x: (int) (pos.X * Game1.VIRTUAL_RESOLUTION.Width + (Game1.VIRTUAL_RESOLUTION.Width * scale.X) / 2),
-                    y: (int) (pos.Y * Game1.VIRTUAL_RESOLUTION.Height + (Game1.VIRTUAL_RESOLUTION.Height * scale.Y) / 2),
-                    width: (int) (scale.X*Game1.VIRTUAL_RESOLUTION.Width),
-                    height: (int) (scale.Y*Game1.VIRTUAL_RESOLUTION.Height));
+                    (int) (pos.X*Game1.VIRTUAL_RESOLUTION.Width + Game1.VIRTUAL_RESOLUTION.Width*scale.X/2),
+                    (int) (pos.Y*Game1.VIRTUAL_RESOLUTION.Height + Game1.VIRTUAL_RESOLUTION.Height*scale.Y/2),
+                    (int) (scale.X*Game1.VIRTUAL_RESOLUTION.Width),
+                    (int) (scale.Y*Game1.VIRTUAL_RESOLUTION.Height));
 
                 sB.Draw(
                     _bufferedDrawer[_mySetting.Bundles[i].ToString()],
@@ -304,9 +304,6 @@ namespace _3DMusicVis2.Screen
                 set.ReverseRotation = !set.ReverseRotation;
             }
 
-            var height = MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height)*mid;
-            var width = MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width)*mid;
-
             if (Math.Abs(rot) == 360)
             {
                 rot = 0;
@@ -322,9 +319,22 @@ namespace _3DMusicVis2.Screen
                 rot = 360;
             }
 
+            if ((set.Mode & ImageMode.HoverRender) != 0)
+            {
+
+                sB.Draw(tryImage,
+                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Center.X + (int)(set.Offset.X * Game1.VIRTUAL_RESOLUTION.Width),
+                        Game1.VIRTUAL_RESOLUTION.Center.Y + (int)(set.Offset.Y * Game1.VIRTUAL_RESOLUTION.Height),
+                        (int)(MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width) * (1 + -1*(mid-1))),
+                        (int)(MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height) * (1 + -1 * (mid - 1)))), null, set.Tint * .5f, (set.Mode & ImageMode.Rotate) != 0 ? rot : 0f,
+                    tryImage.Bounds.Center.ToVector2(), SpriteEffects.None, 0f);
+            }
+
             sB.Draw(tryImage,
-                new Rectangle(Game1.VIRTUAL_RESOLUTION.Center.X+(int)(set.Offset.X*Game1.VIRTUAL_RESOLUTION.Width), Game1.VIRTUAL_RESOLUTION.Center.Y + (int)(set.Offset.Y * Game1.VIRTUAL_RESOLUTION.Height), (int) width,
-                    (int) height), null, Color.White, ((set.Mode & ImageMode.Rotate) != 0 ? rot : 0f),
+                new Rectangle(Game1.VIRTUAL_RESOLUTION.Center.X + (int) (set.Offset.X*Game1.VIRTUAL_RESOLUTION.Width),
+                    Game1.VIRTUAL_RESOLUTION.Center.Y + (int) (set.Offset.Y*Game1.VIRTUAL_RESOLUTION.Height),
+                    (int) (MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width) * mid),
+                    (int) (MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height) * mid)), null, set.Tint, (set.Mode & ImageMode.Rotate) != 0 ? rot : 0f,
                 tryImage.Bounds.Center.ToVector2(), SpriteEffects.None, 0f);
         }
 
