@@ -50,7 +50,7 @@ namespace _3DMusicVis2.RenderFrame
                             device.DisplayMode.Format, DepthFormat.Depth24)
                 };
 
-            myEffect = Game1.FreeBeer.Content.Load<Effect>("Shader/3DGrid");
+            myEffect = Game1.FreeBeer.Content.Load<Effect>("Shader/Heightmap/Heightmap");
             _heightData = new float[100];
             SetupIndices();
             SetupVerticies();

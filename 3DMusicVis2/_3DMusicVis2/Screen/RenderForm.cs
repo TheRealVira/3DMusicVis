@@ -61,7 +61,7 @@ namespace _3DMusicVis2.Screen
             : base(gdm, "RenderForm")
         {
             _mySetting = currentSetting;
-            _cam = new Camera(gdm.GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
+            _cam = new Camera(gdm.GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 15f);
             _menu = new PauseMenu(GDM);
             _wavesRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
                 Game1.VIRTUAL_RESOLUTION.Height);
@@ -137,6 +137,10 @@ namespace _3DMusicVis2.Screen
                     case "2SConnected":
                         var temp6 = _bufferedDrawer["2SConnected"];
                         _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Connected, ref temp6);
+                        continue;
+                    case "3FBlocked":
+                        var temp7 = _bufferedDrawer["3FBlocked"];
+                        _3DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked, ref temp7);
                         continue;
                     default:
                         continue;
@@ -340,16 +344,24 @@ namespace _3DMusicVis2.Screen
 
         public override void Update(GameTime gameTime)
         {
+            _cam.Update(gameTime);
+            Mouse.SetPosition(Game1.VIRTUAL_RESOLUTION.Center.X, Game1.VIRTUAL_RESOLUTION.Center.Y);
+
             if (!RealTimeRecording.IsRecording) return;
 
-            if (_mySetting.Bundles.Any(x => x.IsFrequency))
+            if (_dicKeys.Any(x=>x.StartsWith("2F")))
             {
                 _2DFrequencyRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
             }
 
-            if (_mySetting.Bundles.Any(x => !x.IsFrequency))
+            if (_dicKeys.Any(x => x.StartsWith("2S")))
             {
                 _2DSampleRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.CurrentSamples));
+            }
+
+            if (_dicKeys.Any(x => x.StartsWith("3F")))
+            {
+                _3DFrequencyRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
             }
 
             if (Keys.Escape.KeyWasClicked())

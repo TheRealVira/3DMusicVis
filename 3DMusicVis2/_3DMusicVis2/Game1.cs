@@ -148,10 +148,15 @@ namespace _3DMusicVis2
             System.Console.WriteLine("Initialized the _3DCirclularWaveRenderer...");
             _3DLinearWaveRenderer.Initialise(GraphicsDevice);
             System.Console.WriteLine("Initialized the _3DLinearWaveRenderer...");
+
             _2DSampleRenderer.Initialise(GraphicsDevice);
             System.Console.WriteLine("Initialized the _2DSampleRenderer...");
             _2DFrequencyRenderer.Initialise(GraphicsDevice);
             System.Console.WriteLine("Initialized the _2DFrequencyRenderer...");
+
+            System.Console.WriteLine("Initialized the _3DFrequencyRenderer...");
+            _3DFrequencyRenderer.Initialise(GraphicsDevice, Content);
+
             RealTimeRecording.Initialize();
             System.Console.WriteLine("Initialized the RealTimeRecorder...");
             GaussianBlurManager.Initialize(GraphicsDevice, this);

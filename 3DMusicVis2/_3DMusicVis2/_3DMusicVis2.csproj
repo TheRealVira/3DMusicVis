@@ -98,6 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="3DHelper\Grid.cs" />
     <Compile Include="AudioAnalysisXNAClass.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="ColorMode.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="RenderFrame\2DMusicVisRenderFrame.cs" />
     <Compile Include="RenderFrame\2DSampleRenderer.cs" />
     <Compile Include="RenderFrame\3DCirclularWaveRenderer.cs" />
+    <Compile Include="RenderFrame\3DFrequencyRenderer.cs" />
     <Compile Include="RenderFrame\3DLinearWaveRenderer.cs" />
     <Compile Include="RenderFrame\3DLinearFrequencyRenderer.cs" />
     <Compile Include="RenderFrame\3DMusicVisRenderFrame.cs" />

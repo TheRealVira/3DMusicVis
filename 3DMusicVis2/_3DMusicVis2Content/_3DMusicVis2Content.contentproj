@@ -103,8 +103,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shader\3DGrid.fx">
-      <Name>3DGrid</Name>
+    <Compile Include="Shader\Heightmap\Heightmap.fx">
+      <Name>Heightmap</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>

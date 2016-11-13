@@ -251,6 +251,32 @@ namespace _3DMusicVis2.Manager
             };
         }
 
+        public static Setting.Visualizer.Setting Get3DFreqVis()
+        {
+            return new Setting.Visualizer.Setting
+            {
+                SettingName = "3DFreqVis",
+                //Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
+                BackgroundColor = Color.Black,
+                Bundles = new List<SettingsBundle>
+                {
+                    new SettingsBundle
+                    {
+                        HowIDraw = DrawMode.Blocked,
+                        IsFrequency = true,
+                        Is3D = true,
+                        Trans =
+                            new Transformation
+                            {
+                                Position = new Vector2(0, 0f),
+                                Scale = new Vector2(1f, 1f),
+                            },
+                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow}
+                    }
+                }
+            };
+        }
+
         public static Setting.Visualizer.Setting GetYingYang()
         {
             return new Setting.Visualizer.Setting
@@ -301,6 +327,7 @@ namespace _3DMusicVis2.Manager
             FastSave(GetFrequencyOnly());
             FastSave(GetStriker());
             FastSave(GetYingYang());
+            FastSave(Get3DFreqVis());
 
 #if (DEBUG)
             FastSave(GetDebug());

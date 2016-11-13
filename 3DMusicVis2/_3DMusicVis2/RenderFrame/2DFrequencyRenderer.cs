@@ -21,7 +21,7 @@ using _3DMusicVis2.Setting.Visualizer;
 
 namespace _3DMusicVis2.RenderFrame
 {
-    public static class _2DFrequencyRenderer
+    internal static class _2DFrequencyRenderer
     {
         private const int WIDTH = 1, HEIGHT = 2;
         private static _2DMusicVisRenderFrame _renderer;
