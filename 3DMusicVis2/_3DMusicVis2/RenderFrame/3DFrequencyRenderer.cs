@@ -13,14 +13,14 @@ namespace _3DMusicVis2.RenderFrame
 {
     static class _3DFrequencyRenderer
     {
-        private const int WIDTH = 1, HEIGHT = 2;
         private static _2DMusicVisRenderFrame _renderer;
 
-        private static Grid MyGrid;
-        private static Texture2D MyTex;
+        private static Grid _myGrid;
 
         public static void Initialise(GraphicsDevice device, ContentManager manager)
         {
+            if(_myGrid!=null)return;
+            
             _renderer =
                 new _2DMusicVisRenderFrame
                 {
@@ -33,26 +33,28 @@ namespace _3DMusicVis2.RenderFrame
                     HightMultiplier = 1.5f
                 };
 
-            MyGrid = new Grid(manager);
+            _myGrid = new Grid(manager);
+        }
+
+        public static void Dispose()
+        {
+            _myGrid.Dispose();
         }
 
         public static void UpdateRenderer(ReadOnlyCollection<float> frequencies)
         {
             var length = (int) (frequencies.Count/2.5);
-            var foregroundColors = new Color[length* length];
+            var foregroundColors = new float[length, length];
 
             for (var x = 0; x < length; x++)
             {
                 for (var y = 0; y < length; y++)
                 {
-                    foregroundColors[x + y* length] = Color.White * frequencies[x];
+                    foregroundColors[x, y] = frequencies[x] * Game1.VIRTUAL_RESOLUTION.Height/4;
                 }
             }
 
-            var tempTexture = new Texture2D(Game1.Graphics.GraphicsDevice, length, length);
-            tempTexture.SetData(foregroundColors);
-
-            MyGrid.Update(tempTexture);
+            _myGrid.Update(foregroundColors);
         }
 
         public static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,
@@ -62,7 +64,7 @@ namespace _3DMusicVis2.RenderFrame
             device.Clear(_renderer.ClearColor);
             Game1.SpriteBatch.Begin();
 
-            MyGrid.Draw(device, cam, settings);
+            _myGrid.Draw(device, cam, settings);
 
             Game1.SpriteBatch.End();
 

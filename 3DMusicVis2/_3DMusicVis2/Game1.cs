@@ -82,6 +82,8 @@ namespace _3DMusicVis2
         {
             ScreenManager.UnloadAll();
             RealTimeRecording.UnloadMe();
+
+            _3DFrequencyRenderer.Dispose();
         }
 
         /// <summary>

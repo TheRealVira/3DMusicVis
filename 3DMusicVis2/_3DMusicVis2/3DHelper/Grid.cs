@@ -12,7 +12,19 @@ namespace _3DMusicVis2._3DHelper
     {
         public Grid(ContentManager manager)
         {
-            if(_effect!=null)return;
+            MyStateSolid = new RasterizerState()
+            {
+                CullMode = CullMode.CullCounterClockwiseFace,
+                FillMode = FillMode.Solid
+            };
+
+            MyStateWire = new RasterizerState()
+            {
+                CullMode = CullMode.CullCounterClockwiseFace,
+                FillMode = FillMode.WireFrame
+            };
+
+            if (_effect!=null)return;
 
             _effect = manager.Load<Effect>("Shader/Heightmap/Heightmap");
         }
@@ -23,9 +35,31 @@ namespace _3DMusicVis2._3DHelper
 
         private int _terrainWidth;
         private int _terrainHeight;
+        private readonly RasterizerState MyStateSolid;
+        private readonly RasterizerState MyStateWire;
+
+        public void Dispose()
+        {
+            this.MyStateSolid.Dispose();
+            this.MyStateWire.Dispose();
+        }
+
+        private Point SetTerrainSpacing
+        {
+            set
+            {
+                _terrainWidth = value.X;
+                _terrainHeight = value.Y;
+
+                _indices = new int[(_terrainWidth - 1) * (_terrainHeight - 1) * 6];
+                _vertices = new VertexPositionColor[_terrainWidth * _terrainHeight];
+                _heightData = new float[_terrainWidth, _terrainHeight];
+            }
+        }
+
         private float[,] _heightData;
 
-        public void Update(Texture2D heightmap)
+        public void Update(float[,] heightmap)
         {
             LoadHeightData(heightmap);
             SetUpVertices();
@@ -38,14 +72,8 @@ namespace _3DMusicVis2._3DHelper
 
             var temp = device.RasterizerState;
 
-            var tempFillmode = mode.Equals(DrawMode.Blocked)?FillMode.WireFrame:FillMode.Solid;
+            device.RasterizerState = mode.Equals(DrawMode.Connected)?MyStateSolid:MyStateWire;
 
-            device.RasterizerState = new RasterizerState()
-            {
-                CullMode = CullMode.CullCounterClockwiseFace,
-                FillMode = tempFillmode
-            };
-            
             _effect.CurrentTechnique = _effect.Techniques["ColoredNoShading"];
             _effect.Parameters["xView"].SetValue(cam.View);
             _effect.Parameters["xProjection"].SetValue(cam.Projektion);
@@ -67,7 +95,7 @@ namespace _3DMusicVis2._3DHelper
 
         private void SetUpVertices()
         {
-            _vertices = new VertexPositionColor[_terrainWidth * _terrainHeight];
+            
 
             for (var x = 0; x < _terrainWidth; x++)
             {
@@ -89,7 +117,6 @@ namespace _3DMusicVis2._3DHelper
 
         private void SetUpIndices()
         {
-            _indices = new int[(_terrainWidth - 1) * (_terrainHeight - 1) * 6];
             var counter = 0;
             for (var y = 0; y < _terrainHeight - 1; y++)
             {
@@ -111,20 +138,18 @@ namespace _3DMusicVis2._3DHelper
             }
         }
 
-        private void LoadHeightData(Texture2D heightMap)
+        private void LoadHeightData(float[,] heightMap)
         {
-            _terrainWidth = heightMap.Width;
-            _terrainHeight = heightMap.Height;
+            if (_terrainWidth != heightMap.GetLength(0) || _terrainHeight != heightMap.GetLength(1))
+            {
+                SetTerrainSpacing = new Point(heightMap.GetLength(0), heightMap.GetLength(1));
+            }
 
-            var heightMapColors = new Color[_terrainWidth * _terrainHeight];
-            heightMap.GetData(heightMapColors);
-
-            _heightData = new float[_terrainWidth, _terrainHeight];
             for (var x = 0; x < _terrainWidth; x++)
             {
                 for (var y = 0; y < _terrainHeight; y++)
                 {
-                    _heightData[x, y] = (heightMapColors[x + y * _terrainWidth].R / 2f);
+                    _heightData[x, y] = (heightMap[x, y] / 1.25f);
                 }
             }
         }
