@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ImageManager.cs
 // Date - created:2016.11.09 - 21:04
-// Date - current: 2016.11.11 - 09:50
+// Date - current: 2016.11.14 - 18:39
 
 #endregion
 

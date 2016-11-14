@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TemplateManager.cs
 // Date - created:2016.10.23 - 16:24
-// Date - current: 2016.11.11 - 09:50
+// Date - current: 2016.11.14 - 18:39
 
 #endregion
 
@@ -269,7 +269,7 @@ namespace _3DMusicVis2.Manager
                             new Transformation
                             {
                                 Position = new Vector2(0, 0f),
-                                Scale = new Vector2(1f, 1f),
+                                Scale = new Vector2(1f, 1f)
                             },
                         Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow}
                     }

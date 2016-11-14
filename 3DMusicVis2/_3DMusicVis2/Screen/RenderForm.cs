@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RenderForm.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.11 - 09:51
+// Date - current: 2016.11.14 - 18:39
 
 #endregion
 
@@ -110,14 +110,15 @@ namespace _3DMusicVis2.Screen
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
-            DrawMode curMode = DrawMode.Blocked;
+            var curMode = DrawMode.Blocked;
             RenderTarget2D curTex = null;
 
             foreach (var key in _dicKeys)
             {
                 switch (key)
                 {
-#region DRAWING
+                        #region DRAWING
+
                     case "2DDrawFrequency":
                         _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
                         break;
@@ -131,9 +132,11 @@ namespace _3DMusicVis2.Screen
                     case "3DDrawSample":
                         _3DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
                         break;
-#endregion
 
-#region 2D Frequency render settings
+                        #endregion
+
+                        #region 2D Frequency render settings
+
                     case "2FDashed":
                         curTex = _bufferedDrawer["2FDashed"];
                         curMode = DrawMode.Dashed;
@@ -146,9 +149,11 @@ namespace _3DMusicVis2.Screen
                         curTex = _bufferedDrawer["2FConnected"];
                         curMode = DrawMode.Connected;
                         goto case "2DDrawFrequency";
-#endregion
 
-#region 2D Sample render settings
+                        #endregion
+
+                        #region 2D Sample render settings
+
                     case "2SDashed":
                         curTex = _bufferedDrawer["2SDashed"];
                         curMode = DrawMode.Dashed;
@@ -161,9 +166,11 @@ namespace _3DMusicVis2.Screen
                         curTex = _bufferedDrawer["2SConnected"];
                         curMode = DrawMode.Connected;
                         goto case "2DDrawSample";
-#endregion
 
-                    #region 3D Frequency render settings
+                        #endregion
+
+                        #region 3D Frequency render settings
+
                     case "3FDashed":
                         curTex = _bufferedDrawer["3FDashed"];
                         curMode = DrawMode.Dashed;
@@ -176,7 +183,8 @@ namespace _3DMusicVis2.Screen
                         curTex = _bufferedDrawer["3FConnected"];
                         curMode = DrawMode.Connected;
                         goto case "3DDrawFrequency";
-#endregion
+
+                        #endregion
 
                     default:
                         continue;
@@ -361,20 +369,22 @@ namespace _3DMusicVis2.Screen
 
             if ((set.Mode & ImageMode.HoverRender) != 0)
             {
-
                 sB.Draw(tryImage,
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Center.X + (int)(set.Offset.X * Game1.VIRTUAL_RESOLUTION.Width),
-                        Game1.VIRTUAL_RESOLUTION.Center.Y + (int)(set.Offset.Y * Game1.VIRTUAL_RESOLUTION.Height),
-                        (int)(MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width) * (1 + -1*(mid-1))),
-                        (int)(MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height) * (1 + -1 * (mid - 1)))), null, set.Tint * .5f, (set.Mode & ImageMode.Rotate) != 0 ? rot : 0f,
+                    new Rectangle(
+                        Game1.VIRTUAL_RESOLUTION.Center.X + (int) (set.Offset.X*Game1.VIRTUAL_RESOLUTION.Width),
+                        Game1.VIRTUAL_RESOLUTION.Center.Y + (int) (set.Offset.Y*Game1.VIRTUAL_RESOLUTION.Height),
+                        (int) (MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width)*(1 + -1*(mid - 1))),
+                        (int) (MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height)*(1 + -1*(mid - 1)))),
+                    null, set.Tint*.5f, (set.Mode & ImageMode.Rotate) != 0 ? rot : 0f,
                     tryImage.Bounds.Center.ToVector2(), SpriteEffects.None, 0f);
             }
 
             sB.Draw(tryImage,
                 new Rectangle(Game1.VIRTUAL_RESOLUTION.Center.X + (int) (set.Offset.X*Game1.VIRTUAL_RESOLUTION.Width),
                     Game1.VIRTUAL_RESOLUTION.Center.Y + (int) (set.Offset.Y*Game1.VIRTUAL_RESOLUTION.Height),
-                    (int) (MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width) * mid),
-                    (int) (MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height) * mid)), null, set.Tint, (set.Mode & ImageMode.Rotate) != 0 ? rot : 0f,
+                    (int) (MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width)*mid),
+                    (int) (MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height)*mid)), null, set.Tint,
+                (set.Mode & ImageMode.Rotate) != 0 ? rot : 0f,
                 tryImage.Bounds.Center.ToVector2(), SpriteEffects.None, 0f);
         }
 
@@ -392,7 +402,8 @@ namespace _3DMusicVis2.Screen
 
                 if (_dicKeys.Any(x => x.StartsWith("3F")))
                 {
-                    _3DFrequencyRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
+                    _3DFrequencyRenderer.UpdateRenderer(
+                        new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
                 }
             }
             else

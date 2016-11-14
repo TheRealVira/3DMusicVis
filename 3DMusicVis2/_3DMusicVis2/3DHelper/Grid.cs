@@ -1,45 +1,57 @@
+#region License
+
+// Copyright (c) 2016, Vira
+// All rights reserved.
+// Solution: 3DMusicVis2
+// Project: _3DMusicVis2
+// Filename: Grid.cs
+// Date - created:2016.11.13 - 15:30
+// Date - current: 2016.11.14 - 18:39
+
+#endregion
+
+#region Usings
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using _3DMusicVis2.Setting.Visualizer;
 
+#endregion
+
 namespace _3DMusicVis2._3DHelper
 {
     /// <summary>
-    /// This is a game component that implements IUpdateable.
+    ///     This is a game component that implements IUpdateable.
     /// </summary>
     public class Grid
     {
+        private static Effect _effect;
+        private readonly RasterizerState MyStateSolid;
+        private readonly RasterizerState MyStateWire;
+
+        private float[,] _heightData;
+        private int[] _indices;
+        private int _terrainHeight;
+
+        private int _terrainWidth;
+        private VertexPositionColor[] _vertices;
+
         public Grid(ContentManager manager)
         {
-            MyStateSolid = new RasterizerState()
+            MyStateSolid = new RasterizerState
             {
                 FillMode = FillMode.Solid
             };
 
-            MyStateWire = new RasterizerState()
+            MyStateWire = new RasterizerState
             {
                 FillMode = FillMode.WireFrame
             };
 
-            if (_effect!=null)return;
+            if (_effect != null) return;
 
             _effect = manager.Load<Effect>("Shader/Heightmap/Heightmap");
-        }
-
-        private static  Effect _effect;
-        private VertexPositionColor[] _vertices;
-        private int[] _indices;
-
-        private int _terrainWidth;
-        private int _terrainHeight;
-        private readonly RasterizerState MyStateSolid;
-        private readonly RasterizerState MyStateWire;
-
-        public void Dispose()
-        {
-            this.MyStateSolid.Dispose();
-            this.MyStateWire.Dispose();
         }
 
         private Point SetTerrainSpacing
@@ -49,13 +61,17 @@ namespace _3DMusicVis2._3DHelper
                 _terrainWidth = value.X;
                 _terrainHeight = value.Y;
 
-                _indices = new int[(_terrainWidth - 1) * (_terrainHeight - 1) * 6];
-                _vertices = new VertexPositionColor[_terrainWidth * _terrainHeight];
+                _indices = new int[(_terrainWidth - 1)*(_terrainHeight - 1)*6];
+                _vertices = new VertexPositionColor[_terrainWidth*_terrainHeight];
                 _heightData = new float[_terrainWidth, _terrainHeight];
             }
         }
 
-        private float[,] _heightData;
+        public void Dispose()
+        {
+            MyStateSolid.Dispose();
+            MyStateWire.Dispose();
+        }
 
         public void Update(float[,] heightmap)
         {
@@ -66,11 +82,11 @@ namespace _3DMusicVis2._3DHelper
 
         public void Draw(GraphicsDevice device, Camera cam, DrawMode mode)
         {
-            if(_vertices==null)return;
+            if (_vertices == null) return;
 
             var temp = device.RasterizerState;
 
-            device.RasterizerState = mode.Equals(DrawMode.Connected)?MyStateSolid:MyStateWire;
+            device.RasterizerState = mode.Equals(DrawMode.Connected) ? MyStateSolid : MyStateWire;
 
             _effect.CurrentTechnique = _effect.Techniques["ColoredNoShading"];
             _effect.Parameters["xView"].SetValue(cam.View);
@@ -85,7 +101,8 @@ namespace _3DMusicVis2._3DHelper
             {
                 pass.Apply();
 
-                device.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, _vertices, 0, _vertices.Length, _indices, 0, _indices.Length / 3, VertexPositionColor.VertexDeclaration);
+                device.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, _vertices, 0, _vertices.Length, _indices, 0,
+                    _indices.Length/3, VertexPositionColor.VertexDeclaration);
             }
 
             device.RasterizerState = temp;
@@ -123,10 +140,10 @@ namespace _3DMusicVis2._3DHelper
             {
                 for (var x = 0; x < _terrainWidth - 1; x++)
                 {
-                    var lowerLeft = x + y * _terrainWidth;
-                    var lowerRight = (x + 1) + y * _terrainWidth;
-                    var topLeft = x + (y + 1) * _terrainWidth;
-                    var topRight = (x + 1) + (y + 1) * _terrainWidth;
+                    var lowerLeft = x + y*_terrainWidth;
+                    var lowerRight = x + 1 + y*_terrainWidth;
+                    var topLeft = x + (y + 1)*_terrainWidth;
+                    var topRight = x + 1 + (y + 1)*_terrainWidth;
 
                     _indices[counter++] = topLeft;
                     _indices[counter++] = lowerRight;
@@ -150,7 +167,7 @@ namespace _3DMusicVis2._3DHelper
             {
                 for (var y = 0; y < _terrainHeight; y++)
                 {
-                    _heightData[x, y] = (heightMap[x, y] / 1.25f);
+                    _heightData[x, y] = heightMap[x, y]/1.25f;
                 }
             }
         }

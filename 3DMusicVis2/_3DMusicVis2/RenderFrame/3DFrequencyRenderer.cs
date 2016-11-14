@@ -1,17 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region License
+
+// Copyright (c) 2016, Vira
+// All rights reserved.
+// Solution: 3DMusicVis2
+// Project: _3DMusicVis2
+// Filename: 3DFrequencyRenderer.cs
+// Date - created:2016.11.13 - 15:02
+// Date - current: 2016.11.14 - 18:39
+
+#endregion
+
+#region Usings
+
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using _3DMusicVis2.Setting.Visualizer;
 using _3DMusicVis2._3DHelper;
 
+#endregion
+
 namespace _3DMusicVis2.RenderFrame
 {
-    static class _3DFrequencyRenderer
+    internal static class _3DFrequencyRenderer
     {
         private static _2DMusicVisRenderFrame _renderer;
 
@@ -19,8 +31,8 @@ namespace _3DMusicVis2.RenderFrame
 
         public static void Initialise(GraphicsDevice device, ContentManager manager)
         {
-            if(_myGrid!=null)return;
-            
+            if (_myGrid != null) return;
+
             _renderer =
                 new _2DMusicVisRenderFrame
                 {
@@ -50,7 +62,7 @@ namespace _3DMusicVis2.RenderFrame
             {
                 for (var y = 0; y < length; y++)
                 {
-                    foregroundColors[x, y] = frequencies[x] * Game1.VIRTUAL_RESOLUTION.Height/4;
+                    foregroundColors[x, y] = frequencies[x]*Game1.VIRTUAL_RESOLUTION.Height/4;
                 }
             }
 

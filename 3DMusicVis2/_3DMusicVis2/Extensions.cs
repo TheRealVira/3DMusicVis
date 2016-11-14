@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Extensions.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.11 - 09:50
+// Date - current: 2016.11.14 - 18:39
 
 #endregion
 
@@ -42,11 +42,11 @@ namespace _3DMusicVis2
 
         public static void DrawLine(this SpriteBatch spriteBatch, Vector2 begin, Vector2 end, Color color, int width = 1)
         {
-            var r = new Rectangle((int) begin.X, (int) begin.Y, (int) (end - begin).Length() + width, width);
-            var v = Vector2.Normalize(begin - end);
-            var angle = (float) Math.Acos(Vector2.Dot(v, -Vector2.UnitX));
-            if (begin.Y > end.Y) angle = MathHelper.TwoPi - angle;
-            spriteBatch.Draw(Game1.FamouseOnePixel, r, null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(Game1.FamouseOnePixel,
+                new Rectangle((int) begin.X, (int) begin.Y, (int) (end - begin).Length() + width, width), null, color,
+                (begin.Y > end.Y ? MathHelper.TwoPi : 0) -
+                (float) Math.Acos(Vector2.Dot(Vector2.Normalize(begin - end), -Vector2.UnitX)), Vector2.Zero,
+                SpriteEffects.None, 0);
         }
 
         public static T[] SubArray<T>(this T[] data, int index, int length)

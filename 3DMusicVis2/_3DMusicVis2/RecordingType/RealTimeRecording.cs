@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RealTimeRecording.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.11 - 09:50
+// Date - current: 2016.11.14 - 18:39
 
 #endregion
 
@@ -96,7 +96,7 @@ namespace _3DMusicVis2.RecordingType
                            e.Result[i + e.Result.Length/2 + e.Result.Length/4].Y;
 
                 FrequencySpectrum[i] =
-                    (float) Math.Max(.002f, Math.Min(Math.Sqrt(Math.Sqrt(val2 * MULTIPLACTOR)), 1));
+                    (float) Math.Max(.002f, Math.Min(Math.Sqrt(Math.Sqrt(val2*MULTIPLACTOR)), 1));
                 //var freq = (Math.Max(e.Result[i].Y,0) + Math.Max(e.Result[i].X,0))* MULTIPLACTOR;
                 // (float) Math.Max(.005f, Math.Min(freq, 1)); // Apply maximum level of one.
             }
