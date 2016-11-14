@@ -76,6 +76,14 @@ namespace _3DMusicVis2.Manager
                 {
                     new SettingsBundle
                     {
+                        IsFrequency = true,
+                        Is3D = true,
+                        HowIDraw = DrawMode.Dashed,
+                        Trans = new Transformation {Position = new Vector2(0, 0f), Scale = Vector2.One},
+                        Color = new ColorSetting {Color = Color.White}
+                    },
+                    new SettingsBundle
+                    {
                         HowIDraw = DrawMode.Connected,
                         IsFrequency = true,
                         Trans = new Transformation {Position = new Vector2(0, 0), Scale = Vector2.One},
@@ -256,7 +264,7 @@ namespace _3DMusicVis2.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "3DFreqVis",
-                //Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
+                Shaders = (ShaderMode.Bloom),
                 BackgroundColor = Color.Black,
                 Bundles = new List<SettingsBundle>
                 {

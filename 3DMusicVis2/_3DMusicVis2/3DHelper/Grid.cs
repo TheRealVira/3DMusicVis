@@ -94,8 +94,8 @@ namespace _3DMusicVis2._3DHelper
             _effect.Parameters["xWorld"].SetValue(Matrix.Identity);
 
             device.BlendState = BlendState.Opaque;
-            device.DepthStencilState = DepthStencilState.Default;
             device.SamplerStates[0] = SamplerState.LinearWrap;
+            device.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
 
             foreach (var pass in _effect.CurrentTechnique.Passes)
             {
@@ -106,6 +106,7 @@ namespace _3DMusicVis2._3DHelper
             }
 
             device.RasterizerState = temp;
+            device.DepthStencilState = new DepthStencilState() { DepthBufferEnable = false };
         }
 
         private void SetUpVertices()

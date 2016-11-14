@@ -406,18 +406,15 @@ namespace _3DMusicVis2.Screen
                         new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
                 }
             }
-            else
+            if (_dicKeys.Any(x => x.StartsWith("2F")))
             {
-                if (_dicKeys.Any(x => x.StartsWith("2F")))
-                {
-                    _2DFrequencyRenderer.UpdateRenderer(
-                        new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
-                }
+                _2DFrequencyRenderer.UpdateRenderer(
+                    new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
+            }
 
-                if (_dicKeys.Any(x => x.StartsWith("2S")))
-                {
-                    _2DSampleRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.CurrentSamples));
-                }
+            if (_dicKeys.Any(x => x.StartsWith("2S")))
+            {
+                _2DSampleRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.CurrentSamples));
             }
 
             if (Keys.Escape.KeyWasClicked())
