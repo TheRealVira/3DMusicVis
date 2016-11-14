@@ -14,13 +14,11 @@ namespace _3DMusicVis2._3DHelper
         {
             MyStateSolid = new RasterizerState()
             {
-                CullMode = CullMode.CullCounterClockwiseFace,
                 FillMode = FillMode.Solid
             };
 
             MyStateWire = new RasterizerState()
             {
-                CullMode = CullMode.CullCounterClockwiseFace,
                 FillMode = FillMode.WireFrame
             };
 
@@ -95,13 +93,14 @@ namespace _3DMusicVis2._3DHelper
 
         private void SetUpVertices()
         {
-            
-
             for (var x = 0; x < _terrainWidth; x++)
             {
                 for (var y = 0; y < _terrainHeight; y++)
                 {
-                    _vertices[x + y * _terrainWidth].Position = new Vector3(x, _heightData[x, y], -y);
+                    var cur = _vertices[x + y*_terrainWidth];
+                    cur.Position.X = x;
+                    cur.Position.Y = _heightData[x, y];
+                    cur.Position.Z = -y;
 
                     //if (_heightData[x, y] < minHeight + (maxHeight - minHeight) / 4)
                     //    _vertices[x + y * _terrainWidth].Color = Color.DodgerBlue;
@@ -110,7 +109,9 @@ namespace _3DMusicVis2._3DHelper
                     //else if (_heightData[x, y] < minHeight + (maxHeight - minHeight) * 3 / 4)
                     //    _vertices[x + y * _terrainWidth].Color = Color.DarkGray;
                     //else
-                    _vertices[x + y * _terrainWidth].Color = Color.White;
+                    cur.Color = Color.White;
+
+                    _vertices[x + y*_terrainWidth] = cur;
                 }
             }
         }

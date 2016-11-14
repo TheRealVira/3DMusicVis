@@ -110,38 +110,74 @@ namespace _3DMusicVis2.Screen
 
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
+            DrawMode curMode = DrawMode.Blocked;
+            RenderTarget2D curTex = null;
+
             foreach (var key in _dicKeys)
             {
                 switch (key)
                 {
+#region DRAWING
+                    case "2DDrawFrequency":
+                        _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
+                        break;
+                    case "2DDrawSample":
+                        _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
+                        break;
+
+                    case "3DDrawFrequency":
+                        _3DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
+                        break;
+                    case "3DDrawSample":
+                        _3DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
+                        break;
+#endregion
+
+#region 2D Frequency render settings
                     case "2FDashed":
-                        var temp1 = _bufferedDrawer["2FDashed"];
-                        _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Dashed, ref temp1);
-                        continue;
+                        curTex = _bufferedDrawer["2FDashed"];
+                        curMode = DrawMode.Dashed;
+                        goto case "2DDrawFrequency";
                     case "2FBlocked":
-                        var temp2 = _bufferedDrawer["2FBlocked"];
-                        _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked, ref temp2);
-                        continue;
+                        curTex = _bufferedDrawer["2FBlocked"];
+                        curMode = DrawMode.Blocked;
+                        goto case "2DDrawFrequency";
                     case "2FConnected":
-                        var temp3 = _bufferedDrawer["2FConnected"];
-                        _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Connected, ref temp3);
-                        continue;
+                        curTex = _bufferedDrawer["2FConnected"];
+                        curMode = DrawMode.Connected;
+                        goto case "2DDrawFrequency";
+#endregion
+
+#region 2D Sample render settings
                     case "2SDashed":
-                        var temp4 = _bufferedDrawer["2SDashed"];
-                        _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Dashed, ref temp4);
-                        continue;
+                        curTex = _bufferedDrawer["2SDashed"];
+                        curMode = DrawMode.Dashed;
+                        goto case "2DDrawSample";
                     case "2SBlocked":
-                        var temp5 = _bufferedDrawer["2SBlocked"];
-                        _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked, ref temp5);
-                        continue;
+                        curTex = _bufferedDrawer["2SBlocked"];
+                        curMode = DrawMode.Blocked;
+                        goto case "2DDrawSample";
                     case "2SConnected":
-                        var temp6 = _bufferedDrawer["2SConnected"];
-                        _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Connected, ref temp6);
-                        continue;
+                        curTex = _bufferedDrawer["2SConnected"];
+                        curMode = DrawMode.Connected;
+                        goto case "2DDrawSample";
+#endregion
+
+                    #region 3D Frequency render settings
+                    case "3FDashed":
+                        curTex = _bufferedDrawer["3FDashed"];
+                        curMode = DrawMode.Dashed;
+                        goto case "3DDrawFrequency";
                     case "3FBlocked":
-                        var temp7 = _bufferedDrawer["3FBlocked"];
-                        _3DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, DrawMode.Blocked, ref temp7);
-                        continue;
+                        curTex = _bufferedDrawer["3FBlocked"];
+                        curMode = DrawMode.Blocked;
+                        goto case "3DDrawFrequency";
+                    case "3FConnected":
+                        curTex = _bufferedDrawer["3FConnected"];
+                        curMode = DrawMode.Connected;
+                        goto case "3DDrawFrequency";
+#endregion
+
                     default:
                         continue;
                 }
@@ -344,24 +380,33 @@ namespace _3DMusicVis2.Screen
 
         public override void Update(GameTime gameTime)
         {
-            _cam.Update(gameTime);
-            Mouse.SetPosition(Game1.VIRTUAL_RESOLUTION.Center.X, Game1.VIRTUAL_RESOLUTION.Center.Y);
-
             if (!RealTimeRecording.IsRecording) return;
 
-            if (_dicKeys.Any(x=>x.StartsWith("2F")))
+            if (_dicKeys.Any(x => x.StartsWith("3")))
             {
-                _2DFrequencyRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
-            }
+                if (!_menu.IsVisible)
+                {
+                    _cam.Update(gameTime);
+                    Mouse.SetPosition(Game1.VIRTUAL_RESOLUTION.Center.X, Game1.VIRTUAL_RESOLUTION.Center.Y);
+                }
 
-            if (_dicKeys.Any(x => x.StartsWith("2S")))
-            {
-                _2DSampleRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.CurrentSamples));
+                if (_dicKeys.Any(x => x.StartsWith("3F")))
+                {
+                    _3DFrequencyRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
+                }
             }
-
-            if (_dicKeys.Any(x => x.StartsWith("3F")))
+            else
             {
-                _3DFrequencyRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
+                if (_dicKeys.Any(x => x.StartsWith("2F")))
+                {
+                    _2DFrequencyRenderer.UpdateRenderer(
+                        new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
+                }
+
+                if (_dicKeys.Any(x => x.StartsWith("2S")))
+                {
+                    _2DSampleRenderer.UpdateRenderer(new ReadOnlyCollection<float>(RealTimeRecording.CurrentSamples));
+                }
             }
 
             if (Keys.Escape.KeyWasClicked())

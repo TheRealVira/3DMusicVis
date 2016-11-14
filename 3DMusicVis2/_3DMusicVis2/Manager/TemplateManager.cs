@@ -262,7 +262,7 @@ namespace _3DMusicVis2.Manager
                 {
                     new SettingsBundle
                     {
-                        HowIDraw = DrawMode.Blocked,
+                        HowIDraw = DrawMode.Dashed,
                         IsFrequency = true,
                         Is3D = true,
                         Trans =
