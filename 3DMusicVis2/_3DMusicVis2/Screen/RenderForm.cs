@@ -130,7 +130,7 @@ namespace _3DMusicVis2.Screen
                         _3DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
                         break;
                     case "3DDrawSample":
-                        _3DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
+                        _3DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
                         break;
 
                         #endregion
@@ -184,7 +184,23 @@ namespace _3DMusicVis2.Screen
                         curMode = DrawMode.Connected;
                         goto case "3DDrawFrequency";
 
-                        #endregion
+                    #endregion
+
+                    #region 3D Sample render settings
+
+                    case "3SDashed":
+                        curTex = _bufferedDrawer["3SDashed"];
+                        curMode = DrawMode.Dashed;
+                        goto case "3DDrawSample";
+                    case "3SBlocked":
+                        curTex = _bufferedDrawer["3SBlocked"];
+                        curMode = DrawMode.Blocked;
+                        goto case "3DDrawSample";
+                    case "3SConnected":
+                        curTex = _bufferedDrawer["3SConnected"];
+                        curMode = DrawMode.Connected;
+                        goto case "3DDrawSample";
+                    #endregion
 
                     default:
                         continue;
@@ -404,6 +420,12 @@ namespace _3DMusicVis2.Screen
                 {
                     _3DFrequencyRenderer.UpdateRenderer(
                         new ReadOnlyCollection<float>(RealTimeRecording.FrequencySpectrum));
+                }
+
+                if (_dicKeys.Any(x => x.StartsWith("3S")))
+                {
+                    _3DSampleRenderer.UpdateRenderer(
+                        new ReadOnlyCollection<float>(RealTimeRecording.CurrentSamples));
                 }
             }
             if (_dicKeys.Any(x => x.StartsWith("2F")))

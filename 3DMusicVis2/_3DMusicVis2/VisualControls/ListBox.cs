@@ -40,6 +40,8 @@ namespace _3DMusicVis2.VisualControls
 
             ScrolledUp += ListBox_ScrolledUp;
             ScrolledDown += ListBox_ScrolledDown;
+
+            Scroll(0);
         }
 
         public Label SelectedItem { get; private set; }

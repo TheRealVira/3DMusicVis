@@ -84,6 +84,13 @@ namespace _3DMusicVis2.Manager
                     },
                     new SettingsBundle
                     {
+                        Is3D = true,
+                        HowIDraw = DrawMode.Dashed,
+                        Trans = new Transformation {Position = new Vector2(0, 0f), Scale = Vector2.One},
+                        Color = new ColorSetting {Color = Color.White}
+                    },
+                    new SettingsBundle
+                    {
                         HowIDraw = DrawMode.Connected,
                         IsFrequency = true,
                         Trans = new Transformation {Position = new Vector2(0, 0), Scale = Vector2.One},
@@ -264,7 +271,7 @@ namespace _3DMusicVis2.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "3DFreqVis",
-                Shaders = (ShaderMode.Bloom),
+                //Shaders = (ShaderMode.Bloom | ShaderMode.ScanLine),
                 BackgroundColor = Color.Black,
                 Bundles = new List<SettingsBundle>
                 {
@@ -272,6 +279,31 @@ namespace _3DMusicVis2.Manager
                     {
                         HowIDraw = DrawMode.Dashed,
                         IsFrequency = true,
+                        Is3D = true,
+                        Trans =
+                            new Transformation
+                            {
+                                Position = new Vector2(0, 0f),
+                                Scale = new Vector2(1f, 1f)
+                            },
+                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow}
+                    }
+                }
+            };
+        }
+
+        public static Setting.Visualizer.Setting Get3DSampVis()
+        {
+            return new Setting.Visualizer.Setting
+            {
+                SettingName = "3DSampVis",
+                //Shaders = (ShaderMode.Bloom | ShaderMode.ScanLine),
+                BackgroundColor = Color.Black,
+                Bundles = new List<SettingsBundle>
+                {
+                    new SettingsBundle
+                    {
+                        HowIDraw = DrawMode.Dashed,
                         Is3D = true,
                         Trans =
                             new Transformation
@@ -336,6 +368,7 @@ namespace _3DMusicVis2.Manager
             FastSave(GetStriker());
             FastSave(GetYingYang());
             FastSave(Get3DFreqVis());
+            FastSave(Get3DSampVis());
 
 #if (DEBUG)
             FastSave(GetDebug());

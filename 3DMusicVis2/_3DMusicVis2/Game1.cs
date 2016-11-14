@@ -84,6 +84,7 @@ namespace _3DMusicVis2
             RealTimeRecording.UnloadMe();
 
             _3DFrequencyRenderer.Dispose();
+            _3DSampleRenderer.Dispose();
         }
 
         /// <summary>
@@ -156,8 +157,10 @@ namespace _3DMusicVis2
             _2DFrequencyRenderer.Initialise(GraphicsDevice);
             System.Console.WriteLine("Initialized the _2DFrequencyRenderer...");
 
-            System.Console.WriteLine("Initialized the _3DFrequencyRenderer...");
             _3DFrequencyRenderer.Initialise(GraphicsDevice, Content);
+            System.Console.WriteLine("Initialized the _3DFrequencyRenderer...");
+            _3DSampleRenderer.Initialise(GraphicsDevice, Content);
+            System.Console.WriteLine("Initialized the _3DSampleRenderer...");
 
             RealTimeRecording.Initialize();
             System.Console.WriteLine("Initialized the RealTimeRecorder...");

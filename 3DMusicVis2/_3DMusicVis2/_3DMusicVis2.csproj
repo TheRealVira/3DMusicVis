@@ -123,6 +123,7 @@
     <Compile Include="RenderFrame\3DLinearWaveRenderer.cs" />
     <Compile Include="RenderFrame\3DLinearFrequencyRenderer.cs" />
     <Compile Include="RenderFrame\3DMusicVisRenderFrame.cs" />
+    <Compile Include="RenderFrame\3DSampleRenderer.cs" />
     <Compile Include="SampleAggregator.cs" />
     <Compile Include="Screen\Credits.cs" />
     <Compile Include="Screen\EditForm.cs" />
