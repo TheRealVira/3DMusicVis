@@ -408,9 +408,14 @@ namespace _3DMusicVis2.Screen
         {
             if (!RealTimeRecording.IsRecording) return;
 
+            if (Keys.L.KeyWasClicked())
+            {
+                _cam.Locked = !_cam.Locked;
+            }
+
             if (_dicKeys.Any(x => x.StartsWith("3")))
             {
-                if (!_menu.IsVisible)
+                if (!_menu.IsVisible&&!_cam.Locked)
                 {
                     _cam.Update(gameTime);
                     Mouse.SetPosition(Game1.VIRTUAL_RESOLUTION.Center.X, Game1.VIRTUAL_RESOLUTION.Center.Y);

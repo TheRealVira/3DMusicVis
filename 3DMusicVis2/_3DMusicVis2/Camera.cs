@@ -35,6 +35,8 @@ namespace _3DMusicVis2
         public bool Orbit;
         private Matrix view;
 
+        public bool Locked;
+
         //Constructor
         public Camera(GraphicsDevice device, Vector3 position, Vector3 rotation, float speed)
         {
@@ -142,6 +144,8 @@ namespace _3DMusicVis2
 
         public void Update(GameTime gameTime)
         {
+            if(Locked)return;
+
             //Sprint-Key
             movespeedmultiplikator = Game1.NewKeyboardState.IsKeyDown(Keys.LeftShift) ? 2.5F : 1.6F;
 
