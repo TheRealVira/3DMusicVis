@@ -12,6 +12,8 @@
 
 #region Usings
 
+using System;
+using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,7 +28,7 @@ namespace _3DMusicVis2._3DHelper
     /// </summary>
     public class Grid
     {
-        private static Effect _effect;
+        private static BasicEffect _effect;
         private readonly RasterizerState MyStateSolid;
         private readonly RasterizerState MyStateWire;
 
@@ -35,7 +37,7 @@ namespace _3DMusicVis2._3DHelper
         private int _terrainHeight;
 
         private int _terrainWidth;
-        private VertexPositionColor[] _vertices;
+        private VertexPositionColorNormal[] _vertices;
 
         public Grid(ContentManager manager)
         {
@@ -51,7 +53,13 @@ namespace _3DMusicVis2._3DHelper
 
             if (_effect != null) return;
 
-            _effect = manager.Load<Effect>("Shader/Heightmap/Heightmap");
+            //_effect = manager.Load<Effect>("Shader/Heightmap/Heightmap");
+            _effect = new BasicEffect(Game1.Graphics.GraphicsDevice);
+            _effect.EnableDefaultLighting();
+            _effect.DirectionalLight0.Direction = new Vector3(1, 0, 0);  // coming along the x-axis
+            _effect.DirectionalLight0.SpecularColor = new Vector3(0, 1, 0); // with green highlights
+            _effect.AmbientLightColor = new Vector3(.2f, .2f, .2f);
+            _effect.DirectionalLight0.DiffuseColor = new Vector3(0.5f, 0, 0); // a red light
         }
 
         private Point SetTerrainSpacing
@@ -62,7 +70,7 @@ namespace _3DMusicVis2._3DHelper
                 _terrainHeight = value.Y;
 
                 _indices = new int[(_terrainWidth - 1)*(_terrainHeight - 1)*6];
-                _vertices = new VertexPositionColor[_terrainWidth*_terrainHeight];
+                _vertices = new VertexPositionColorNormal[_terrainWidth*_terrainHeight];
                 _heightData = new float[_terrainWidth, _terrainHeight];
             }
         }
@@ -78,32 +86,46 @@ namespace _3DMusicVis2._3DHelper
             LoadHeightData(heightmap);
             SetUpVertices();
             SetUpIndices();
+            SetUpNormals();
         }
 
         public void Draw(GraphicsDevice device, Camera cam, DrawMode mode)
         {
             if (_vertices == null) return;
+            
+            device.BeginRender3D();
 
             var temp = device.RasterizerState;
 
             device.RasterizerState = mode.Equals(DrawMode.Connected) ? MyStateSolid : MyStateWire;
 
-            _effect.CurrentTechnique = _effect.Techniques["ColoredNoShading"];
-            _effect.Parameters["xView"].SetValue(cam.View);
-            _effect.Parameters["xProjection"].SetValue(cam.Projektion);
-            _effect.Parameters["xWorld"].SetValue(Matrix.Identity);
+            //_effect.CurrentTechnique = _effect.Techniques["Colored"];
+            //_effect.Parameters["xView"].SetValue(cam.View);
+            //_effect.Parameters["xProjection"].SetValue(cam.Projektion);
+            //_effect.Parameters["xWorld"].SetValue(Matrix.Identity);
+            //_effect.Parameters["xEnableLighting"].SetValue(true);
+            //_effect.Parameters["xLightDirection"].SetValue(new Vector3(-1,10,0));
+            //_effect.Parameters["xAmbient"].SetValue(.3f);
+            //_effect.Parameters["xShowNormals"].SetValue(true);
+            //_effect.Parameters["xCamPos"].SetValue(cam.Position);
+            //_effect.Parameters["xCamUp"].SetValue(Vector3.Up);
+            //_effect.Parameters["xPointSpriteSize"].SetValue(1f);
 
-            device.BlendState = BlendState.Opaque;
-            device.SamplerStates[0] = SamplerState.LinearWrap;
-            device.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+            //foreach (var pass in _effect.CurrentTechnique.Passes)
+            //{
+            //    pass.Apply();
+            
+            _effect.World = Matrix.Identity;
+            _effect.View = cam.View;
+            _effect.Projection = cam.Projektion;
+            _effect.CurrentTechnique.Passes[0].Apply();
 
-            foreach (var pass in _effect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
+            device.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, _vertices, 0, _vertices.Length, _indices, 0,
+                    _indices.Length / 3, VertexPositionColorNormal.VertexDeclaration);
 
-                device.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, _vertices, 0, _vertices.Length, _indices, 0,
-                    _indices.Length/3, VertexPositionColor.VertexDeclaration);
-            }
+
+
+            //}
 
             device.RasterizerState = temp;
             device.DepthStencilState = new DepthStencilState() { DepthBufferEnable = false };
@@ -127,7 +149,9 @@ namespace _3DMusicVis2._3DHelper
                     //else if (_heightData[x, y] < minHeight + (maxHeight - minHeight) * 3 / 4)
                     //    _vertices[x + y * _terrainWidth].Color = Color.DarkGray;
                     //else
-                    cur.Color = Color.White;
+
+
+                    cur.Color = Color.White * cur.Position.Y;
 
                     _vertices[x + y*_terrainWidth] = cur;
                 }
@@ -154,6 +178,28 @@ namespace _3DMusicVis2._3DHelper
                     _indices[counter++] = topRight;
                     _indices[counter++] = lowerRight;
                 }
+            }
+        }
+
+        private void SetUpNormals()
+        {
+            for (int i = 0; i < _indices.Length/3; i++)
+            {
+                var index1 = _indices[i * 3];
+                var index2 = _indices[i * 3 + 1];
+                var index3 = _indices[i * 3 + 2];
+
+                var side1 = _vertices[index1].Position - _vertices[index3].Position;
+                var side2 = _vertices[index1].Position - _vertices[index2].Position;
+                var normal = Vector3.Cross(side1, side2);
+
+                _vertices[index1].Normal = normal;
+                _vertices[index2].Normal = normal;
+                _vertices[index3].Normal = normal;
+
+                _vertices[index1].Normal.Normalize();
+                _vertices[index2].Normal.Normalize();
+                _vertices[index3].Normal.Normalize();
             }
         }
 

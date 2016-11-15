@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="3DHelper\Grid.cs" />
+    <Compile Include="3DHelper\VertexPositionColorNormal.cs" />
     <Compile Include="AudioAnalysisXNAClass.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="ColorMode.cs" />

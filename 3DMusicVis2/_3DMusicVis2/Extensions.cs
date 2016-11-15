@@ -103,5 +103,20 @@ namespace _3DMusicVis2
             return attrs.Length > 0 ? ((DescriptionAttribute) attrs[0]).Description : enumerationValue.ToString();
             //If we have no description attribute, just return the ToString of the enum
         }
+
+        public static void ResetGraphic(this GraphicsDevice dev)
+        {
+            dev.BlendState = BlendState.AlphaBlend;
+            dev.DepthStencilState = DepthStencilState.None;
+            dev.RasterizerState = RasterizerState.CullCounterClockwise;
+            dev.SamplerStates[0] = SamplerState.AnisotropicWrap;
+
+        }
+        public static void BeginRender3D(this GraphicsDevice dev)
+        {
+            dev.BlendState = BlendState.Opaque;
+            dev.DepthStencilState = DepthStencilState.Default;
+            dev.SamplerStates[0] = SamplerState.LinearWrap;
+        }
     }
 }

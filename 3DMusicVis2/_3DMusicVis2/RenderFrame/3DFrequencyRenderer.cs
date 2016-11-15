@@ -62,7 +62,7 @@ namespace _3DMusicVis2.RenderFrame
             {
                 for (var y = 0; y < length; y++)
                 {
-                    foregroundColors[x, y] = frequencies[x]*Game1.VIRTUAL_RESOLUTION.Height/4;
+                    foregroundColors[x, y] = frequencies[frequencies.Count - 1 - x]*Game1.VIRTUAL_RESOLUTION.Height/4;
                 }
             }
 
