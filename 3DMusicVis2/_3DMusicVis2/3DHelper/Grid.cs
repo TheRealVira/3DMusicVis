@@ -133,6 +133,8 @@ namespace _3DMusicVis2._3DHelper
 
         private void SetUpVertices()
         {
+            if (_vertices == null) return;
+
             for (var x = 0; x < _terrainWidth; x++)
             {
                 for (var y = 0; y < _terrainHeight; y++)
@@ -160,6 +162,8 @@ namespace _3DMusicVis2._3DHelper
 
         private void SetUpIndices()
         {
+            if (_indices == null) return;
+
             var counter = 0;
             for (var y = 0; y < _terrainHeight - 1; y++)
             {
@@ -183,6 +187,8 @@ namespace _3DMusicVis2._3DHelper
 
         private void SetUpNormals()
         {
+            if(_vertices == null)return;
+
             for (int i = 0; i < _indices.Length/3; i++)
             {
                 var index1 = _indices[i * 3];
@@ -205,6 +211,8 @@ namespace _3DMusicVis2._3DHelper
 
         private void LoadHeightData(float[,] heightMap)
         {
+            if(heightMap.GetLength(0)==0)return;
+
             if (_terrainWidth != heightMap.GetLength(0) || _terrainHeight != heightMap.GetLength(1))
             {
                 SetTerrainSpacing = new Point(heightMap.GetLength(0), heightMap.GetLength(1));
