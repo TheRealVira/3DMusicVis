@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: ImageSetting.cs
 // Date - created:2016.11.10 - 18:57
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 

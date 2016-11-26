@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: VisualControl.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -16,6 +16,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using _3DMusicVis2.Manager;
 
 #endregion
 
@@ -65,7 +66,7 @@ namespace _3DMusicVis2.VisualControls
         {
             if (!IsVisible) return;
 
-            if (Bounding.Contains(new Point(Game1.NewMouseState.X, Game1.NewMouseState.Y)))
+            if (Bounding.Contains(InputManager.MousePosition.ToPoint()))
             {
                 if (!WasHovering)
                 {
@@ -87,11 +88,9 @@ namespace _3DMusicVis2.VisualControls
 
                 if (Game1.NewMouseState.LeftButton == ButtonState.Pressed)
                 {
-                    if (!WasPressing)
-                    {
-                        WasPressing = true;
-                        OnMouseButtonDown();
-                    }
+                    if (WasPressing) return;
+                    WasPressing = true;
+                    OnMouseButtonDown();
 
                     return;
                 }
@@ -100,29 +99,23 @@ namespace _3DMusicVis2.VisualControls
 
                 if (Game1.OldMouseState.LeftButton == ButtonState.Pressed)
                 {
-                    if (!WasReleasing)
-                    {
-                        WasReleasing = true;
-                        OnMousePressed();
-                    }
+                    if (WasReleasing) return;
+                    WasReleasing = true;
+                    OnMousePressed();
 
                     return;
                 }
 
-                if (WasReleasing)
-                {
-                    WasReleasing = false;
-                    OnMouseButtonUp();
-                }
+                if (!WasReleasing) return;
+                WasReleasing = false;
+                OnMouseButtonUp();
 
                 return;
             }
 
-            if (WasHovering)
-            {
-                WasHovering = false;
-                OnMouseExits();
-            }
+            if (!WasHovering) return;
+            WasHovering = false;
+            OnMouseExits();
         }
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)

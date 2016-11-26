@@ -106,7 +106,9 @@
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Manager\ImageManager.cs" />
+    <Compile Include="Manager\InputManager.cs" />
     <Compile Include="Manager\MediaPlayerManager.cs" />
+    <Compile Include="Manager\ResolutionManager.cs" />
     <Compile Include="Manager\ScreenManager.cs" />
     <Compile Include="Manager\TemplateManager.cs" />
     <Compile Include="MyMath.cs" />

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: PauseMenu.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -35,23 +35,27 @@ namespace _3DMusicVis2.Screen
         {
             _hadder =
                 new Label(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2 - 280, 160,
+                    new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width/2 - 80,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height/2 - 280, 160,
                         50), Game1.FamouseOnePixel, Game1.InformationFont, "Menu")
                 {DrawColor = Color.Transparent};
 
             _resume =
                 new Button(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2, 160, 50),
+                    new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width/2 - 80,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height/2, 160, 50),
                     Game1.FamouseOnePixel, Game1.InformationFont, "Resume");
 
             _menu =
                 new Button(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2 - 100, 160,
+                    new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width/2 - 80,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height/2 - 100, 160,
                         50), Game1.FamouseOnePixel, Game1.InformationFont, "Main Menu");
 
             _exit =
                 new Button(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2 + 100, 160,
+                    new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width/2 - 80,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height/2 + 100, 160,
                         50),
                     Game1.FamouseOnePixel, Game1.InformationFont, "Exit");
 
@@ -80,9 +84,10 @@ namespace _3DMusicVis2.Screen
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
             sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, null);
-            sB.Draw(Game1.FamouseOnePixel, Game1.VIRTUAL_RESOLUTION, new Color(50, 50, 50, 1));
+            sB.Draw(Game1.FamouseOnePixel, ResolutionManager.VIRTUAL_RESOLUTION, new Color(50, 50, 50, 1));
             sB.Draw(Game1.FamouseOnePixel,
-                new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 150, Game1.VIRTUAL_RESOLUTION.Height/2 - 300, 300, 600),
+                new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width/2 - 150,
+                    ResolutionManager.VIRTUAL_RESOLUTION.Height/2 - 300, 300, 600),
                 new Color(10, 10, 10));
 
             _hadder.Draw(gameTime, sB);

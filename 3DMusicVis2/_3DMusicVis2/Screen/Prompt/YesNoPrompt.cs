@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: YesNoPrompt.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -35,19 +35,22 @@ namespace _3DMusicVis2.Screen.Prompt
 
             _myText =
                 new Label(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 80, Game1.VIRTUAL_RESOLUTION.Height/2 - 130, 160,
+                    new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width/2 - 80,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height/2 - 130, 160,
                         50), Game1.FamouseOnePixel, Game1.InformationFont, prompt)
                 {DrawColor = Color.Transparent};
 
             Yes =
                 new Button(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 170, Game1.VIRTUAL_RESOLUTION.Height/2 + 80, 160,
+                    new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width/2 - 170,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height/2 + 80, 160,
                         50),
                     Game1.FamouseOnePixel, Game1.InformationFont, "Yes");
 
             No =
                 new Button(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 + 10, Game1.VIRTUAL_RESOLUTION.Height/2 + 80, 160,
+                    new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width/2 + 10,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height/2 + 80, 160,
                         50),
                     Game1.FamouseOnePixel, Game1.InformationFont, "No");
         }
@@ -60,9 +63,10 @@ namespace _3DMusicVis2.Screen.Prompt
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
             sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            sB.Draw(Game1.FamouseOnePixel, Game1.VIRTUAL_RESOLUTION, new Color(50, 50, 50, 1));
+            sB.Draw(Game1.FamouseOnePixel, ResolutionManager.VIRTUAL_RESOLUTION, new Color(50, 50, 50, 1));
             sB.Draw(Game1.FamouseOnePixel,
-                new Rectangle(Game1.VIRTUAL_RESOLUTION.Width/2 - 300, Game1.VIRTUAL_RESOLUTION.Height/2 - 150, 600, 300),
+                new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width/2 - 300,
+                    ResolutionManager.VIRTUAL_RESOLUTION.Height/2 - 150, 600, 300),
                 new Color(10, 10, 10));
             sB.End();
 

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 3DFrequencyRenderer.cs
 // Date - created:2016.11.13 - 15:02
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Manager;
 using _3DMusicVis2.Setting.Visualizer;
 using _3DMusicVis2._3DHelper;
 
@@ -62,7 +63,8 @@ namespace _3DMusicVis2.RenderFrame
             {
                 for (var y = 0; y < length; y++)
                 {
-                    foregroundColors[x, y] = frequencies[frequencies.Count - 1 - x]*Game1.VIRTUAL_RESOLUTION.Height/4;
+                    foregroundColors[x, y] = frequencies[frequencies.Count - 1 - x]*
+                                             ResolutionManager.VIRTUAL_RESOLUTION.Height/4;
                 }
             }
 
@@ -85,8 +87,8 @@ namespace _3DMusicVis2.RenderFrame
 
         public static Texture2D Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings)
         {
-            var toRet = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height, true,
+            var toRet = new RenderTarget2D(device, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
 
             Draw(device, gameTime, cam, settings, ref toRet);

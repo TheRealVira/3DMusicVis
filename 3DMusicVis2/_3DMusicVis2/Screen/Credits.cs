@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Credits.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -33,16 +33,19 @@ namespace _3DMusicVis2.Screen
         public Credits(GraphicsDeviceManager gdm) : base(gdm, "Credits")
         {
             _namingList =
-                new ListBox(new Rectangle(0, 0, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height),
+                new ListBox(
+                    new Rectangle(0, 0, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height),
                     Game1.GhostPixel, new[]
                     {
                         "Audio Analysis Framework - Created by Stephen Hoult. (\"http://bit.ly/1U6BtBU\")",
                         "All other stuff - Copyright (c) 2015 Vira"
                     }.ToList(), Game1.GhostPixel, Game1.InformationFont);
 
-            _namingList.Scroll(Game1.VIRTUAL_RESOLUTION.Height/4);
+            _namingList.Scroll(ResolutionManager.VIRTUAL_RESOLUTION.Height/4);
 
-            _back = new Button(new Rectangle(100, Game1.VIRTUAL_RESOLUTION.Height - 150, 200, 50), Game1.FamouseOnePixel,
+            _back = new Button(new Rectangle(100, ResolutionManager.VIRTUAL_RESOLUTION.Height - 150, 200, 50),
+                Game1.FamouseOnePixel,
                 Game1.InformationFont, "Back");
             _back.MousePressed += Back_MousePressed;
         }

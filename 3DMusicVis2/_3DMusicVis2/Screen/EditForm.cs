@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: EditForm.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -19,6 +19,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using _3DMusicVis2.Manager;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Screen.Prompt;
@@ -68,13 +69,14 @@ namespace _3DMusicVis2.Screen
 
             _cam = new Camera(gdm.GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 1.5f);
 
-            _currentItems = new ListBox(new Rectangle(20, 20, 200, Game1.VIRTUAL_RESOLUTION.Height - 40),
+            _currentItems = new ListBox(new Rectangle(20, 20, 200, ResolutionManager.VIRTUAL_RESOLUTION.Height - 40),
                 Game1.FamouseOnePixel, _loaded.Bundles.Select(x => x.ToString()).ToList(), Game1.FamouseOnePixel,
                 Game1.InformationFont);
 
             _save =
                 new Button(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width - 130, Game1.VIRTUAL_RESOLUTION.Height - 80, 100, 50),
+                    new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width - 130,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height - 80, 100, 50),
                     Game1.FamouseOnePixel, Game1.InformationFont, "Save");
             _save.MousePressed += _save_MousePressed;
 

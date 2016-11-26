@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Console.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -15,6 +15,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Manager;
 using _3DMusicVis2.OutputConsole;
 using _3DMusicVis2.OutPutConsole;
 
@@ -24,7 +25,9 @@ namespace _3DMusicVis2.VisualControls
 {
     public class Console : VisualControl
     {
-        public static Rectangle ConsoleBoundings = new Rectangle(0, Game1.VIRTUAL_RESOLUTION.Height - 250, 500, 250);
+        public static Rectangle ConsoleBoundings = new Rectangle(0, ResolutionManager.VIRTUAL_RESOLUTION.Height - 250,
+            500, 250);
+
         private readonly ListBox _lines;
 
         private readonly Label ConsoleSignLabel;

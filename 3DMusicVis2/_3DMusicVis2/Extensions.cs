@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Extensions.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -16,7 +16,6 @@ using System;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 #endregion
 
@@ -37,9 +36,6 @@ namespace _3DMusicVis2
             return smalestPossible;
         }
 
-        public static bool KeyWasClicked(this Keys key)
-            => Game1.NewKeyboardState.IsKeyUp(key) && Game1.OldKeyboardState.IsKeyDown(key);
-
         public static void DrawLine(this SpriteBatch spriteBatch, Vector2 begin, Vector2 end, Color color, int width = 1)
         {
             spriteBatch.Draw(Game1.FamouseOnePixel,
@@ -59,6 +55,11 @@ namespace _3DMusicVis2
         public static Vector2 ToVector2(this Point value)
         {
             return new Vector2(value.X, value.Y);
+        }
+
+        public static Point ToPoint(this Vector2 value)
+        {
+            return new Point((int) value.X, (int) value.Y);
         }
 
         public static RenderTarget2D Clone(this RenderTarget2D target)
@@ -110,8 +111,8 @@ namespace _3DMusicVis2
             dev.DepthStencilState = DepthStencilState.None;
             dev.RasterizerState = RasterizerState.CullCounterClockwise;
             dev.SamplerStates[0] = SamplerState.AnisotropicWrap;
-
         }
+
         public static void BeginRender3D(this GraphicsDevice dev)
         {
             dev.BlendState = BlendState.Opaque;

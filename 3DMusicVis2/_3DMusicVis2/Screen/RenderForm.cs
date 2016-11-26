@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RenderForm.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -63,14 +63,15 @@ namespace _3DMusicVis2.Screen
             _mySetting = currentSetting;
             _cam = new Camera(gdm.GraphicsDevice, new Vector3(10, 14.5f, -9.5f), new Vector3(0.65f, 0, 0), 15f);
             _menu = new PauseMenu(GDM);
-            _wavesRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height);
-            _gausianBlurRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height);
-            _scanLineRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height);
-            _alphaDeletionRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height);
+            _wavesRendertarget = new RenderTarget2D(GDM.GraphicsDevice, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height);
+            _gausianBlurRendertarget = new RenderTarget2D(GDM.GraphicsDevice, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height);
+            _scanLineRendertarget = new RenderTarget2D(GDM.GraphicsDevice, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height);
+            _alphaDeletionRendertarget = new RenderTarget2D(GDM.GraphicsDevice,
+                ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height);
 
             _dicKeys = new List<string>();
             _bufferedDrawer = new Dictionary<string, RenderTarget2D>();
@@ -79,8 +80,8 @@ namespace _3DMusicVis2.Screen
                 if (_bufferedDrawer.ContainsKey(x.ToString())) return;
 
                 _bufferedDrawer.Add(x.ToString(),
-                    new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
-                        Game1.VIRTUAL_RESOLUTION.Height));
+                    new RenderTarget2D(GDM.GraphicsDevice, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height));
                 _dicKeys.Add(x.ToString());
             });
         }
@@ -184,9 +185,9 @@ namespace _3DMusicVis2.Screen
                         curMode = DrawMode.Connected;
                         goto case "3DDrawFrequency";
 
-                    #endregion
+                        #endregion
 
-                    #region 3D Sample render settings
+                        #region 3D Sample render settings
 
                     case "3SDashed":
                         curTex = _bufferedDrawer["3SDashed"];
@@ -200,7 +201,8 @@ namespace _3DMusicVis2.Screen
                         curTex = _bufferedDrawer["3SConnected"];
                         curMode = DrawMode.Connected;
                         goto case "3DDrawSample";
-                    #endregion
+
+                        #endregion
 
                     default:
                         continue;
@@ -254,13 +256,17 @@ namespace _3DMusicVis2.Screen
                                  : SpriteEffects.None);
 
 
-                var origin = Game1.VIRTUAL_RESOLUTION.Center.ToVector2();
+                var origin = ResolutionManager.VIRTUAL_RESOLUTION.Center.ToVector2();
 
                 var myRec = new Rectangle(
-                    (int) (pos.X*Game1.VIRTUAL_RESOLUTION.Width + Game1.VIRTUAL_RESOLUTION.Width*scale.X/2),
-                    (int) (pos.Y*Game1.VIRTUAL_RESOLUTION.Height + Game1.VIRTUAL_RESOLUTION.Height*scale.Y/2),
-                    (int) (scale.X*Game1.VIRTUAL_RESOLUTION.Width),
-                    (int) (scale.Y*Game1.VIRTUAL_RESOLUTION.Height));
+                    (int)
+                        (pos.X*ResolutionManager.VIRTUAL_RESOLUTION.Width +
+                         ResolutionManager.VIRTUAL_RESOLUTION.Width*scale.X/2),
+                    (int)
+                        (pos.Y*ResolutionManager.VIRTUAL_RESOLUTION.Height +
+                         ResolutionManager.VIRTUAL_RESOLUTION.Height*scale.Y/2),
+                    (int) (scale.X*ResolutionManager.VIRTUAL_RESOLUTION.Width),
+                    (int) (scale.Y*ResolutionManager.VIRTUAL_RESOLUTION.Height));
 
                 sB.Draw(
                     _bufferedDrawer[_mySetting.Bundles[i].ToString()],
@@ -293,8 +299,8 @@ namespace _3DMusicVis2.Screen
                     BloomManager.Bloom.BeginDraw();
                     sB.GraphicsDevice.Clear(Color.Transparent);
                     // Applying shader
-                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                    sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
+                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+                    sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
                     sB.End();
                     BloomManager.Bloom.EndDraw();
 
@@ -305,10 +311,11 @@ namespace _3DMusicVis2.Screen
                 {
                     GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
                     sB.GraphicsDevice.Clear(Color.Transparent);
-                    sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, null, null, null, Game1.LiquifyEffect);
+                    sB.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, null, null,
+                        Game1.LiquifyEffect);
                     Game1.LiquifyEffect.Parameters["width"].SetValue( /*.5f*/0.2f);
                     Game1.LiquifyEffect.Parameters["toBe"].SetValue(_mySetting.BackgroundColor.Negate().ToVector4());
-                    sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
+                    sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
                     sB.End();
 
                     toUse = _alphaDeletionRendertarget;
@@ -318,10 +325,11 @@ namespace _3DMusicVis2.Screen
                 {
                     GDM.GraphicsDevice.SetRenderTarget(_scanLineRendertarget);
                     sB.GraphicsDevice.Clear(Color.Transparent);
-                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, Game1.ScanlinEffect);
-                    Game1.ScanlinEffect.Parameters["ImageHeight"].SetValue(Game1.VIRTUAL_RESOLUTION.Height);
+                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null,
+                        Game1.ScanlinEffect);
+                    Game1.ScanlinEffect.Parameters["ImageHeight"].SetValue(ResolutionManager.VIRTUAL_RESOLUTION.Height);
                     Game1.ScanlinEffect.Parameters["LineColor"].SetValue(_mySetting.BackgroundColor.ToVector4());
-                    sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
+                    sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
                     sB.End();
 
                     toUse = _scanLineRendertarget;
@@ -337,7 +345,7 @@ namespace _3DMusicVis2.Screen
                 DrawImageFromSetting(_mySetting.BackgroundImage, ref _mySetting.BackgroundImage.Rotation, sB, gameTime);
             }
 
-            sB.Draw(toUse, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
 
             if (_mySetting.ForegroundImage != null)
             {
@@ -352,7 +360,7 @@ namespace _3DMusicVis2.Screen
             }
         }
 
-        private void DrawImageFromSetting(ImageSetting set, ref float rot, SpriteBatch sB, GameTime gt)
+        private static void DrawImageFromSetting(ImageSetting set, ref float rot, SpriteBatch sB, GameTime gt)
         {
             Texture2D tryImage;
             if (!ImageManager.Images.TryGetValue(set.ImageFileName ?? "", out tryImage)) return;
@@ -387,19 +395,29 @@ namespace _3DMusicVis2.Screen
             {
                 sB.Draw(tryImage,
                     new Rectangle(
-                        Game1.VIRTUAL_RESOLUTION.Center.X + (int) (set.Offset.X*Game1.VIRTUAL_RESOLUTION.Width),
-                        Game1.VIRTUAL_RESOLUTION.Center.Y + (int) (set.Offset.Y*Game1.VIRTUAL_RESOLUTION.Height),
-                        (int) (MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width)*(1 + -1*(mid - 1))),
-                        (int) (MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height)*(1 + -1*(mid - 1)))),
+                        ResolutionManager.VIRTUAL_RESOLUTION.Center.X +
+                        (int) (set.Offset.X*ResolutionManager.VIRTUAL_RESOLUTION.Width),
+                        ResolutionManager.VIRTUAL_RESOLUTION.Center.Y +
+                        (int) (set.Offset.Y*ResolutionManager.VIRTUAL_RESOLUTION.Height),
+                        (int)
+                            (MathHelper.Min(tryImage.Width, ResolutionManager.VIRTUAL_RESOLUTION.Width)*
+                             (1 + -1*(mid - 1))),
+                        (int)
+                            (MathHelper.Min(tryImage.Height, ResolutionManager.VIRTUAL_RESOLUTION.Height)*
+                             (1 + -1*(mid - 1)))),
                     null, set.Tint*.5f, (set.Mode & ImageMode.Rotate) != 0 ? rot : 0f,
                     tryImage.Bounds.Center.ToVector2(), SpriteEffects.None, 0f);
             }
 
             sB.Draw(tryImage,
-                new Rectangle(Game1.VIRTUAL_RESOLUTION.Center.X + (int) (set.Offset.X*Game1.VIRTUAL_RESOLUTION.Width),
-                    Game1.VIRTUAL_RESOLUTION.Center.Y + (int) (set.Offset.Y*Game1.VIRTUAL_RESOLUTION.Height),
-                    (int) (MathHelper.Min(tryImage.Width, Game1.VIRTUAL_RESOLUTION.Width)*mid),
-                    (int) (MathHelper.Min(tryImage.Height, Game1.VIRTUAL_RESOLUTION.Height)*mid)), null, set.Tint,
+                new Rectangle(
+                    ResolutionManager.VIRTUAL_RESOLUTION.Center.X +
+                    (int) (set.Offset.X*ResolutionManager.VIRTUAL_RESOLUTION.Width),
+                    ResolutionManager.VIRTUAL_RESOLUTION.Center.Y +
+                    (int) (set.Offset.Y*ResolutionManager.VIRTUAL_RESOLUTION.Height),
+                    (int) (MathHelper.Min(tryImage.Width, ResolutionManager.VIRTUAL_RESOLUTION.Width)*mid),
+                    (int) (MathHelper.Min(tryImage.Height, ResolutionManager.VIRTUAL_RESOLUTION.Height)*mid)), null,
+                set.Tint,
                 (set.Mode & ImageMode.Rotate) != 0 ? rot : 0f,
                 tryImage.Bounds.Center.ToVector2(), SpriteEffects.None, 0f);
         }
@@ -415,10 +433,11 @@ namespace _3DMusicVis2.Screen
 
             if (_dicKeys.Any(x => x.StartsWith("3")))
             {
-                if (!_menu.IsVisible&&!_cam.Locked)
+                if (!_menu.IsVisible && !_cam.Locked)
                 {
                     _cam.Update(gameTime);
-                    Mouse.SetPosition(Game1.VIRTUAL_RESOLUTION.Center.X, Game1.VIRTUAL_RESOLUTION.Center.Y);
+                    Mouse.SetPosition(ResolutionManager.REAL_RESOLUTION.Center.X,
+                        ResolutionManager.REAL_RESOLUTION.Center.Y);
                 }
 
                 if (_dicKeys.Any(x => x.StartsWith("3F")))

@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TemplateManager.cs
 // Date - created:2016.10.23 - 16:24
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 

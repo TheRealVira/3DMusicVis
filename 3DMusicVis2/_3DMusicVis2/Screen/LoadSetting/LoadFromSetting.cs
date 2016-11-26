@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: LoadFromSetting.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -46,12 +46,14 @@ namespace _3DMusicVis2.Screen.LoadSetting
 
             _myKind = kind;
 
-            _delete = new Button(new Rectangle(100, Game1.VIRTUAL_RESOLUTION.Height - 300, 200, 50),
+            _delete = new Button(new Rectangle(100, ResolutionManager.VIRTUAL_RESOLUTION.Height - 300, 200, 50),
                 Game1.FamouseOnePixel,
                 Game1.InformationFont, "Delete");
-            _use = new Button(new Rectangle(100, Game1.VIRTUAL_RESOLUTION.Height - 200, 200, 50), Game1.FamouseOnePixel,
+            _use = new Button(new Rectangle(100, ResolutionManager.VIRTUAL_RESOLUTION.Height - 200, 200, 50),
+                Game1.FamouseOnePixel,
                 Game1.InformationFont, _myKind == KindOfLoadingSettingScreen.OnlyLoad ? "Load" : "Edit");
-            _back = new Button(new Rectangle(100, Game1.VIRTUAL_RESOLUTION.Height - 100, 200, 50), Game1.FamouseOnePixel,
+            _back = new Button(new Rectangle(100, ResolutionManager.VIRTUAL_RESOLUTION.Height - 100, 200, 50),
+                Game1.FamouseOnePixel,
                 Game1.InformationFont, "Back");
 
             _settingsBox = new ListBox(new Rectangle(100, 100, 300, 500), Game1.FamouseOnePixel,
@@ -77,7 +79,8 @@ namespace _3DMusicVis2.Screen.LoadSetting
 
             _new =
                 new Button(
-                    new Rectangle(Game1.VIRTUAL_RESOLUTION.Width - 230, Game1.VIRTUAL_RESOLUTION.Height - 100, 200, 50),
+                    new Rectangle(ResolutionManager.VIRTUAL_RESOLUTION.Width - 230,
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height - 100, 200, 50),
                     Game1.FamouseOnePixel,
                     Game1.InformationFont, "New");
             _new.MousePressed += _new_MousePressed;

@@ -1,9 +1,26 @@
-﻿using System.Collections.ObjectModel;
+﻿#region License
+
+// Copyright (c) 2016, Vira
+// All rights reserved.
+// Solution: 3DMusicVis2
+// Project: _3DMusicVis2
+// Filename: 3DSampleRenderer.cs
+// Date - created:2016.11.14 - 19:01
+// Date - current: 2016.11.26 - 14:25
+
+#endregion
+
+#region Usings
+
+using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Manager;
 using _3DMusicVis2.Setting.Visualizer;
 using _3DMusicVis2._3DHelper;
+
+#endregion
 
 namespace _3DMusicVis2.RenderFrame
 {
@@ -39,14 +56,14 @@ namespace _3DMusicVis2.RenderFrame
 
         public static void UpdateRenderer(ReadOnlyCollection<float> samples)
         {
-            var length = (int)(samples.Count / 25);
+            var length = samples.Count/25;
             var foregroundColors = new float[length, length];
 
             for (var x = 0; x < length; x++)
             {
                 for (var y = 0; y < length; y++)
                 {
-                    foregroundColors[x, y] = samples[x] * Game1.VIRTUAL_RESOLUTION.Height / 16;
+                    foregroundColors[x, y] = samples[x]*ResolutionManager.VIRTUAL_RESOLUTION.Height/16;
                 }
             }
 
@@ -69,8 +86,8 @@ namespace _3DMusicVis2.RenderFrame
 
         public static Texture2D Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings)
         {
-            var toRet = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height, true,
+            var toRet = new RenderTarget2D(device, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
 
             Draw(device, gameTime, cam, settings, ref toRet);

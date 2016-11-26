@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Game1.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,12 +22,9 @@ using _3DMusicVis2.Manager;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Shader;
-using Color = Microsoft.Xna.Framework.Color;
 using Console = _3DMusicVis2.VisualControls.Console;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using MainMenu = _3DMusicVis2.Screen.MainMenu;
-using Point = Microsoft.Xna.Framework.Point;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 #endregion
 
@@ -40,7 +36,6 @@ namespace _3DMusicVis2
         public const int FIELD_WIDTH = 100;
         public const float INITAIL_HEIGHT = 0;
         public const float SplashMaxCount = 1000;
-        public static Rectangle VIRTUAL_RESOLUTION = new Rectangle(0, 0, 1920, 1080);
 
         public static GraphicsDeviceManager Graphics;
         public static SpriteBatch SpriteBatch;
@@ -100,10 +95,6 @@ namespace _3DMusicVis2
             //Graphics.IsFullScreen = false;
             //Graphics.PreferredBackBufferHeight = Graphics.GraphicsDevice.Viewport.Bounds.Height;
             //Graphics.PreferredBackBufferWidth = Graphics.GraphicsDevice.Viewport.Bounds.Width;
-            InactiveSleepTime = new TimeSpan(0);
-            //this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 60);
-            //graphics.SynchronizeWithVerticalRetrace = false;
-            Graphics.ApplyChanges();
 
             Rand = new Random(DateTime.Now.Millisecond);
             FamouseOnePixel = new Texture2D(Graphics.GraphicsDevice, 1, 1);
@@ -119,17 +110,7 @@ namespace _3DMusicVis2
 
             System.Console.WriteLine("IsInitialised the OutputManager...");
 
-            //Resolution.Init(ref Graphics);
-            //Resolution.SetVirtualResolution(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
-            //Resolution.SetResolution(Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width,
-            //    Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, false);
-            Graphics.PreferredBackBufferWidth = Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
-            Graphics.PreferredBackBufferHeight = Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height;
-            Graphics.IsFullScreen = false;
-            Graphics.ApplyChanges();
-
-            //var form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(this.Window.Handle);
-            //form.Location = new System.Drawing.Point(10, 10);
+            ResolutionManager.ApplyResolution(Graphics);
 
             System.Console.WriteLine("IsInitialised the Resolution...");
 
@@ -170,8 +151,8 @@ namespace _3DMusicVis2
             System.Console.WriteLine("Initialized the bloom...");
             _3DLinearFrequencyRenderer.Initialise(GraphicsDevice);
             System.Console.WriteLine("Initialized the _3DLinearFrecuencyRenderer...");
-            DEFAULT_RENDERTARGET = new RenderTarget2D(GraphicsDevice, VIRTUAL_RESOLUTION.Width,
-                VIRTUAL_RESOLUTION.Height, true,
+            DEFAULT_RENDERTARGET = new RenderTarget2D(GraphicsDevice, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height, true,
                 GraphicsDevice.DisplayMode.Format, DepthFormat.Depth24);
             System.Console.WriteLine("Initialized the default rendertarget...");
 
@@ -242,51 +223,13 @@ namespace _3DMusicVis2
             NewKeyboardState = Keyboard.GetState();
             NewMouseState = Mouse.GetState();
 
+            InputManager.UpdateMousePosition(NewMouseState, Graphics);
+
             MyConsole.Update(gameTime);
 
-            if (NewKeyboardState.IsKeyDown(Keys.RightAlt) && NewKeyboardState.IsKeyUp(Keys.Enter) &&
-                OldKeyboardState.IsKeyDown(Keys.Enter))
+            if (NewKeyboardState.IsKeyDown(Keys.RightAlt) && Keys.Enter.KeyWasClicked())
             {
-                var window = Control.FromHandle(FreeBeer.Window.Handle) as Form;
-                var formPosition = new Point(window.Location.X, window.Location.Y);
-                var dispayXMulitplikator =
-                    (int) Math.Round(formPosition.X/(decimal) Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width);
-                if (dispayXMulitplikator == 0)
-                {
-                    if (formPosition.X < -100)
-                    {
-                        dispayXMulitplikator = -1;
-                    }
-                    else
-                    {
-                        dispayXMulitplikator = 1;
-                    }
-                }
-                var displayXMultiplikatorForLocation = dispayXMulitplikator;
-                //int dispayYMulitplikator = this.GraphicsDevice.Adapter.CurrentDisplayMode.Height / formPosition.Y;
-
-                if (displayXMultiplikatorForLocation > 0)
-                {
-                    displayXMultiplikatorForLocation--;
-                }
-
-                if (window.FormBorderStyle == FormBorderStyle.FixedSingle) // If fullscreen
-                {
-                    window.FormBorderStyle = FormBorderStyle.None;
-                    window.Location =
-                        new System.Drawing.Point(
-                            Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation, 0);
-                    window.Size = new Size(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height);
-                }
-                else
-                {
-                    window.FormBorderStyle = FormBorderStyle.FixedSingle;
-                    window.Location =
-                        new System.Drawing.Point(
-                            Graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width*displayXMultiplikatorForLocation,
-                            -16);
-                    window.Size = new Size(VIRTUAL_RESOLUTION.Width, VIRTUAL_RESOLUTION.Height + 16);
-                }
+                ResolutionManager.ToggleFullScreen(Graphics);
             }
 
             ScreenManager.Update(gameTime);
@@ -317,7 +260,7 @@ namespace _3DMusicVis2
 
             Graphics.GraphicsDevice.SetRenderTarget(null);
 
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
 
             SpriteBatch.Draw(DEFAULT_RENDERTARGET, GraphicsDevice.Viewport.Bounds, Color.White);
 

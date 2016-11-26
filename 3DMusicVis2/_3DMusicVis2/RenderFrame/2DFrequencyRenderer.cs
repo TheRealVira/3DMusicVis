@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 2DFrequencyRenderer.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -15,6 +15,7 @@
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Manager;
 using _3DMusicVis2.Setting.Visualizer;
 
 #endregion
@@ -61,9 +62,9 @@ namespace _3DMusicVis2.RenderFrame
                 case DrawMode.Blocked:
                     for (var f = 0; f < Frequencies.Count; f++)
                     {
-                        var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
+                        var x = ResolutionManager.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
                         var y =
-                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                            (int) (Frequencies[f]*ResolutionManager.VIRTUAL_RESOLUTION.Height/2);
                         //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
 
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
@@ -75,9 +76,9 @@ namespace _3DMusicVis2.RenderFrame
                 case DrawMode.Dashed:
                     for (var f = 0; f < Frequencies.Count; f++)
                     {
-                        var x = Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
+                        var x = ResolutionManager.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count;
                         var y =
-                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                            (int) (Frequencies[f]*ResolutionManager.VIRTUAL_RESOLUTION.Height/2);
                         //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
 
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
@@ -87,13 +88,13 @@ namespace _3DMusicVis2.RenderFrame
                     }
                     break;
                 case DrawMode.Connected:
-                    var last = new Vector2(0, Frequencies[0]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                    var last = new Vector2(0, Frequencies[0]*ResolutionManager.VIRTUAL_RESOLUTION.Height/2);
                     for (var f = 1; f < Frequencies.Count; f++)
                     {
                         var y =
-                            (int) (Frequencies[f]*Game1.VIRTUAL_RESOLUTION.Height/2);
+                            (int) (Frequencies[f]*ResolutionManager.VIRTUAL_RESOLUTION.Height/2);
                         //y = y > Game1.VIRTUAL_RESOLUTION.Height / 2 ? Game1.VIRTUAL_RESOLUTION.Height / 2 : y;
-                        var c = new Vector2(Game1.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count, y);
+                        var c = new Vector2(ResolutionManager.VIRTUAL_RESOLUTION.Width*f/(float) Frequencies.Count, y);
 
                         //sprite.Draw(Game1.FamouseOnePixel, new Rectangle((int) (x + width*2), y, width, height),
                         //    _renderer.ForeGroundColor.Negate());
@@ -113,8 +114,8 @@ namespace _3DMusicVis2.RenderFrame
 
         public static Texture2D Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings)
         {
-            var toRet = new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height, true,
+            var toRet = new RenderTarget2D(device, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height, true,
                 device.DisplayMode.Format, DepthFormat.Depth24);
 
             Draw(device, gameTime, cam, settings, ref toRet);

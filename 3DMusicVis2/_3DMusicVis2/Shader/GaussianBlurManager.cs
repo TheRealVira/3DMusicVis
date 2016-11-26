@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: GaussianBlurManager.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -15,6 +15,7 @@
 using Dhpoware;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Manager;
 
 #endregion
 
@@ -37,8 +38,8 @@ namespace _3DMusicVis2.Shader
             myBlur = new GaussianBlur(game);
             myBlur.ComputeKernel(BLUR_RADIUS, BLUR_AMOUNT);
 
-            var renderTargetWidth = Game1.VIRTUAL_RESOLUTION.Width/2;
-            var renderTargetHeight = Game1.VIRTUAL_RESOLUTION.Height/2;
+            var renderTargetWidth = ResolutionManager.VIRTUAL_RESOLUTION.Width/2;
+            var renderTargetHeight = ResolutionManager.VIRTUAL_RESOLUTION.Height/2;
             renderTarget1 = new RenderTarget2D(gd,
                 renderTargetWidth, renderTargetHeight, false,
                 gd.PresentationParameters.BackBufferFormat,

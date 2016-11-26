@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: Camera.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -29,13 +29,13 @@ namespace _3DMusicVis2
 
         //Collision Boxes for this instance of camera
         internal List<BoundingBox> collisionBoxes = new List<BoundingBox>();
+
+        public bool Locked;
         public Vector3 mouseRotationBuffer;
         private float movespeedmultiplikator;
         public bool NegateOrbit;
         public bool Orbit;
         private Matrix view;
-
-        public bool Locked;
 
         //Constructor
         public Camera(GraphicsDevice device, Vector3 position, Vector3 rotation, float speed)
@@ -144,7 +144,7 @@ namespace _3DMusicVis2
 
         public void Update(GameTime gameTime)
         {
-            if(Locked)return;
+            if (Locked) return;
 
             //Sprint-Key
             movespeedmultiplikator = Game1.NewKeyboardState.IsKeyDown(Keys.LeftShift) ? 2.5F : 1.6F;

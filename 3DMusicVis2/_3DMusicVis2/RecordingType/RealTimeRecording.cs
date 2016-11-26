@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: RealTimeRecording.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -77,7 +77,7 @@ namespace _3DMusicVis2.RecordingType
         private static void Aggregator_FftCalculated(object sender, FftEventArgs e)
         {
             const int dif = 4;
-            var half = e.Result.Length / dif;
+            var half = e.Result.Length/dif;
             FrequencySpectrum = new float[half];
             PrevMaxFreq = MaxFreq;
             PrevMinFreq = MinFreq;
@@ -91,10 +91,10 @@ namespace _3DMusicVis2.RecordingType
                 // sqrt(1/16) = 1/4
                 // sqrt(1.5)  = 1.225
 
-                var val = e.Result[i + e.Result.Length / 2 + e.Result.Length / dif].X *
-                           e.Result[i + e.Result.Length / 2 + e.Result.Length / dif].X +
-                           e.Result[i + e.Result.Length / 2 + e.Result.Length / dif].Y *
-                           e.Result[i + e.Result.Length / 2 + e.Result.Length / dif].Y;
+                var val = e.Result[i + e.Result.Length/2 + e.Result.Length/dif].X*
+                          e.Result[i + e.Result.Length/2 + e.Result.Length/dif].X +
+                          e.Result[i + e.Result.Length/2 + e.Result.Length/dif].Y*
+                          e.Result[i + e.Result.Length/2 + e.Result.Length/dif].Y;
 
                 //var val = e.Result[i].X *
                 //           e.Result[i].X +

@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using _3DMusicVis2;
+using _3DMusicVis2.Manager;
 
 #endregion
 
@@ -95,8 +96,8 @@ namespace BloomPostprocess
             // Look up the resolution and format of our main backbuffer.
             PresentationParameters pp = GraphicsDevice.PresentationParameters;
 
-            int width = Game1.VIRTUAL_RESOLUTION.Width;
-            int height = Game1.VIRTUAL_RESOLUTION.Height;
+            int width = ResolutionManager.VIRTUAL_RESOLUTION.Width;
+            int height = ResolutionManager.VIRTUAL_RESOLUTION.Height;
 
             SurfaceFormat format = pp.BackBufferFormat;
 

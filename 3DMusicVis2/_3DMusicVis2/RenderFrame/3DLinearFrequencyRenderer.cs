@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: 3DLinearFrequencyRenderer.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -15,6 +15,7 @@
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis2.Manager;
 using _3DMusicVis2.Setting.Visualizer;
 
 #endregion
@@ -46,7 +47,8 @@ namespace _3DMusicVis2.RenderFrame
                     ForeGroundColor = Color.White,
                     HightMultiplier = 1.5f,
                     FinalRenderTarget =
-                        new RenderTarget2D(device, Game1.VIRTUAL_RESOLUTION.Width, Game1.VIRTUAL_RESOLUTION.Height, true,
+                        new RenderTarget2D(device, ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                            ResolutionManager.VIRTUAL_RESOLUTION.Height, true,
                             device.DisplayMode.Format, DepthFormat.Depth24)
                 };
 

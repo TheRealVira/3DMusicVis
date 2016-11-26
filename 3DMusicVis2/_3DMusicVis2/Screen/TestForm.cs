@@ -6,7 +6,7 @@
 // Project: _3DMusicVis2
 // Filename: TestForm.cs
 // Date - created:2016.10.23 - 14:56
-// Date - current: 2016.11.14 - 18:39
+// Date - current: 2016.11.26 - 14:25
 
 #endregion
 
@@ -18,6 +18,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using _3DMusicVis2.Manager;
 using _3DMusicVis2.RecordingType;
 using _3DMusicVis2.RenderFrame;
 using _3DMusicVis2.Shader;
@@ -115,25 +116,26 @@ namespace _3DMusicVis2.Screen
             sB.GraphicsDevice.Clear(Color.Transparent);
             // Applying shader
             sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            sB.Draw(Game1.ViraLogo, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.Draw(Game1.ViraLogo, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
             BloomManager.Bloom.EndDraw();
 
             var temp = GaussianBlurManager.Compute(BloomManager.Bloom.FinalRenderTarget, sB);
-            var _alphaDeletionRendertarget = new RenderTarget2D(GDM.GraphicsDevice, Game1.VIRTUAL_RESOLUTION.Width,
-                Game1.VIRTUAL_RESOLUTION.Height);
+            var _alphaDeletionRendertarget = new RenderTarget2D(GDM.GraphicsDevice,
+                ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height);
 
             GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
             sB.GraphicsDevice.Clear(Color.Transparent);
             sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, Game1.LiquifyEffect);
             Game1.LiquifyEffect.Parameters["width"].SetValue(.5f);
-            sB.Draw(temp, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.Draw(temp, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
 
             sB.GraphicsDevice.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
             sB.GraphicsDevice.Clear(Color.White);
             sB.Begin();
-            sB.Draw(_alphaDeletionRendertarget, Game1.VIRTUAL_RESOLUTION, Color.White);
+            sB.Draw(_alphaDeletionRendertarget, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
         }
 
