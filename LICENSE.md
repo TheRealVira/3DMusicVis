@@ -1,1 +1,1 @@
-Copyright © 2015 by Thomas Rührig aka TheRealVira
+Copyright © 2015 by Johanna Rührig aka TheRealVira
