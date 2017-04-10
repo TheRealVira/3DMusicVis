@@ -211,7 +211,7 @@ namespace _3DMusicVis.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "Striker",
-                Shaders = ShaderMode.Blur | ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine,
+                Shaders = ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine,
                 BackgroundColor = new ColorSetting
                 {
                     Color = Color.Black,
