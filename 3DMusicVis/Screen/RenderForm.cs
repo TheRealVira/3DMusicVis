@@ -50,10 +50,8 @@ namespace _3DMusicVis.Screen
 
         private float _rainbowGradiant;
         private float _rainbowgradiantMultiplier = 1;
-        public Color NotSelectedColor = Color.White;
 
         public SettingsBundle Selected;
-        public Color SelectedColor = Color.Red;
         public bool UseColor = true;
 
         public bool UseShader = true;
@@ -227,7 +225,7 @@ namespace _3DMusicVis.Screen
                 }
                 else
                 {
-                    toDraw = _mySetting.Bundles[i] == Selected ? SelectedColor : NotSelectedColor;
+                    toDraw = _mySetting.Bundles[i] == Selected ? backGroundColor.Negate() : backGroundColor;
                 }
 
                 var pos = _mySetting.Bundles[i].Trans.Position;
