@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: Setting.cs
 // Date - created:2016.12.10 - 09:43
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 
 #endregion
 
@@ -24,6 +23,8 @@ namespace _3DMusicVis.Setting.Visualizer
     internal struct Setting
     {
         public string SettingName;
+        public float RotationNotice;
+
         public ShaderMode Shaders;
         public List<SettingsBundle> Bundles;
 

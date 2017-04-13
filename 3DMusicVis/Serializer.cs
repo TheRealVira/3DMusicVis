@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: Serializer.cs
 // Date - created:2016.12.10 - 09:37
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -28,6 +28,8 @@ namespace _3DMusicVis
 
         public const string OPTIONS_EXT = "opt";
         public const string OPTIONS_DIR = "Settings";
+
+        public const string SHADER_DIR = "Shader";
 
         public static List<T> Load<T>(string directory, string extension)
         {

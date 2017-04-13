@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: GaussianBlurManager.cs
 // Date - created:2016.12.10 - 09:41
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -36,7 +36,8 @@ namespace _3DMusicVis.Shader
         {
             myBlur = new GaussianBlur(game);
             myBlur.ComputeKernel(BLUR_RADIUS, BLUR_AMOUNT);
-            myBlur.ComputeOffsets(ResolutionManager.VIRTUAL_RESOLUTION.Width, ResolutionManager.VIRTUAL_RESOLUTION.Height);
+            myBlur.ComputeOffsets(ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height);
 
             var renderTargetWidth = ResolutionManager.VIRTUAL_RESOLUTION.Width / 2;
             var renderTargetHeight = ResolutionManager.VIRTUAL_RESOLUTION.Height / 2;

@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: TestForm.cs
 // Date - created:2016.12.10 - 09:43
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -123,8 +123,9 @@ namespace _3DMusicVis.Screen
 
             GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
             sB.GraphicsDevice.Clear(Color.Transparent);
-            sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null, Game1.LiquifyEffect);
-            Game1.LiquifyEffect.Parameters["width"].SetValue(.5f);
+            sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null,
+                ShadersManager.ShaderDictionary["Liquify"]);
+            ShadersManager.ShaderDictionary["Liquify"].Parameters["width"].SetValue(.5f);
             sB.Draw(temp, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
 

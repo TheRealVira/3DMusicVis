@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: Game1.cs
 // Date - created:2016.12.10 - 09:36
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -58,8 +58,6 @@ namespace _3DMusicVis
         public static Texture2D ViraLogo;
         public static Texture2D FamouseOnePixel;
         public static Texture2D GhostPixel;
-        public static Effect ScanlinEffect;
-        public static Effect LiquifyEffect;
         public static RenderTarget2D DEFAULT_RENDERTARGET;
 
         private Texture2D _3DMusicVisLogo;
@@ -102,16 +100,17 @@ namespace _3DMusicVis
             GhostPixel.SetData(new[] {Color.Transparent});
             InformationFont = Content.Load<SpriteFont>("Fonts/InformationFont");
             ConsoleFont = Content.Load<SpriteFont>("Fonts/Console");
-            ScanlinEffect = Content.Load<Effect>("Shader/Random");
-            LiquifyEffect = Content.Load<Effect>("Shader/Liquify");
+
+            ShadersManager.Initialize();
+            System.Console.WriteLine("Initialized the Shaders...");
 
             MyConsole = new Console(Console.ConsoleBoundings, FamouseOnePixel);
 
-            System.Console.WriteLine("IsInitialised the OutputManager...");
+            System.Console.WriteLine("Initialized the OutputManager...");
 
             ResolutionManager.ApplyResolution(Graphics);
 
-            System.Console.WriteLine("IsInitialised the Resolution...");
+            System.Console.WriteLine("Initialized the Resolution...");
 
             BasicEffect = new BasicEffect(GraphicsDevice)
             {

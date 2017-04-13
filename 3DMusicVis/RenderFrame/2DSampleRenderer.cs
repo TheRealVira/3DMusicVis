@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: 2DSampleRenderer.cs
 // Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -29,6 +29,9 @@ namespace _3DMusicVis.RenderFrame
         private static _2DMusicVisRenderFrame _renderer;
         private static ReadOnlyCollection<float> _samples;
 
+        public static RendererDefaults.DrawGraphicsOnRenderTarget DrawingTechnique;
+        public static string ToString() => "2F";
+
         public static void Initialise(GraphicsDevice device)
         {
             _renderer =
@@ -44,6 +47,8 @@ namespace _3DMusicVis.RenderFrame
                 };
 
             _samples = new ReadOnlyCollection<float>(new List<float>());
+
+            DrawingTechnique = Draw;
         }
 
         public static void UpdateRenderer(ReadOnlyCollection<float> samples)
@@ -54,7 +59,7 @@ namespace _3DMusicVis.RenderFrame
             }
         }
 
-        public static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,
+        private static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,
             ref RenderTarget2D tex)
         {
             if (_samples == null || _samples.Count < 2 || tex == null) return;

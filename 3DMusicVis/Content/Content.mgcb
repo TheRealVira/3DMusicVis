@@ -52,12 +52,6 @@
 /processorParam:TextureFormat=Color
 /build:Splashscreens/Vira.png
 
-#begin Shader/Random.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Shader/Random.fx
-
 #begin Shader/GaussianBlur/GaussianBlur.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -87,4 +81,16 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shader/Liquify.fx
+
+#begin Shader/Scanline.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shader/Scanline.fx
+
+#begin Shader/Rumble.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shader/Rumble.fx
 

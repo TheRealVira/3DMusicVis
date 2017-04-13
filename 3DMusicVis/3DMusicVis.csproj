@@ -65,6 +65,7 @@
     <Compile Include="RenderFrame\3DLinearWaveRenderer.cs" />
     <Compile Include="RenderFrame\3DMusicVisRenderFrame.cs" />
     <Compile Include="RenderFrame\3DSampleRenderer.cs" />
+    <Compile Include="RenderFrame\RendererDefaults.cs" />
     <Compile Include="SampleAggregator.cs" />
     <Compile Include="Screen\Credits.cs" />
     <Compile Include="Screen\EditForm.cs" />
@@ -94,6 +95,8 @@
     <Compile Include="Shader\BloomSettings.cs" />
     <Compile Include="Shader\GaussianBlur.cs" />
     <Compile Include="Shader\GaussianBlurManager.cs" />
+    <Compile Include="Shader\Rumble.cs" />
+    <Compile Include="Shader\ShadersManager.cs" />
     <Compile Include="TileHelper\Tile.cs" />
     <Compile Include="TileHelper\TileField.cs" />
     <Compile Include="VisualControls\Button.cs" />

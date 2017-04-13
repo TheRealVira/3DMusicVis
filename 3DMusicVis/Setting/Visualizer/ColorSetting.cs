@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: ColorSetting.cs
 // Date - created:2016.12.10 - 09:43
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -24,7 +24,8 @@ namespace _3DMusicVis.Setting.Visualizer
     {
         public bool Equals(ColorSetting other)
         {
-            return Color.Equals(other.Color) && BaseColor.Equals(other.BaseColor) && Mode == other.Mode && Negate == other.Negate;
+            return Color.Equals(other.Color) && BaseColor.Equals(other.BaseColor) && Mode == other.Mode &&
+                   Negate == other.Negate;
         }
 
         public override int GetHashCode()
@@ -40,10 +41,12 @@ namespace _3DMusicVis.Setting.Visualizer
         }
 
         public Color Color;
+
         /// <summary>
-        /// Is used as baseline for gradiantal effects (breafing, etc.)
+        ///     Is used as baseline for gradiantal effects (breafing, etc.)
         /// </summary>
         public Color BaseColor;
+
         public ColorMode Mode;
         public bool Negate;
 

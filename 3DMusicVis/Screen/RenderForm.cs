@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: RenderForm.cs
 // Date - created:2016.12.10 - 09:43
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -32,6 +32,7 @@ namespace _3DMusicVis.Screen
     internal class RenderForm : Screen
     {
         private readonly RenderTarget2D _alphaDeletionRendertarget;
+        private readonly RenderTarget2D _bloomRendertarget;
 
         private readonly Dictionary<string, RenderTarget2D> _bufferedDrawer;
         private readonly Camera _cam;
@@ -39,10 +40,11 @@ namespace _3DMusicVis.Screen
         private readonly List<string> _dicKeys;
         private readonly PauseMenu _menu;
         private readonly Setting.Visualizer.Setting _mySetting;
+        private readonly RenderTarget2D _rumbleRendertarget;
         private readonly RenderTarget2D _scanLineRendertarget;
 
         private readonly RenderTarget2D _wavesRendertarget;
-        private readonly RenderTarget2D _bloomRendertarget;
+        private readonly Dictionary<string, RendererDefaults.DrawGraphicsOnRenderTarget> DrawingTechniques;
 
         private float _breathingGradiant;
         private float _breathinggradiantMultiplier = 1;
@@ -74,6 +76,9 @@ namespace _3DMusicVis.Screen
             _bloomRendertarget = new RenderTarget2D(GDM.GraphicsDevice,
                 ResolutionManager.VIRTUAL_RESOLUTION.Width,
                 ResolutionManager.VIRTUAL_RESOLUTION.Height);
+            _rumbleRendertarget = new RenderTarget2D(GDM.GraphicsDevice,
+                ResolutionManager.VIRTUAL_RESOLUTION.Width,
+                ResolutionManager.VIRTUAL_RESOLUTION.Height);
 
             _dicKeys = new List<string>();
             _bufferedDrawer = new Dictionary<string, RenderTarget2D>();
@@ -86,6 +91,24 @@ namespace _3DMusicVis.Screen
                         ResolutionManager.VIRTUAL_RESOLUTION.Height));
                 _dicKeys.Add(x.ToString());
             });
+
+            DrawingTechniques = new Dictionary<string, RendererDefaults.DrawGraphicsOnRenderTarget>
+            {
+                {
+                    "2F", _2DFrequencyRenderer.DrawingTechnique
+                },
+
+                {
+                    "2S", _2DSampleRenderer.DrawingTechnique
+                },
+                {
+                    "3F", _3DFrequencyRenderer.DrawingTechnique
+                },
+
+                {
+                    "3S", _3DSampleRenderer.DrawingTechnique
+                }
+            };
         }
 
         public override void LoadedUp()
@@ -109,103 +132,23 @@ namespace _3DMusicVis.Screen
                 renderTarget2D.Value.Dispose();
         }
 
+        private RendererDefaults.DrawGraphicsOnRenderTarget SetSettingsFromString(string setting,
+            ref RenderTarget2D curTex, ref DrawMode curMode)
+        {
+            curTex = _bufferedDrawer[setting];
+            Enum.TryParse(setting.Substring(2, setting.Length - 2), out curMode);
+
+            return DrawingTechniques[setting.Substring(0, 2)];
+        }
+
         public override void Draw(SpriteBatch sB, GameTime gameTime)
         {
             var curMode = DrawMode.Blocked;
             RenderTarget2D curTex = null;
 
-            foreach (var key in _dicKeys)
-                switch (key)
-                {
-                        #region DRAWING
-
-                    case "2DDrawFrequency":
-                        _2DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
-                        break;
-                    case "2DDrawSample":
-                        _2DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
-                        break;
-
-                    case "3DDrawFrequency":
-                        _3DFrequencyRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
-                        break;
-                    case "3DDrawSample":
-                        _3DSampleRenderer.Draw(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
-                        break;
-
-                        #endregion
-
-                        #region 2D Frequency render settings
-
-                    case "2FDashed":
-                        curTex = _bufferedDrawer["2FDashed"];
-                        curMode = DrawMode.Dashed;
-                        goto case "2DDrawFrequency";
-                    case "2FBlocked":
-                        curTex = _bufferedDrawer["2FBlocked"];
-                        curMode = DrawMode.Blocked;
-                        goto case "2DDrawFrequency";
-                    case "2FConnected":
-                        curTex = _bufferedDrawer["2FConnected"];
-                        curMode = DrawMode.Connected;
-                        goto case "2DDrawFrequency";
-
-                        #endregion
-
-                        #region 2D Sample render settings
-
-                    case "2SDashed":
-                        curTex = _bufferedDrawer["2SDashed"];
-                        curMode = DrawMode.Dashed;
-                        goto case "2DDrawSample";
-                    case "2SBlocked":
-                        curTex = _bufferedDrawer["2SBlocked"];
-                        curMode = DrawMode.Blocked;
-                        goto case "2DDrawSample";
-                    case "2SConnected":
-                        curTex = _bufferedDrawer["2SConnected"];
-                        curMode = DrawMode.Connected;
-                        goto case "2DDrawSample";
-
-                        #endregion
-
-                        #region 3D Frequency render settings
-
-                    case "3FDashed":
-                        curTex = _bufferedDrawer["3FDashed"];
-                        curMode = DrawMode.Dashed;
-                        goto case "3DDrawFrequency";
-                    case "3FBlocked":
-                        curTex = _bufferedDrawer["3FBlocked"];
-                        curMode = DrawMode.Blocked;
-                        goto case "3DDrawFrequency";
-                    case "3FConnected":
-                        curTex = _bufferedDrawer["3FConnected"];
-                        curMode = DrawMode.Connected;
-                        goto case "3DDrawFrequency";
-
-                        #endregion
-
-                        #region 3D Sample render settings
-
-                    case "3SDashed":
-                        curTex = _bufferedDrawer["3SDashed"];
-                        curMode = DrawMode.Dashed;
-                        goto case "3DDrawSample";
-                    case "3SBlocked":
-                        curTex = _bufferedDrawer["3SBlocked"];
-                        curMode = DrawMode.Blocked;
-                        goto case "3DDrawSample";
-                    case "3SConnected":
-                        curTex = _bufferedDrawer["3SConnected"];
-                        curMode = DrawMode.Connected;
-                        goto case "3DDrawSample";
-
-                        #endregion
-
-                    default:
-                        continue;
-                }
+            for (var i = 0; i < _dicKeys.Count; i++)
+                SetSettingsFromString(_dicKeys[i], ref curTex, ref curMode)
+                    .Invoke(GDM.GraphicsDevice, gameTime, _cam, curMode, ref curTex);
 
             GDM.GraphicsDevice.SetRenderTarget(_wavesRendertarget);
             sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, null);
@@ -218,15 +161,13 @@ namespace _3DMusicVis.Screen
                 Color toDraw;
 
                 if (UseColor)
-                {
                     toDraw = _mySetting.Bundles[i].Color.Negate
-                        ? _mySetting.Bundles[i].Color.GetAppliedColor(_breathingGradiant, _rainbowGradiant, backGroundColor).Negate()
-                        : _mySetting.Bundles[i].Color.GetAppliedColor(_breathingGradiant, _rainbowGradiant, backGroundColor);
-                }
+                        ? _mySetting.Bundles[i].Color.GetAppliedColor(_breathingGradiant, _rainbowGradiant,
+                            backGroundColor).Negate()
+                        : _mySetting.Bundles[i].Color.GetAppliedColor(_breathingGradiant, _rainbowGradiant,
+                            backGroundColor);
                 else
-                {
                     toDraw = _mySetting.Bundles[i] == Selected ? backGroundColor.Negate() : backGroundColor;
-                }
 
                 var pos = _mySetting.Bundles[i].Trans.Position;
                 var scale = _mySetting.Bundles[i].Trans.Scale;
@@ -301,23 +242,30 @@ namespace _3DMusicVis.Screen
                     GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
                     sB.GraphicsDevice.Clear(Color.Transparent);
                     sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null,
-                        Game1.LiquifyEffect);
-                    Game1.LiquifyEffect.Parameters["width"].SetValue( /*.5f*/0.2f);
-                    Game1.LiquifyEffect.Parameters["toBe"].SetValue(backGroundColor.Negate().ToVector4());
+                        ShadersManager.ShaderDictionary["Liquify"]);
+                    ShadersManager.ShaderDictionary["Liquify"].Parameters["width"].SetValue( /*.5f*/0.2f);
+                    ShadersManager.ShaderDictionary["Liquify"].Parameters["toBe"].SetValue(
+                        backGroundColor.Negate().ToVector4());
                     sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
                     sB.End();
 
                     toUse = _alphaDeletionRendertarget;
                 }
 
+                if ((_mySetting.Shaders & ShaderMode.Rumble) != 0)
+                    Rumble.Apply(GDM.GraphicsDevice, ref toUse, sB, gameTime, _rumbleRendertarget,
+                        _mySetting.RotationNotice);
+
                 if ((_mySetting.Shaders & ShaderMode.ScanLine) != 0)
                 {
                     GDM.GraphicsDevice.SetRenderTarget(_scanLineRendertarget);
                     sB.GraphicsDevice.Clear(Color.Transparent);
                     sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null,
-                        Game1.ScanlinEffect);
-                    Game1.ScanlinEffect.Parameters["ImageHeight"].SetValue(ResolutionManager.VIRTUAL_RESOLUTION.Height);
-                    Game1.ScanlinEffect.Parameters["LineColor"].SetValue(backGroundColor.ToVector4());
+                        ShadersManager.ShaderDictionary["Scanline"]);
+                    ShadersManager.ShaderDictionary["Scanline"].Parameters["ImageHeight"].SetValue(
+                        ResolutionManager.VIRTUAL_RESOLUTION.Height);
+                    ShadersManager.ShaderDictionary["Scanline"].Parameters["LineColor"].SetValue(
+                        backGroundColor.ToVector4());
                     sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
                     sB.End();
 

@@ -6,15 +6,18 @@
 // Project: 3DMusicVis
 // Filename: Extensions.cs
 // Date - created:2016.12.10 - 09:37
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using _3DMusicVis.Setting.Visualizer;
 
@@ -114,8 +117,9 @@ namespace _3DMusicVis
             dev.DepthStencilState = DepthStencilState.Default;
             dev.SamplerStates[0] = SamplerState.LinearWrap;
         }
-        
-        public static Color GetAppliedColor(this ColorSetting setting, float breathTime, float rainbowTime, Color baseColor)
+
+        public static Color GetAppliedColor(this ColorSetting setting, float breathTime, float rainbowTime,
+            Color baseColor)
         {
             switch (setting.Mode)
             {
@@ -135,6 +139,24 @@ namespace _3DMusicVis
         public static Color GetAppliedColor(this ColorSetting setting, float breathTime, float rainbowTime)
         {
             return setting.GetAppliedColor(breathTime, rainbowTime, setting.BaseColor);
+        }
+
+        public static Dictionary<string, T> LoadListContent<T>(this ContentManager contentManager, string contentFolder)
+        {
+            var dir = new DirectoryInfo(contentManager.RootDirectory + "/" + contentFolder);
+            if (!dir.Exists)
+                throw new DirectoryNotFoundException();
+            var result = new Dictionary<string, T>();
+
+            var files = dir.GetFiles("*.*");
+            foreach (var file in files)
+            {
+                var key = Path.GetFileNameWithoutExtension(file.Name);
+
+
+                result[key] = contentManager.Load<T>(contentFolder + "/" + key);
+            }
+            return result;
         }
     }
 }

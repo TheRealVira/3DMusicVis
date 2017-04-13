@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: 2DFrequencyRenderer.cs
 // Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -28,6 +28,9 @@ namespace _3DMusicVis.RenderFrame
         private static _2DMusicVisRenderFrame _renderer;
         private static ReadOnlyCollection<float> Frequencies;
 
+        public static RendererDefaults.DrawGraphicsOnRenderTarget DrawingTechnique;
+        public static string ToString() => "2F";
+
         public static void Initialise(GraphicsDevice device)
         {
             _renderer =
@@ -41,6 +44,8 @@ namespace _3DMusicVis.RenderFrame
                     ForeGroundColor = Color.White,
                     HightMultiplier = 1.5f
                 };
+
+            DrawingTechnique = Draw;
         }
 
         public static void UpdateRenderer(ReadOnlyCollection<float> frequencies)
@@ -48,7 +53,7 @@ namespace _3DMusicVis.RenderFrame
             Frequencies = frequencies;
         }
 
-        public static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,
+        private static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,
             ref RenderTarget2D tex)
         {
             if (Frequencies == null || Frequencies.Count < 2 || tex == null) return;

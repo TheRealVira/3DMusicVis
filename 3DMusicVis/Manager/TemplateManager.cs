@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: TemplateManager.cs
 // Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -29,7 +29,7 @@ namespace _3DMusicVis.Manager
             {
                 SettingName = "SamplesOnly",
                 Shaders = ShaderMode.ScanLine,
-                BackgroundColor = new ColorSetting{Color = Color.Black},
+                BackgroundColor = new ColorSetting {Color = Color.Black},
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle
@@ -74,7 +74,7 @@ namespace _3DMusicVis.Manager
                 BackgroundColor = new ColorSetting
                 {
                     Color = Color.Black
-                    },
+                },
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle
@@ -162,7 +162,7 @@ namespace _3DMusicVis.Manager
                 BackgroundColor = new ColorSetting
                 {
                     Color = Color.Black
-                    },
+                },
                 BackgroundImage = new ImageSetting
                 {
                     ImageFileName = "heart.png",
@@ -211,12 +211,13 @@ namespace _3DMusicVis.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "Striker",
-                Shaders = ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine,
+                RotationNotice = .7f,
+                Shaders = ShaderMode.Rumble | ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine,
                 BackgroundColor = new ColorSetting
                 {
                     Color = Color.Black,
                     Mode = Setting.Visualizer.ColorMode.Static
-                    },
+                },
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle
@@ -255,12 +256,13 @@ namespace _3DMusicVis.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "Debug",
-                Shaders = ShaderMode.Blur,
+                Shaders = ShaderMode.Rumble | ShaderMode.Bloom,
+                RotationNotice = .7f,
                 //Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
                 BackgroundColor = new ColorSetting
                 {
                     Color = Color.Black
-                    },
+                },
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle
@@ -270,11 +272,19 @@ namespace _3DMusicVis.Manager
                         Trans =
                             new Transformation
                             {
-                                Position = new Vector2(0, .5f),
-                                Scale = new Vector2(1f, 1f),
-                                Rotation = (float) Math.PI / 4
+                                Position = new Vector2(.05f, -.05f),
+                                Scale = new Vector2(.9f, 1),
+                                Rotation = (float) Math.PI
                             },
-                        Color = new ColorSetting {Color = Color.White, Mode = Setting.Visualizer.ColorMode.Rainbow}
+                        Color = new ColorSetting {Color = Color.White /*, Mode = Setting.Visualizer.ColorMode.Rainbow*/}
+                    },
+                    new SettingsBundle
+                    {
+                        HowIDraw = DrawMode.Blocked,
+                        IsFrequency = true,
+                        Trans = new Transformation {Position = new Vector2(.05f, .05f), Scale = new Vector2(.9f, 1)},
+                        Color =
+                            new ColorSetting {Color = Color.White /*, Mode = Setting.Visualizer.ColorMode.Rainbow*/}
                     }
                 }
             };
@@ -289,7 +299,7 @@ namespace _3DMusicVis.Manager
                 BackgroundColor = new ColorSetting
                 {
                     Color = Color.Black
-                    },
+                },
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle
@@ -314,11 +324,11 @@ namespace _3DMusicVis.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "3DSampVis",
-                Shaders = (ShaderMode.Bloom | ShaderMode.ScanLine),
+                Shaders = ShaderMode.Bloom | ShaderMode.ScanLine,
                 BackgroundColor = new ColorSetting
                 {
                     Color = Color.Black
-                    },
+                },
                 Bundles = new List<SettingsBundle>
                 {
                     new SettingsBundle
@@ -342,11 +352,11 @@ namespace _3DMusicVis.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "YingYang",
-                //Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
+                Shaders = ShaderMode.Bloom,
                 BackgroundColor = new ColorSetting
                 {
                     Color = Color.White
-                    },
+                },
                 ForegroundImage = new ImageSetting
                 {
                     ImageFileName = "yingyang.png",

@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: 3DSampleRenderer.cs
 // Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.09 - 14:10
+// Date - current: 2017.04.13 - 14:32
 
 #endregion
 
@@ -30,6 +30,9 @@ namespace _3DMusicVis.RenderFrame
 
         private static Grid _myGrid;
 
+        public static RendererDefaults.DrawGraphicsOnRenderTarget DrawingTechnique;
+        public static string ToString() => "3S";
+
         public static void Initialise(GraphicsDevice device, ContentManager manager)
         {
             if (_myGrid != null) return;
@@ -47,6 +50,7 @@ namespace _3DMusicVis.RenderFrame
                 };
 
             _myGrid = new Grid(manager);
+            DrawingTechnique = Draw;
         }
 
         public static void Dispose()
@@ -66,7 +70,7 @@ namespace _3DMusicVis.RenderFrame
             _myGrid.Update(foregroundColors);
         }
 
-        public static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,
+        private static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,
             ref RenderTarget2D tex)
         {
             device.SetRenderTarget(tex);
