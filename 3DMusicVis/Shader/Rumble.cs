@@ -24,6 +24,7 @@ namespace _3DMusicVis.Shader
     internal static class Rumble
     {
         private static readonly float[] TempValues = new float[6];
+        private static bool Rumbled;
 
         public static void Apply(GraphicsDevice graphics, ref RenderTarget2D toUse, SpriteBatch sB, GameTime gameTime,
             RenderTarget2D rumbleRendertarget, float rotationNotive)
@@ -35,27 +36,34 @@ namespace _3DMusicVis.Shader
 
             if (RealTimeRecording.MaxFreq > rotationNotive)
             {
-                TempValues[0] = (Game1.Rand.Next(0, 10) - 5) *
-                                (gameTime.ElapsedGameTime.Milliseconds /
-                                 (float) gameTime.ElapsedGameTime.TotalMilliseconds);
-                TempValues[1] = (Game1.Rand.Next(0, 10) - 5) *
-                                (gameTime.ElapsedGameTime.Milliseconds /
-                                 (float) gameTime.ElapsedGameTime.TotalMilliseconds);
-                TempValues[2] = (Game1.Rand.Next(0, 10) - 5) *
-                                (gameTime.ElapsedGameTime.Milliseconds /
-                                 (float) gameTime.ElapsedGameTime.TotalMilliseconds);
-                TempValues[3] = (Game1.Rand.Next(0, 10) - 5) *
-                                (gameTime.ElapsedGameTime.Milliseconds /
-                                 (float) gameTime.ElapsedGameTime.TotalMilliseconds);
-                TempValues[4] = (Game1.Rand.Next(0, 10) - 5) *
-                                (gameTime.ElapsedGameTime.Milliseconds /
-                                 (float) gameTime.ElapsedGameTime.TotalMilliseconds);
-                TempValues[5] = (Game1.Rand.Next(0, 10) - 5) *
-                                (gameTime.ElapsedGameTime.Milliseconds /
-                                 (float) gameTime.ElapsedGameTime.TotalMilliseconds);
+                if (!Rumbled)
+                {
+                    Rumbled = true;
+
+                    TempValues[0] = (Game1.Rand.Next(0, 10) - 5) *
+                                    (gameTime.ElapsedGameTime.Milliseconds /
+                                     (float) gameTime.ElapsedGameTime.TotalMilliseconds);
+                    TempValues[1] = (Game1.Rand.Next(0, 10) - 5) *
+                                    (gameTime.ElapsedGameTime.Milliseconds /
+                                     (float) gameTime.ElapsedGameTime.TotalMilliseconds);
+                    TempValues[2] = (Game1.Rand.Next(0, 10) - 5) *
+                                    (gameTime.ElapsedGameTime.Milliseconds /
+                                     (float) gameTime.ElapsedGameTime.TotalMilliseconds);
+                    TempValues[3] = (Game1.Rand.Next(0, 10) - 5) *
+                                    (gameTime.ElapsedGameTime.Milliseconds /
+                                     (float) gameTime.ElapsedGameTime.TotalMilliseconds);
+                    TempValues[4] = (Game1.Rand.Next(0, 10) - 5) *
+                                    (gameTime.ElapsedGameTime.Milliseconds /
+                                     (float) gameTime.ElapsedGameTime.TotalMilliseconds);
+                    TempValues[5] = (Game1.Rand.Next(0, 10) - 5) *
+                                    (gameTime.ElapsedGameTime.Milliseconds /
+                                     (float) gameTime.ElapsedGameTime.TotalMilliseconds);
+                }
             }
             else
             {
+                Rumbled = false;
+
                 for (var i = 0; i < TempValues.Length; i++)
                     TempValues[i] = TempValues[i].Lerp(0, .01f);
             }
