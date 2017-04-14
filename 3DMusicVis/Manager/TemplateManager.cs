@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: TemplateManager.cs
 // Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.14 - 11:59
+// Date - current: 2017.04.14 - 20:16
 
 #endregion
 
@@ -236,7 +236,7 @@ namespace _3DMusicVis.Manager
                     },
                     new SettingsBundle
                     {
-                        HowIDraw = DrawMode.Connected,
+                        HowIDraw = DrawMode.Blocked,
                         IsFrequency = false,
                         Trans = new Transformation {Position = new Vector2(0, 0f), Scale = new Vector2(1, 1)},
                         Color = new ColorSetting {Color = Color.Red}

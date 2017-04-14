@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: 2DSampleRenderer.cs
 // Date - created:2017.04.14 - 09:21
-// Date - current: 2017.04.14 - 12:00
+// Date - current: 2017.04.14 - 20:16
 
 #endregion
 
@@ -53,10 +53,7 @@ namespace _3DMusicVis.RenderFrame._2D
 
         public static void UpdateRenderer(ReadOnlyCollection<float> samples)
         {
-            lock (_samples)
-            {
-                _samples = samples;
-            }
+            _samples = samples;
         }
 
         private static void Draw(GraphicsDevice device, GameTime gameTime, Camera cam, DrawMode settings,

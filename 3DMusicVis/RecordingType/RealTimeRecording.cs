@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: RealTimeRecording.cs
 // Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.14 - 12:00
+// Date - current: 2017.04.14 - 20:16
 
 #endregion
 
@@ -163,7 +163,7 @@ namespace _3DMusicVis.RecordingType
             //}
 
             // Saving data into a static field
-            CurrentSamples = frames;
+            CurrentSamples = frames.Where((x, i) => i % samples.WaveFormat.Channels == 0).ToArray();
 
             // Get parameters
             var buffer = waveInEventArgs.Buffer;
