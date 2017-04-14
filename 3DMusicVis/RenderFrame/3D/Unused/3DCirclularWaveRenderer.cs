@@ -4,9 +4,9 @@
 // All rights reserved.
 // Solution: 3DMusicVis
 // Project: 3DMusicVis
-// Filename: 3DLinearWaveRenderer.cs
-// Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.13 - 14:32
+// Filename: 3DCirclularWaveRenderer.cs
+// Date - created:2017.04.14 - 09:23
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -16,6 +16,7 @@ using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using _3DMusicVis.RenderFrame._3D.Unused;
 using _3DMusicVis.Setting.Visualizer;
 using _3DMusicVis.TileHelper;
 
@@ -23,14 +24,14 @@ using _3DMusicVis.TileHelper;
 
 namespace _3DMusicVis.RenderFrame
 {
-    internal static class _3DLinearWaveRenderer
+    [Obsolete]
+    internal static class _3DCirclularWaveRenderer
     {
         private static _3DMusicVisRenderFrame _renderer;
         private static TileField Field;
 
         public static void Initialise(GraphicsDevice device)
         {
-            var pp = device.PresentationParameters;
             _renderer =
                 new _3DMusicVisRenderFrame
                 {
@@ -57,60 +58,46 @@ namespace _3DMusicVis.RenderFrame
         private static void MyMethod(Tile[,] tiles, ReadOnlyCollection<float> samples, int arrayStep, Color fadeOutColor,
             ColorMode colorMode, bool onlycenter, float heightMulitplier)
         {
-            for (var x = tiles.GetLength(0) - 1; x > -1; x--)
+            var center = new Vector2(tiles.GetLength(0) / 2 - 1, tiles.GetLength(1) / 2 - 1);
+
+            for (var x = 0; x < tiles.GetLength(0); x++)
+            for (var y = 0; y < tiles.GetLength(1); y++)
             {
-                if (samples.Count <= x * arrayStep)
-                    break;
+                var calculatedCen = Math.Round((decimal) Vector2.Distance(center, new Vector2(x, y))) * arrayStep;
 
-                tiles[x, 0].ChangeMiddleColors(Color.Lerp(_renderer.ForeGroundColor, fadeOutColor,
-                    1 - samples[samples.Count - 1 - x * arrayStep].Normalize()));
-                tiles[x, 0].ChangeCenterHeight(samples[samples.Count - 1 - x * arrayStep] * 1.5f * heightMulitplier);
-            }
-
-            for (var x = tiles.GetLength(0) - 1; x > -1; x--)
-            {
-                if (samples.Count < x * arrayStep)
-                    break;
-
-                for (var y = 0; y < tiles.GetLength(1); y++)
-                {
-                    tiles[x, y].ChangeMiddleColors(tiles[x, 0].CenterColor);
-                    tiles[x, y].ChangeCenterHeight(tiles[x, 0].CenterHeight);
-                }
+                tiles[x, y].ChangeMiddleColors(Color.Lerp(_renderer.ForeGroundColor, fadeOutColor,
+                    1 - samples[(int) calculatedCen].Normalize()));
+                tiles[x, y].ChangeCenterHeight(
+                    samples[(int) calculatedCen] * 1.5f * heightMulitplier);
             }
 
             if (onlycenter && colorMode == ColorMode.OnlyCenter) return;
 
             for (var x = 0; x < tiles.GetLength(0); x++)
+            for (var y = 0; y < tiles.GetLength(1); y++)
             {
-                if (samples.Count < x * arrayStep)
-                    break;
+                if (!onlycenter)
+                    tiles[x, y].UpdateOutsideHeight(tiles, new Point(x, y));
 
-                for (var y = 0; y < tiles.GetLength(1); y++)
+                switch (colorMode)
                 {
-                    if (!onlycenter)
-                        tiles[x, y].UpdateOutsideHeight(tiles, new Point(x, y));
-
-                    switch (colorMode)
-                    {
-                        case ColorMode.SideEqualsCenter:
-                            tiles[x, y].ChangeSideColor(tiles[x, y].CenterColor);
-                            break;
-                        case ColorMode.DynamicSideColorShiat:
-                            tiles[x, y].ChangeSideColorsDynamic(fadeOutColor);
-                            break;
-                        case ColorMode.OnlyCenter:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(colorMode), colorMode, null);
-                    }
+                    case ColorMode.SideEqualsCenter:
+                        tiles[x, y].ChangeSideColor(tiles[x, y].CenterColor);
+                        break;
+                    case ColorMode.DynamicSideColorShiat:
+                        tiles[x, y].ChangeSideColorsDynamic(fadeOutColor);
+                        break;
+                    case ColorMode.OnlyCenter:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(colorMode), colorMode, null);
                 }
             }
         }
 
-        public static void UpdateRenderer(ReadOnlyCollection<float> samples)
+        public static void UpdateRenderer(ReadOnlyCollection<float> frequencies)
         {
-            Field.Update(MyMethod, samples, samples.Count / 87, _renderer.FadeOutColor, _renderer.ColorMode,
+            Field.Update(MyMethod, frequencies, frequencies.Count / 70, _renderer.FadeOutColor, _renderer.ColorMode,
                 _renderer.UpdateOnlyTheCenterOfATile, _renderer.HightMultiplier);
         }
 

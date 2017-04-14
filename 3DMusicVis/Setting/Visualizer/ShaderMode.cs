@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: ShaderMode.cs
 // Date - created:2016.12.10 - 09:43
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -24,9 +24,10 @@ namespace _3DMusicVis.Setting.Visualizer
     {
         None = 0,
         Bloom = 1,
-        Blur = 2,
+        GaussianBlur = 2,
         Liquify = 4,
         ScanLine = 8,
-        Rumble = 16
+        Rumble = 16,
+        FishEye = 32
     }
 }

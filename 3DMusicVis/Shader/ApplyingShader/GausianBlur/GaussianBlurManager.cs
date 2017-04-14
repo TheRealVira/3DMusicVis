@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis
 // Project: 3DMusicVis
 // Filename: GaussianBlurManager.cs
-// Date - created:2016.12.10 - 09:41
-// Date - current: 2017.04.13 - 14:32
+// Date - created:2017.04.14 - 11:10
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -30,13 +30,13 @@ namespace _3DMusicVis.Shader
         private static RenderTarget2D renderTarget1;
         private static RenderTarget2D renderTarget2;
 
-        private static GaussianBlur myBlur;
+        private static GaussianBlur _myGaussianBlur;
 
         public static void Initialize(GraphicsDevice gd, Game game)
         {
-            myBlur = new GaussianBlur(game);
-            myBlur.ComputeKernel(BLUR_RADIUS, BLUR_AMOUNT);
-            myBlur.ComputeOffsets(ResolutionManager.VIRTUAL_RESOLUTION.Width,
+            _myGaussianBlur = new GaussianBlur();
+            _myGaussianBlur.ComputeKernel(BLUR_RADIUS, BLUR_AMOUNT);
+            _myGaussianBlur.ComputeOffsets(ResolutionManager.VIRTUAL_RESOLUTION.Width,
                 ResolutionManager.VIRTUAL_RESOLUTION.Height);
 
             var renderTargetWidth = ResolutionManager.VIRTUAL_RESOLUTION.Width / 2;
@@ -54,7 +54,7 @@ namespace _3DMusicVis.Shader
 
         public static Texture2D Compute(Texture2D texture, SpriteBatch sB)
         {
-            return myBlur.PerformGaussianBlur(texture, renderTarget1, renderTarget2, sB);
+            return _myGaussianBlur.PerformGaussianBlur(texture, renderTarget1, renderTarget2, sB);
         }
     }
 }

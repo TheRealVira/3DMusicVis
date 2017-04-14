@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: Game1.cs
 // Date - created:2016.12.10 - 09:36
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 11:59
 
 #endregion
 
@@ -20,7 +20,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3DMusicVis.Manager;
 using _3DMusicVis.RecordingType;
-using _3DMusicVis.RenderFrame;
+using _3DMusicVis.RenderFrame._2D;
+using _3DMusicVis.RenderFrame._3D.Used;
 using _3DMusicVis.Shader;
 using Console = _3DMusicVis.VisualControls.Console;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
@@ -101,7 +102,7 @@ namespace _3DMusicVis
             InformationFont = Content.Load<SpriteFont>("Fonts/InformationFont");
             ConsoleFont = Content.Load<SpriteFont>("Fonts/Console");
 
-            ShadersManager.Initialize();
+            ShadersManager.Initialize(Content);
             System.Console.WriteLine("Initialized the Shaders...");
 
             MyConsole = new Console(Console.ConsoleBoundings, FamouseOnePixel);
@@ -125,10 +126,12 @@ namespace _3DMusicVis
             ImageManager.Initialise();
             System.Console.WriteLine("Initialized the ImageManager...");
 
-            _3DCirclularWaveRenderer.Initialise(GraphicsDevice);
-            System.Console.WriteLine("Initialized the _3DCirclularWaveRenderer...");
-            _3DLinearWaveRenderer.Initialise(GraphicsDevice);
-            System.Console.WriteLine("Initialized the _3DLinearWaveRenderer...");
+            //_3DCirclularWaveRenderer.Initialise(GraphicsDevice);
+            //System.Console.WriteLine("Initialized the _3DCirclularWaveRenderer...");
+            //_3DLinearWaveRenderer.Initialise(GraphicsDevice);
+            //System.Console.WriteLine("Initialized the _3DLinearWaveRenderer...");
+            //_3DLinearFrequencyRenderer.Initialise(GraphicsDevice);
+            //System.Console.WriteLine("Initialized the _3DLinearFrecuencyRenderer...");
 
             _2DSampleRenderer.Initialise(GraphicsDevice);
             System.Console.WriteLine("Initialized the _2DSampleRenderer...");
@@ -146,8 +149,6 @@ namespace _3DMusicVis
             System.Console.WriteLine("Initialized the gaussianblur...");
             BloomManager.Initialize(this);
             System.Console.WriteLine("Initialized the bloom...");
-            _3DLinearFrequencyRenderer.Initialise(GraphicsDevice);
-            System.Console.WriteLine("Initialized the _3DLinearFrecuencyRenderer...");
             DEFAULT_RENDERTARGET = new RenderTarget2D(GraphicsDevice, ResolutionManager.VIRTUAL_RESOLUTION.Width,
                 ResolutionManager.VIRTUAL_RESOLUTION.Height, true,
                 GraphicsDevice.DisplayMode.Format, DepthFormat.Depth24);
@@ -249,9 +250,12 @@ namespace _3DMusicVis
             Graphics.GraphicsDevice.SetRenderTarget(DEFAULT_RENDERTARGET);
             SpriteBatch.GraphicsDevice.Clear(Color.Black);
             ScreenManager.Draw(SpriteBatch, gameTime);
-            //MyConsole.Draw(gameTime, SpriteBatch, 2);
 
-            //SpriteBatch.End();
+#if DEBUG
+            SpriteBatch.Begin();
+            MyConsole.Draw(gameTime, SpriteBatch, 2);
+            SpriteBatch.End();
+#endif
 
             Graphics.GraphicsDevice.SetRenderTarget(null);
 

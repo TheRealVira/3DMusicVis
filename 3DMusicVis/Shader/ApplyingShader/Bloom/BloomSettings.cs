@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis
 // Project: 3DMusicVis
 // Filename: BloomSettings.cs
-// Date - created:2016.12.10 - 09:41
-// Date - current: 2017.04.13 - 14:32
+// Date - created:2017.04.14 - 11:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -22,7 +22,7 @@ namespace _3DMusicVis.Shader
         /// </summary>
         public static BloomSettings[] PresetSettings =
         {
-            //                Name           Thresh  Blur Bloom  Base  BloomSat BaseSat
+            //                Name           Thresh  GaussianBlur Bloom  Base  BloomSat BaseSat
             new BloomSettings("Default", 0.25f, 4, 1.25f, 1, 1, 1),
             new BloomSettings("Soft", 0, 3, 1, 1, 1, 1),
             new BloomSettings("Desaturated", 0.5f, 8, 2, 1, 0, 1),

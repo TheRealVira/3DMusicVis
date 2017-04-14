@@ -5,13 +5,14 @@
 // Solution: 3DMusicVis
 // Project: 3DMusicVis
 // Filename: 3DLinearFrequencyRenderer.cs
-// Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.13 - 14:32
+// Date - created:2017.04.14 - 09:23
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
 #region Usings
 
+using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,8 +21,9 @@ using _3DMusicVis.Setting.Visualizer;
 
 #endregion
 
-namespace _3DMusicVis.RenderFrame
+namespace _3DMusicVis.RenderFrame._3D.Unused
 {
+    [Obsolete]
     internal static class _3DLinearFrequencyRenderer
     {
         private static _3DMusicVisRenderFrame mFrame;
@@ -31,7 +33,14 @@ namespace _3DMusicVis.RenderFrame
 
         private static VertexPositionColor[] _vertices;
         private static int[] _indices;
-        private static BasicEffect myEffect;
+
+#pragma warning disable 0649
+        /// <summary>
+        ///     This is something obsolete and I do currently not want to deal with it...
+        /// </summary>
+        private static BasicEffect _myEffect;
+#pragma warning restore 0649 
+
         private static float[] _heightData;
 
         public static void Initialise(GraphicsDevice device)
@@ -117,12 +126,12 @@ namespace _3DMusicVis.RenderFrame
             };
             device.RasterizerState = rasterState;
 
-            myEffect.CurrentTechnique = myEffect.Techniques["ColoredNoShading"];
-            myEffect.Parameters["xView"].SetValue(cam.View);
-            myEffect.Parameters["xProjection"].SetValue(cam.Projektion);
-            myEffect.Parameters["xWorld"].SetValue(Matrix.CreateWorld(cam.Position, Vector3.Forward, Vector3.Up));
+            _myEffect.CurrentTechnique = _myEffect.Techniques["ColoredNoShading"];
+            _myEffect.Parameters["xView"].SetValue(cam.View);
+            _myEffect.Parameters["xProjection"].SetValue(cam.Projektion);
+            _myEffect.Parameters["xWorld"].SetValue(Matrix.CreateWorld(cam.Position, Vector3.Forward, Vector3.Up));
 
-            foreach (var pass in myEffect.CurrentTechnique.Passes)
+            foreach (var pass in _myEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
 

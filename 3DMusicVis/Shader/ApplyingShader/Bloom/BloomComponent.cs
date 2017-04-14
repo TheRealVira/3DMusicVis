@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis
 // Project: 3DMusicVis
 // Filename: BloomComponent.cs
-// Date - created:2016.12.10 - 09:41
-// Date - current: 2017.04.13 - 14:32
+// Date - created:2017.04.14 - 11:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 

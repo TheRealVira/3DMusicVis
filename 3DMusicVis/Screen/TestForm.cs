@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: TestForm.cs
 // Date - created:2016.12.10 - 09:43
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3DMusicVis.Manager;
 using _3DMusicVis.RecordingType;
-using _3DMusicVis.RenderFrame;
+using _3DMusicVis.RenderFrame._2D;
 using _3DMusicVis.Shader;
 using _3DMusicVis.VisualControls;
 using Console = System.Console;
@@ -123,9 +123,9 @@ namespace _3DMusicVis.Screen
 
             GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
             sB.GraphicsDevice.Clear(Color.Transparent);
-            sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null,
-                ShadersManager.ShaderDictionary["Liquify"]);
-            ShadersManager.ShaderDictionary["Liquify"].Parameters["width"].SetValue(.5f);
+            //sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, null,
+            //    ShadersManager.ShaderDictionary["Liquify"]);
+            //ShadersManager.ShaderDictionary["Liquify"].Parameters["width"].SetValue(.5f);
             sB.Draw(temp, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
             sB.End();
 

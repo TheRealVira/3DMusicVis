@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: Console.cs
 // Date - created:2016.12.10 - 09:41
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -28,30 +28,26 @@ namespace _3DMusicVis.VisualControls
         public static Rectangle ConsoleBoundings = new Rectangle(0, ResolutionManager.VIRTUAL_RESOLUTION.Height - 250,
             500, 250);
 
+        private readonly Label _consoleSignLabel;
+
         private readonly ListBox _lines;
-
-        private readonly Label ConsoleSignLabel;
         private readonly int MAX_CONSOLE_TEXT = 7;
-
-        private readonly OutputManagerEventHandeling Writer;
-        private float _timer;
-        private float VANISH = 1000;
 
         public Console(Rectangle bounding, Texture2D texture)
             : base(bounding, texture, DefaultDrawColor, Color.White, Color.White)
         {
-            Writer = new OutputManagerEventHandeling();
+            var writer = new OutputManagerEventHandeling();
 
-            Writer.Writing += Write;
-            Writer.Writlineing += WriteLine;
-            System.Console.SetOut(Writer);
+            writer.Writing += Write;
+            writer.Writlineing += WriteLine;
+            System.Console.SetOut(writer);
 
             _lines =
                 new ListBox(
                     new Rectangle(Bounding.X, Bounding.Y, Bounding.Width, Bounding.Height - 20),
                     Game1.FamouseOnePixel, new List<string>(), Game1.FamouseOnePixel, Game1.ConsoleFont);
             //ConsoleSignLabel =new Label(new Rectangle(this.Bounding.X+1,this.Bounding.Y+this.Bounding.Height-200,10,10), Game1.FamouseOnePixel,Game1.ConsoleFont,">_");
-            ConsoleSignLabel = new Label(new Rectangle(Bounding.X + 1, Bounding.Y + Bounding.Height - 20, 20, 20),
+            _consoleSignLabel = new Label(new Rectangle(Bounding.X + 1, Bounding.Y + Bounding.Height - 20, 20, 20),
                 Game1.FamouseOnePixel, Game1.ConsoleFont, ">_");
         }
 
@@ -83,22 +79,8 @@ namespace _3DMusicVis.VisualControls
 
             base.Draw(gameTime, spriteBatch);
 
-            //int y = Game1.VIRTUAL_RESOLUTION.Height - (int)Game1.ConsoleFont.MeasureString("Test").Y * MAX_CONSOLE_TEXT + Spacing * 2;
-            //spriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle(0, y, (int)Game1.ConsoleFont.MeasureString("TestTestTestTestTestTestTestTestTestTestTestTestTestTestTest").X + Spacing * 3, Game1.VIRTUAL_RESOLUTION.Height - y), new Color(100, 100, 100, 255));
-            //spriteBatch.Draw(Game1.FamouseOnePixel, new Rectangle(Spacing, y + Spacing, (int)Game1.ConsoleFont.MeasureString("TestTestTestTestTestTestTestTestTestTestTestTestTestTestTest").X + Spacing, Game1.VIRTUAL_RESOLUTION.Height - y - Spacing * 2), new Color(0, 0, 0, 200));
-
-            //int y = this.Bounding.Y+Spacing*2;
-
-            //foreach (var text in Lines.Items)
-            //{
-            //    spriteBatch.DrawString(Game1.ConsoleFont, text.Text, new Vector2(10, y), FontColor);
-            //    y += (int)(Game1.ConsoleFont.MeasureString(text.Text).Y + Spacing);
-            //}
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.AnisotropicClamp, null, null);
             _lines.Draw(gameTime, spriteBatch, 2);
-            ConsoleSignLabel.Draw(gameTime, spriteBatch, 2);
-            spriteBatch.End();
+            _consoleSignLabel.Draw(gameTime, spriteBatch, 2);
         }
 
         public override void Update(GameTime gameTime)
@@ -107,15 +89,9 @@ namespace _3DMusicVis.VisualControls
 
             base.Update(gameTime);
 
-            //if (!(_lines.Count > 0)) return;
+            if (!(_lines.Items.Count > 0)) return;
 
-            //_timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            //if (_timer > VANISH)
-            //{
-            //    _timer = 0;
-            //    _lines.RemoveAt(0);
-            //}
-
+            _lines.Scroll(-1);
             _lines.Update(gameTime);
         }
     }

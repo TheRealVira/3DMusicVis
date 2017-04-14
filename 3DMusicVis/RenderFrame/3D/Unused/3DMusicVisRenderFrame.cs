@@ -5,13 +5,14 @@
 // Solution: 3DMusicVis
 // Project: 3DMusicVis
 // Filename: 3DMusicVisRenderFrame.cs
-// Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.13 - 14:32
+// Date - created:2017.04.14 - 09:23
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
 #region Usings
 
+using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,8 +20,9 @@ using _3DMusicVis.Setting.Visualizer;
 
 #endregion
 
-namespace _3DMusicVis.RenderFrame
+namespace _3DMusicVis.RenderFrame._3D.Unused
 {
+    [Obsolete]
     internal struct _3DMusicVisRenderFrame
     {
         public RasterizerState RastState;

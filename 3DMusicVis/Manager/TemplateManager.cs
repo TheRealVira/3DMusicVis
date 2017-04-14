@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: TemplateManager.cs
 // Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 11:59
 
 #endregion
 
@@ -212,7 +212,8 @@ namespace _3DMusicVis.Manager
             {
                 SettingName = "Striker",
                 RotationNotice = .7f,
-                Shaders = ShaderMode.Rumble | ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine,
+                Shaders =
+                    ShaderMode.Rumble | ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine | ShaderMode.FishEye,
                 BackgroundColor = new ColorSetting
                 {
                     Color = Color.Black,
@@ -256,7 +257,7 @@ namespace _3DMusicVis.Manager
             return new Setting.Visualizer.Setting
             {
                 SettingName = "Debug",
-                Shaders = ShaderMode.Rumble | ShaderMode.Bloom,
+                Shaders = ShaderMode.Rumble | ShaderMode.Bloom | ShaderMode.FishEye,
                 RotationNotice = .7f,
                 //Shaders = (ShaderMode.Bloom | ShaderMode.Liquify | ShaderMode.ScanLine),
                 BackgroundColor = new ColorSetting

@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: RendererDefaults.cs
 // Date - created:2017.04.13 - 12:55
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 

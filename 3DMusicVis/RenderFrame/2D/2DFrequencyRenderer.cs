@@ -5,8 +5,8 @@
 // Solution: 3DMusicVis
 // Project: 3DMusicVis
 // Filename: 2DFrequencyRenderer.cs
-// Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.13 - 14:32
+// Date - created:2017.04.14 - 09:21
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -20,7 +20,7 @@ using _3DMusicVis.Setting.Visualizer;
 
 #endregion
 
-namespace _3DMusicVis.RenderFrame
+namespace _3DMusicVis.RenderFrame._2D
 {
     internal static class _2DFrequencyRenderer
     {
@@ -29,7 +29,8 @@ namespace _3DMusicVis.RenderFrame
         private static ReadOnlyCollection<float> Frequencies;
 
         public static RendererDefaults.DrawGraphicsOnRenderTarget DrawingTechnique;
-        public static string ToString() => "2F";
+
+        public new static string ToString() => "2F";
 
         public static void Initialise(GraphicsDevice device)
         {

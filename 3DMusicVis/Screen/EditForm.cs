@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: EditForm.cs
 // Date - created:2016.12.10 - 09:43
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -21,7 +21,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using _3DMusicVis.Manager;
 using _3DMusicVis.RecordingType;
-using _3DMusicVis.RenderFrame;
+using _3DMusicVis.RenderFrame._2D;
 using _3DMusicVis.Screen.Prompt;
 using _3DMusicVis.Setting.Visualizer;
 using _3DMusicVis.VisualControls;

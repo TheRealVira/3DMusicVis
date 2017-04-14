@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: SettingsBundle.cs
 // Date - created:2016.12.10 - 09:43
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -21,6 +21,28 @@ namespace _3DMusicVis.Setting.Visualizer
     [Serializable]
     public struct SettingsBundle
     {
+        public bool Equals(SettingsBundle other)
+        {
+            return Trans.Equals(other.Trans) && Is3D == other.Is3D && HowIDraw == other.HowIDraw &&
+                   IsFrequency == other.IsFrequency && Color.Equals(other.Color) &&
+                   VerticalMirror == other.VerticalMirror && HorizontalMirror == other.HorizontalMirror;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Trans.GetHashCode();
+                hashCode = (hashCode * 397) ^ Is3D.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) HowIDraw;
+                hashCode = (hashCode * 397) ^ IsFrequency.GetHashCode();
+                hashCode = (hashCode * 397) ^ Color.GetHashCode();
+                hashCode = (hashCode * 397) ^ VerticalMirror.GetHashCode();
+                hashCode = (hashCode * 397) ^ HorizontalMirror.GetHashCode();
+                return hashCode;
+            }
+        }
+
         public Transformation Trans;
 
         /// <summary>

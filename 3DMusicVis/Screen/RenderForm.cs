@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: RenderForm.cs
 // Date - created:2016.12.10 - 09:43
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -22,6 +22,8 @@ using Microsoft.Xna.Framework.Input;
 using _3DMusicVis.Manager;
 using _3DMusicVis.RecordingType;
 using _3DMusicVis.RenderFrame;
+using _3DMusicVis.RenderFrame._2D;
+using _3DMusicVis.RenderFrame._3D.Used;
 using _3DMusicVis.Setting.Visualizer;
 using _3DMusicVis.Shader;
 
@@ -40,7 +42,6 @@ namespace _3DMusicVis.Screen
         private readonly List<string> _dicKeys;
         private readonly PauseMenu _menu;
         private readonly Setting.Visualizer.Setting _mySetting;
-        private readonly RenderTarget2D _rumbleRendertarget;
         private readonly RenderTarget2D _scanLineRendertarget;
 
         private readonly RenderTarget2D _wavesRendertarget;
@@ -74,9 +75,6 @@ namespace _3DMusicVis.Screen
                 ResolutionManager.VIRTUAL_RESOLUTION.Width,
                 ResolutionManager.VIRTUAL_RESOLUTION.Height);
             _bloomRendertarget = new RenderTarget2D(GDM.GraphicsDevice,
-                ResolutionManager.VIRTUAL_RESOLUTION.Width,
-                ResolutionManager.VIRTUAL_RESOLUTION.Height);
-            _rumbleRendertarget = new RenderTarget2D(GDM.GraphicsDevice,
                 ResolutionManager.VIRTUAL_RESOLUTION.Width,
                 ResolutionManager.VIRTUAL_RESOLUTION.Height);
 
@@ -207,71 +205,16 @@ namespace _3DMusicVis.Screen
             var toUse = _wavesRendertarget;
 
             if (UseShader)
-            {
-                if ((_mySetting.Shaders & ShaderMode.Blur) != 0)
+                foreach (ShaderMode value in Enum.GetValues(typeof(ShaderMode)))
                 {
-                    // Blur the bloom
-                    _gausianBlurRendertarget = (RenderTarget2D) GaussianBlurManager.Compute(toUse, sB);
+                    if (!Enum.TryParse(value.ToString(), out ShaderMode currentShader) ||
+                        !ShadersManager.ShaderDictionary.ContainsKey(currentShader) ||
+                        !_mySetting.Shaders.HasFlag(value))
+                        continue;
 
-                    toUse = _gausianBlurRendertarget;
+                    ShadersManager.ShaderDictionary[currentShader].Apply(GDM.GraphicsDevice,
+                        ref toUse, sB, gameTime, backGroundColor, _mySetting);
                 }
-
-                if ((_mySetting.Shaders & ShaderMode.Bloom) != 0)
-                {
-                    // Apply bloom
-                    BloomManager.Bloom.BeginDraw();
-                    sB.GraphicsDevice.Clear(Color.Transparent);
-                    // Applying shader
-                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-                    sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
-                    sB.End();
-                    BloomManager.Bloom.EndDraw();
-
-                    GDM.GraphicsDevice.SetRenderTarget(_bloomRendertarget);
-                    sB.GraphicsDevice.Clear(Color.Transparent);
-                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
-                    sB.Draw(BloomManager.Bloom.FinalRenderTarget, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
-                    sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
-                    sB.End();
-
-                    toUse = _bloomRendertarget;
-                }
-
-                if ((_mySetting.Shaders & ShaderMode.Liquify) != 0)
-                {
-                    GDM.GraphicsDevice.SetRenderTarget(_alphaDeletionRendertarget);
-                    sB.GraphicsDevice.Clear(Color.Transparent);
-                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null,
-                        ShadersManager.ShaderDictionary["Liquify"]);
-                    ShadersManager.ShaderDictionary["Liquify"].Parameters["width"].SetValue( /*.5f*/0.2f);
-                    ShadersManager.ShaderDictionary["Liquify"].Parameters["toBe"].SetValue(
-                        backGroundColor.Negate().ToVector4());
-                    sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
-                    sB.End();
-
-                    toUse = _alphaDeletionRendertarget;
-                }
-
-                if ((_mySetting.Shaders & ShaderMode.Rumble) != 0)
-                    Rumble.Apply(GDM.GraphicsDevice, ref toUse, sB, gameTime, _rumbleRendertarget,
-                        _mySetting.RotationNotice);
-
-                if ((_mySetting.Shaders & ShaderMode.ScanLine) != 0)
-                {
-                    GDM.GraphicsDevice.SetRenderTarget(_scanLineRendertarget);
-                    sB.GraphicsDevice.Clear(Color.Transparent);
-                    sB.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null,
-                        ShadersManager.ShaderDictionary["Scanline"]);
-                    ShadersManager.ShaderDictionary["Scanline"].Parameters["ImageHeight"].SetValue(
-                        ResolutionManager.VIRTUAL_RESOLUTION.Height);
-                    ShadersManager.ShaderDictionary["Scanline"].Parameters["LineColor"].SetValue(
-                        backGroundColor.ToVector4());
-                    sB.Draw(toUse, ResolutionManager.VIRTUAL_RESOLUTION, Color.White);
-                    sB.End();
-
-                    toUse = _scanLineRendertarget;
-                }
-            }
 
             GDM.GraphicsDevice.SetRenderTarget(Game1.DEFAULT_RENDERTARGET);
             sB.GraphicsDevice.Clear(backGroundColor);

@@ -1,12 +1,12 @@
-﻿#region License
+#region License
 
 // Copyright (c) 2017, Vira
 // All rights reserved.
 // Solution: 3DMusicVis
 // Project: 3DMusicVis
-// Filename: 3DFrequencyRenderer.cs
-// Date - created:2016.12.10 - 09:45
-// Date - current: 2017.04.13 - 14:32
+// Filename: 3DSampleRenderer.cs
+// Date - created:2017.04.14 - 09:23
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -17,21 +17,22 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using _3DMusicVis.Manager;
+using _3DMusicVis.RenderFrame._2D;
 using _3DMusicVis.Setting.Visualizer;
 using _3DMusicVis._3DHelper;
 
 #endregion
 
-namespace _3DMusicVis.RenderFrame
+namespace _3DMusicVis.RenderFrame._3D.Used
 {
-    internal static class _3DFrequencyRenderer
+    internal static class _3DSampleRenderer
     {
         private static _2DMusicVisRenderFrame _renderer;
 
         private static Grid _myGrid;
 
         public static RendererDefaults.DrawGraphicsOnRenderTarget DrawingTechnique;
-        public static string ToString() => "3F";
+        public new static string ToString() => "3S";
 
         public static void Initialise(GraphicsDevice device, ContentManager manager)
         {
@@ -58,15 +59,14 @@ namespace _3DMusicVis.RenderFrame
             _myGrid.Dispose();
         }
 
-        public static void UpdateRenderer(ReadOnlyCollection<float> frequencies)
+        public static void UpdateRenderer(ReadOnlyCollection<float> samples)
         {
-            var length = (int) (frequencies.Count / 2.5);
+            var length = samples.Count / 25;
             var foregroundColors = new float[length, length];
 
             for (var x = 0; x < length; x++)
             for (var y = 0; y < length; y++)
-                foregroundColors[x, y] = frequencies[frequencies.Count - 1 - x] *
-                                         ResolutionManager.VIRTUAL_RESOLUTION.Height / 4;
+                foregroundColors[x, y] = samples[x] * ResolutionManager.VIRTUAL_RESOLUTION.Height / 16;
 
             _myGrid.Update(foregroundColors);
         }

@@ -6,7 +6,7 @@
 // Project: 3DMusicVis
 // Filename: Label.cs
 // Date - created:2016.12.10 - 09:41
-// Date - current: 2017.04.13 - 14:32
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 

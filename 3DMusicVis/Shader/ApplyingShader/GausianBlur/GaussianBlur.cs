@@ -1,12 +1,12 @@
-﻿#region License
+#region License
 
 // Copyright (c) 2017, Vira
 // All rights reserved.
 // Solution: 3DMusicVis
 // Project: 3DMusicVis
 // Filename: GaussianBlur.cs
-// Date - created:2016.12.10 - 09:41
-// Date - current: 2017.04.13 - 14:32
+// Date - created:2017.04.14 - 11:10
+// Date - current: 2017.04.14 - 12:00
 
 #endregion
 
@@ -74,20 +74,10 @@ namespace _3DMusicVis.Shader
     ///         offsetsHoriz and offsetsVert fields.
     ///     </para>
     /// </summary>
-    public class GaussianBlur
+    internal class GaussianBlur : ApplyShader
     {
         private readonly Effect effect;
         private readonly Game game;
-
-        /// <summary>
-        ///     Default constructor for the GaussianBlur class. This constructor
-        ///     should be called if you don't want the GaussianBlur class to use
-        ///     its GaussianBlur.fx effect file to perform the two pass Gaussian
-        ///     blur operation.
-        /// </summary>
-        public GaussianBlur()
-        {
-        }
 
         /// <summary>
         ///     This overloaded constructor instructs the GaussianBlur class to
@@ -96,11 +86,11 @@ namespace _3DMusicVis.Shader
         ///     be already bound to the asset name: 'Effects\GaussianBlur' or
         ///     'GaussianBlur'.
         /// </summary>
-        public GaussianBlur(Game game)
+        public GaussianBlur(Effect eff = null)
+            : base(eff ?? Game1.FreeBeer.Content.Load<Effect>("Shader/GaussianBlur/GaussianBlur"))
         {
-            this.game = game;
-
-            effect = game.Content.Load<Effect>("Shader/GaussianBlur/GaussianBlur");
+            game = Game1.FreeBeer;
+            effect = eff ?? game.Content.Load<Effect>("Shader/GaussianBlur/GaussianBlur");
         }
 
         /// <summary>
@@ -263,6 +253,14 @@ namespace _3DMusicVis.Shader
             outputTexture = renderTarget2;
 
             return outputTexture;
+        }
+
+        public override void Apply(GraphicsDevice graphics, ref RenderTarget2D toUse, SpriteBatch sB, GameTime gameTime,
+            params object[] paramArray)
+        {
+            // GaussianBlur the bloom
+
+            toUse = (RenderTarget2D) GaussianBlurManager.Compute(toUse, sB);
         }
     }
 }
